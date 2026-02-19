@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indira Steel & Wood Furniture — Since 1988</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║           SUPABASE SETUP — READ BEFORE UPLOADING            ║
+╠══════════════════════════════════════════════════════════════╣
+║  1. Go to https://supabase.com → Sign up free               ║
+║  2. New Project → give it a name → set a DB password        ║
+║  3. Go to Project Settings → API                            ║
+║     Copy: Project URL  →  paste as SUPABASE_URL below       ║
+║     Copy: anon public key → paste as SUPABASE_KEY below     ║
+║  4. Go to SQL Editor → New Query → paste & run this SQL:    ║
+║                                                              ║
+║  create table products (                                     ║
+║    id uuid default gen_random_uuid() primary key,           ║
+║    name text not null,                                       ║
+║    cat text not null,                                        ║
+║    sub text not null,                                        ║
+║    model text not null,                                      ║
+║    size text,                                                ║
+║    material text,                                            ║
+║    color text,                                               ║
+║    price text,                                               ║
+║    description text,                                         ║
+║    emoji text,                                               ║
+║    image_url text,                                           ║
+║    image_path text,                                          ║
+║    created_at timestamptz default now()                      ║
+║  );                                                          ║
+║                                                              ║
+║  5. Go to Storage → New bucket → name: product-images       ║
+║     Make it PUBLIC                                           ║
+║  6. Go to Authentication → Policies (or use SQL Editor):    ║
+║     Run: alter table products enable row level security;     ║
+║     Run: create policy "Public read" on products            ║
+║       for select using (true);                               ║
+║     Run: create policy "Public write" on products            ║
+║       for all using (true);                                  ║
+║  7. Upload this file as index.html to your hosting           ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+
+<style>
+:root{
+  --bg:#f8f4ef;--white:#fff;--dark:#1c1410;
+  --maroon:#7a1c1c;--gold:#b8860b;--gold-l:#d4a017;
+  --brown:#6b4423;--cream:#fdf6ec;--border:#e2d5c3;
+  --gray:#8a7d6e;--red:#9b2335;--green:#1a7a40;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
+
+/* ─── HEADER ─── */
+.hdr{
+  background:linear-gradient(135deg,#1c1410,#2d1f14,#3a2010);
+  padding:0 32px;display:flex;align-items:center;justify-content:space-between;
+  height:78px;border-bottom:3px solid var(--gold);
+  position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.4);
+}
+.brand{display:flex;align-items:center;gap:14px;}
+.b-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-size:1.5rem;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);}
+.b-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--gold-l);letter-spacing:.8px;line-height:1.1;}
+.b-sub{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
+.b-since{color:var(--gold);}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.btn-alog{background:transparent;border:1px solid rgba(184,134,11,.4);color:rgba(255,255,255,.6);padding:7px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.73rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;}
+.btn-alog:hover{border-color:var(--gold);color:var(--gold);}
+.adm-badge{background:linear-gradient(135deg,var(--maroon),var(--red));color:white;padding:6px 13px;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;display:none;}
+.btn-lout{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);padding:6px 13px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;transition:all .3s;display:none;}
+.btn-lout:hover{border-color:#ff6b6b;color:#ff6b6b;}
+.menu-tog{display:none;background:none;border:none;color:rgba(255,255,255,.7);font-size:1.5rem;cursor:pointer;}
+
+/* ─── STATUS BAR ─── */
+#fbs{display:none;padding:9px 32px;font-size:.78rem;letter-spacing:.4px;text-align:center;font-weight:500;}
+#fbs.connecting{background:#fff3cd;color:#856404;}
+#fbs.ok{background:#d1e7dd;color:#0f5132;}
+#fbs.err{background:#f8d7da;color:#721c24;}
+#fbs.demo{background:#cce5ff;color:#004085;}
+
+/* ─── SETUP GUIDE ─── */
+#guide{
+  display:none;margin:18px 32px;
+  border:1px solid var(--gold);background:#fffef5;
+}
+.guide-head{
+  background:linear-gradient(135deg,var(--dark),#2d1f14);
+  padding:16px 22px;display:flex;align-items:center;justify-content:space-between;
+}
+.guide-head h3{font-family:'Cormorant Garamond',serif;color:var(--gold-l);font-size:1.2rem;}
+.gcls{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:4px 12px;cursor:pointer;font-size:.72rem;font-family:'Outfit',sans-serif;letter-spacing:1px;transition:all .2s;}
+.gcls:hover{background:rgba(255,255,255,.2);color:white;}
+.guide-body{padding:20px 22px;}
+.guide-body ol{padding-left:20px;font-size:.83rem;line-height:2.4;color:var(--dark);}
+.guide-body code{background:#f0e8d0;padding:1px 7px;font-size:.78rem;border-radius:2px;color:var(--maroon);}
+.guide-body a{color:var(--maroon);font-weight:600;text-decoration:none;}
+.guide-body a:hover{text-decoration:underline;}
+.sql-block{
+  background:#1c1410;color:#a8d8a8;
+  padding:14px 16px;margin:10px 0;font-family:monospace;
+  font-size:.76rem;line-height:1.8;border-left:3px solid var(--gold);
+  overflow-x:auto;white-space:pre;
+}
+.copy-sql{
+  background:var(--gold);color:var(--dark);border:none;
+  padding:4px 12px;cursor:pointer;font-size:.72rem;
+  font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:1px;
+  float:right;margin-bottom:6px;transition:all .2s;
+}
+.copy-sql:hover{background:var(--gold-l);}
+
+/* ─── HERO ─── */
+.hero{background:linear-gradient(135deg,#1c1410,#3a2010,#1c1410);padding:42px 32px 36px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(184,134,11,.1),transparent 60%),radial-gradient(ellipse at 70%,rgba(122,28,28,.1),transparent 60%);}
+.h-eye{font-size:.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;position:relative;display:flex;align-items:center;justify-content:center;gap:12px;}
+.h-eye::before,.h-eye::after{content:'';width:36px;height:1px;background:var(--gold);opacity:.5;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:2.9rem;font-weight:700;color:white;line-height:1.15;position:relative;margin-bottom:8px;}
+.hero h1 span{color:var(--gold-l);}
+.hero p{color:rgba(255,255,255,.38);font-size:.86rem;letter-spacing:1px;position:relative;}
+
+/* ─── ADMIN BAR ─── */
+#admbar{display:none;background:linear-gradient(135deg,#1a0f0f,#2a1515);border-bottom:2px solid var(--maroon);padding:15px 32px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+#admbar h3{font-family:'Cormorant Garamond',serif;color:var(--gold-l);font-size:1.05rem;}
+#admbar p{color:rgba(255,255,255,.28);font-size:.73rem;margin-top:2px;}
+.add-btn{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--dark);border:none;padding:11px 24px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;display:flex;align-items:center;gap:7px;}
+.add-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.4);}
+
+/* ─── LAYOUT ─── */
+.layout{display:flex;}
+.sbar{width:252px;min-width:252px;background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:78px;height:calc(100vh - 78px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.sbar-ttl{font-size:.61rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray);padding:0 16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sbar-ttl::after{content:'';flex:1;height:1px;background:var(--border);}
+.all-btn{margin:0 16px 8px;background:var(--dark);color:white;border:none;padding:9px 13px;width:calc(100% - 32px);font-family:'Outfit',sans-serif;font-size:.76rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:left;}
+.all-btn:hover,.all-btn.active{background:var(--maroon);}
+.cat-item{border-bottom:1px solid var(--border);}
+.cat-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;cursor:pointer;transition:all .2s;user-select:none;}
+.cat-hdr:hover{background:var(--cream);}
+.cat-hdr.acat{background:var(--maroon);}
+.cat-hdr.acat .clbl,.cat-hdr.acat .carr,.cat-hdr.acat .cico{color:white!important;}
+.cl{display:flex;align-items:center;gap:9px;}
+.cico{font-size:.95rem;}
+.clbl{font-size:.83rem;font-weight:500;color:var(--dark);}
+.carr{font-size:.68rem;color:var(--gray);transition:transform .3s;}
+.carr.open{transform:rotate(90deg);}
+.sclist{display:none;background:var(--cream);border-top:1px solid var(--border);}
+.sclist.open{display:block;}
+.sci{padding:9px 16px 9px 40px;font-size:.78rem;color:var(--gray);cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(226,213,195,.45);display:flex;align-items:center;gap:6px;}
+.sci:last-child{border-bottom:none;}
+.sci:hover{background:var(--border);color:var(--dark);}
+.sci.active{background:var(--gold);color:var(--dark);font-weight:600;}
+.sci::before{content:'›';font-size:.88rem;opacity:.45;}
+.sci.active::before{opacity:1;}
+
+/* ─── MAIN ─── */
+.main{flex:1;padding:24px;}
+.bc{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--gray);margin-bottom:16px;flex-wrap:wrap;}
+.bc span{color:var(--dark);font-weight:500;}
+.bc-sep{color:var(--border);}
+.rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.rcount{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;color:var(--dark);}
+.rsub{color:var(--gray);font-size:.76rem;margin-top:2px;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px;}
+
+/* SKELETON */
+.ske{background:linear-gradient(90deg,#f0e8db 25%,#e8ddd0 50%,#f0e8db 75%);background-size:200% 100%;animation:shim 1.5s infinite;height:310px;border:1px solid var(--border);}
+@keyframes shim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* PRODUCT CARD */
+.pcard{background:var(--white);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .3s;animation:fu .35s ease both;}
+@keyframes fu{from{opacity:0;transform:translateY(13px);}to{opacity:1;transform:translateY(0);}}
+.pcard:hover{box-shadow:0 8px 32px rgba(107,68,35,.14);transform:translateY(-4px);border-color:var(--gold);}
+.cimgw{width:100%;height:190px;overflow:hidden;background:linear-gradient(135deg,#f0e8db,#e8ddd0);position:relative;}
+.cimgw img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
+.pcard:hover .cimgw img{transform:scale(1.05);}
+.cph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+.cph-ico{font-size:2.7rem;opacity:.4;}
+.cph-txt{font-size:.62rem;color:var(--gray);letter-spacing:1px;}
+.cbadge{position:absolute;top:8px;left:8px;background:var(--maroon);color:white;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;}
+.csbadge{position:absolute;top:8px;right:8px;background:rgba(28,20,16,.82);color:rgba(255,255,255,.85);font-size:.57rem;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;}
+.cbody{padding:13px 15px 9px;}
+.cname{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--dark);margin-bottom:8px;line-height:1.3;}
+.cspecs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px;}
+.csp{background:var(--cream);padding:5px 7px;}
+.csp-k{font-size:.57rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);}
+.csp-v{font-size:.76rem;color:var(--dark);font-weight:500;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cmodel{font-size:.66rem;color:var(--gray);border-top:1px solid var(--border);padding-top:6px;font-family:monospace;letter-spacing:.5px;}
+.cadm{padding:0 15px 11px;display:none;gap:6px;}
+.cadm.show{display:flex;}
+.dbtn{background:#fff0f0;color:var(--red);border:1px solid #ffc5c5;padding:6px 14px;font-size:.72rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .25s;display:flex;align-items:center;gap:5px;font-weight:500;}
+.dbtn:hover{background:var(--red);color:white;border-color:var(--red);}
+
+/* EMPTY */
+.empty{display:none;text-align:center;padding:70px 20px;grid-column:1/-1;}
+.empty-ico{font-size:3.2rem;margin-bottom:13px;opacity:.32;}
+.empty h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--dark);margin-bottom:6px;}
+.empty p{color:var(--gray);font-size:.83rem;}
+
+/* ═══ MODALS ═══ */
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px;}
+.ovl.open{display:flex;}
+@keyframes pop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+
+/* ADMIN LOGIN */
+.lmodal{background:var(--dark);width:365px;padding:42px;border:1px solid rgba(184,134,11,.3);position:relative;animation:pop .3s ease;}
+.mclose{position:absolute;top:13px;right:13px;background:none;border:none;color:rgba(255,255,255,.3);font-size:1.4rem;cursor:pointer;line-height:1;transition:color .2s;}
+.mclose:hover{color:white;}
+.llogo{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold-l);letter-spacing:2px;text-align:center;margin-bottom:4px;}
+.lsub{text-align:center;font-size:.64rem;letter-spacing:3px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:28px;}
+.mf{margin-bottom:15px;}
+.mf label{display:block;font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px;}
+.mf input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(184,134,11,.2);color:white;padding:11px 12px;font-family:'Outfit',sans-serif;font-size:.88rem;outline:none;transition:border-color .3s;}
+.mf input:focus{border-color:var(--gold);}
+.mf input::placeholder{color:rgba(255,255,255,.14);}
+.lgo{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--dark);border:none;padding:13px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:4px;transition:all .3s;}
+.lgo:hover{box-shadow:0 4px 18px rgba(184,134,11,.4);}
+.lerr{color:#ff6b6b;font-size:.72rem;text-align:center;margin-top:10px;display:none;}
+
+/* ADD PRODUCT */
+.amodal{background:var(--white);width:610px;max-height:88vh;overflow-y:auto;padding:36px;position:relative;animation:pop .3s ease;}
+.amodal h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--dark);margin-bottom:4px;}
+.amdsub{color:var(--gray);font-size:.78rem;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.af{margin-bottom:15px;}
+.af label{display:block;font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--brown);margin-bottom:5px;font-weight:500;}
+.af input,.af select,.af textarea{width:100%;border:1px solid var(--border);background:var(--cream);padding:10px 12px;font-family:'Outfit',sans-serif;font-size:.85rem;color:var(--dark);outline:none;transition:border-color .3s;}
+.af input:focus,.af select:focus,.af textarea:focus{border-color:var(--gold);background:white;}
+.af textarea{resize:vertical;min-height:65px;}
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.imgzone{border:2px dashed var(--border);padding:20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.imgzone:hover{border-color:var(--gold);background:rgba(184,134,11,.03);}
+.imgzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.iz-ico{font-size:1.6rem;margin-bottom:4px;}
+.iz-txt{font-size:.74rem;color:var(--gray);}
+#prevImg{width:100%;max-height:115px;object-fit:cover;display:none;margin-top:7px;border:1px solid var(--border);}
+.sbtn{width:100%;background:var(--dark);color:white;border:none;padding:13px;font-family:'Outfit',sans-serif;font-size:.83rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .3s;}
+.sbtn:hover{background:var(--maroon);}
+.sbtn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* DELETE CONFIRM */
+.dmodal{background:white;width:430px;position:relative;animation:pop .3s ease;overflow:hidden;}
+.dm-top{background:linear-gradient(135deg,#6d1010,#9b2335);padding:32px 30px 26px;text-align:center;}
+.dm-ico{font-size:3.2rem;margin-bottom:10px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));}
+.dm-top h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:white;margin-bottom:5px;}
+.dm-top p{color:rgba(255,255,255,.6);font-size:.8rem;}
+.dm-body{padding:22px 28px 26px;}
+.dm-name{background:var(--cream);border:1px solid var(--border);padding:11px 15px;margin-bottom:18px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--dark);text-align:center;line-height:1.3;}
+.dm-warn{background:#fff0f0;border:1px solid #ffcccc;padding:10px 13px;margin-bottom:20px;font-size:.76rem;color:var(--red);line-height:1.6;}
+.dm-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dm-cancel{background:var(--cream);color:var(--dark);border:1px solid var(--border);padding:13px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.dm-cancel:hover{background:var(--border);}
+.dm-ok{background:var(--red);color:white;border:none;padding:13px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.dm-ok:hover{background:#7a1c1c;}
+.dm-ok:disabled{opacity:.5;cursor:not-allowed;}
+
+/* DETAIL */
+.detmodal{background:white;width:670px;max-height:90vh;overflow-y:auto;position:relative;animation:pop .3s ease;}
+.dim-wrap{width:100%;height:285px;overflow:hidden;background:linear-gradient(135deg,#f0e8db,#e8ddd0);display:flex;align-items:center;justify-content:center;}
+.dim-wrap img{width:100%;height:100%;object-fit:cover;}
+.dph{font-size:4.5rem;opacity:.26;}
+.dbody{padding:28px 30px;}
+.dcats{display:flex;gap:7px;margin-bottom:8px;}
+.dcat{font-size:.61rem;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;}
+.dcat.mc{background:var(--maroon);color:white;}
+.dcat.sc{background:var(--dark);color:rgba(255,255,255,.8);}
+.dname{font-family:'Cormorant Garamond',serif;font-size:1.85rem;color:var(--dark);margin-bottom:17px;line-height:1.2;}
+.dspecs{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--cream);padding:17px;margin-bottom:17px;}
+.dsk{font-size:.61rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:3px;}
+.dsv{font-size:.91rem;color:var(--dark);font-weight:500;}
+.ddesc{color:var(--gray);line-height:1.75;font-size:.84rem;}
+.det-close{position:absolute;top:11px;right:11px;background:rgba(255,255,255,.92);border:none;width:33px;height:33px;border-radius:50%;font-size:1.15rem;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.14);}
+
+/* SPINNER */
+.spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:rot .7s linear infinite;display:none;}
+@keyframes rot{to{transform:rotate(360deg);}}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;right:26px;z-index:9999;padding:12px 20px;font-size:.8rem;font-family:'Outfit',sans-serif;border-left:4px solid;letter-spacing:.5px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.14);transform:translateX(120%);transition:transform .4s ease;max-width:310px;background:white;}
+.toast.show{transform:translateX(0);}
+.toast.ok{border-color:#2ecc71;color:#1a7a40;}
+.toast.err{border-color:var(--red);color:var(--red);}
+.toast.inf{border-color:var(--gold);color:var(--brown);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .menu-tog{display:block;}
+  .sbar{position:fixed;left:-260px;top:78px;bottom:0;z-index:150;transition:left .3s;box-shadow:4px 0 20px rgba(0,0,0,.2);}
+  .sbar.open{left:0;}
+  .layout{flex-direction:column;}
+  .main{padding:16px 13px;}
+  .hero h1{font-size:1.9rem;}
+  .hero{padding:28px 16px;}
+  .hdr{padding:0 13px;}
+  .amodal,.detmodal,.dmodal{width:95vw;padding:18px;}
+  .arow{grid-template-columns:1fr;}
+  .dspecs{grid-template-columns:1fr;}
+  .b-name{font-size:.98rem;}
+  #guide{margin:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="brand">
+    <div class="b-icon">🪵</div>
+    <div>
+      <div class="b-name">Indira Steel &amp; Wood Furniture</div>
+      <div class="b-sub">Quality Craftsmanship &nbsp;·&nbsp; <span class="b-since">Est. 1988</span></div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <button class="menu-tog" onclick="toggleSb()">☰</button>
+    <span class="adm-badge" id="admBadge">⚙ Admin Mode</span>
+    <button class="btn-alog" id="btnAlog" onclick="openLogin()">Admin Login</button>
+    <button class="btn-lout" id="btnLout" onclick="doLogout()">Logout</button>
+  </div>
+</header>
+
+<!-- STATUS BAR -->
+<div id="fbs"></div>
+
+<!-- SETUP GUIDE -->
+<div id="guide">
+  <div class="guide-head">
+    <h3>🔧 Supabase Setup Guide — 5 Minutes</h3>
+    <button class="gcls" onclick="document.getElementById('guide').style.display='none'">✕ Close</button>
+  </div>
+  <div class="guide-body">
+    <ol>
+      <li>Go to <a href="https://supabase.com" target="_blank">supabase.com</a> → <strong>Sign up free</strong> with GitHub or Google</li>
+      <li>Click <strong>New Project</strong> → Enter a name → Set a database password → Create</li>
+      <li>Go to <strong>Project Settings → API</strong> → Copy <strong>Project URL</strong> and <strong>anon public key</strong></li>
+      <li>Open this HTML file in a text editor → Replace <code>YOUR_SUPABASE_URL</code> and <code>YOUR_SUPABASE_ANON_KEY</code> at the top of the script</li>
+      <li>Go to <strong>SQL Editor → New Query</strong> → Copy and run this SQL:
+        <button class="copy-sql" onclick="copySql()">📋 Copy SQL</button>
+        <div class="sql-block" id="sqlBlock">create table products (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  cat text not null,
+  sub text not null,
+  model text not null,
+  size text,
+  material text,
+  color text,
+  price text,
+  description text,
+  emoji text,
+  image_url text,
+  image_path text,
+  created_at timestamptz default now()
+);
+
+-- Allow public read & write (for this single-admin site)
+alter table products enable row level security;
+create policy "Public read" on products for select using (true);
+create policy "Public insert" on products for insert with check (true);
+create policy "Public delete" on products for delete using (true);</div>
+      </li>
+      <li>Go to <strong>Storage → New bucket</strong> → Name it <code>product-images</code> → Toggle <strong>Public bucket ON</strong> → Create</li>
+      <li>Upload this file as <strong>index.html</strong> to your GoDaddy hosting → Done! ✅</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="h-eye">Trusted Since 1988</div>
+  <h1>Steel Strong. <span>Wood Warm.</span></h1>
+  <p>Quality Furniture for Every Home &amp; Office — Coimbatore's Finest</p>
+</div>
+
+<!-- ADMIN BAR -->
+<div id="admbar">
+  <div>
+    <h3>Admin Dashboard</h3>
+    <p>Add or remove products — all changes save permanently to Supabase</p>
+  </div>
+  <button class="add-btn" onclick="openAdd()">＋ Add New Product</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <div class="sbar" id="sbar">
+    <div class="sbar-ttl">Browse By</div>
+    <button class="all-btn active" id="allBtn" onclick="selectAll()">🏠 &nbsp;All Products</button>
+    <div id="cattree"></div>
+  </div>
+  <div class="main">
+    <div class="bc" id="bc"><span>All Products</span></div>
+    <div class="rbar">
+      <div>
+        <div class="rcount" id="rc">All Products</div>
+        <div class="rsub" id="rs"></div>
+      </div>
+    </div>
+    <div class="pgrid" id="grid">
+      <div class="ske"></div><div class="ske"></div>
+      <div class="ske"></div><div class="ske"></div>
+      <div class="empty" id="empty" style="display:none;">
+        <div class="empty-ico">🪑</div>
+        <h3>No Products Found</h3>
+        <p id="emptyMsg">No items here yet.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="ovl" id="ovlLogin">
+  <div class="lmodal">
+    <button class="mclose" onclick="closeLogin()">×</button>
+    <div class="llogo">Indira Steel &amp; Wood</div>
+    <div class="lsub">Admin Access Only</div>
+    <div class="mf"><label>Username</label><input type="text" id="aU" placeholder="admin" autocomplete="off"/></div>
+    <div class="mf"><label>Password</label><input type="password" id="aP" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <button class="lgo" onclick="doLogin()">Login as Admin</button>
+    <div class="lerr" id="lerr">❌ Invalid credentials. Try again.</div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="ovl" id="ovlAdd">
+  <div class="amodal">
+    <button class="mclose" style="color:var(--gray);" onclick="closeAdd()">×</button>
+    <h2>Add New Product</h2>
+    <div class="amdsub">Fields marked * are required. Images are stored in Supabase Storage.</div>
+    <div class="af">
+      <label>Product Image</label>
+      <div class="imgzone">
+        <input type="file" id="pImg" accept="image/*" onchange="handleImg(event)"/>
+        <div class="iz-ico">📷</div>
+        <div class="iz-txt" id="iztxt">Click or drag to upload image</div>
+        <img id="prevImg" alt=""/>
+      </div>
+    </div>
+    <div class="arow">
+      <div class="af"><label>Product Name *</label><input type="text" id="pN" placeholder="e.g. Royal Teak Sofa"/></div>
+      <div class="af"><label>Category *</label><select id="pC" onchange="fillSubs()"><option value="">— Select —</option></select></div>
+    </div>
+    <div class="arow">
+      <div class="af"><label>Sub-Category *</label><select id="pS"><option value="">— Select —</option></select></div>
+      <div class="af"><label>Model Number *</label><input type="text" id="pM" placeholder="ISW-WD-001"/></div>
+    </div>
+    <div class="arow">
+      <div class="af"><label>Size / Dimensions</label><input type="text" id="pSz" placeholder="180 × 56 × 210 cm"/></div>
+      <div class="af"><label>Material</label><input type="text" id="pMt" placeholder="Teak Wood, Glass"/></div>
+    </div>
+    <div class="arow">
+      <div class="af"><label>Color / Finish</label><input type="text" id="pCl" placeholder="Walnut Brown"/></div>
+      <div class="af"><label>Price (₹)</label><input type="text" id="pPr" placeholder="24,500"/></div>
+    </div>
+    <div class="af"><label>Description</label><textarea id="pD" placeholder="Brief product description..."></textarea></div>
+    <button class="sbtn" id="sbtn" onclick="addProduct()">
+      <div class="spin" id="sspin"></div>
+      <span id="stxt">✓ Save Product to Catalog</span>
+    </button>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="ovl" id="ovlDel">
+  <div class="dmodal">
+    <div class="dm-top">
+      <div class="dm-ico">🗑️</div>
+      <h2>Delete Product?</h2>
+      <p>This action is permanent and cannot be undone.</p>
+    </div>
+    <div class="dm-body">
+      <div class="dm-name" id="delName">—</div>
+      <div class="dm-warn">⚠️ &nbsp;This product will be <strong>permanently removed</strong> from your Supabase database. The product image will also be deleted from storage. This cannot be recovered.</div>
+      <div class="dm-acts">
+        <button class="dm-cancel" onclick="closeDel()">✕ Cancel</button>
+        <button class="dm-ok" id="dokBtn" onclick="confirmDel()">
+          <div class="spin" id="dspin"></div>
+          <span id="dtxt">🗑 Yes, Delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="ovl" id="ovlDet">
+  <div class="detmodal">
+    <button class="det-close" onclick="closeDet()">×</button>
+    <div id="detc"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  ▼▼▼ PASTE YOUR SUPABASE CREDENTIALS HERE ▼▼▼
+// ════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://ddovhxyduwjrchturqdq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_yV6Mm7gmJ0oePTD24rTViw_HQm8nM3a';
+// ════════════════════════════════════════════════════
+
+// ── ADMIN CREDENTIALS (change here) ──
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin@1988';
+
+// ── CATEGORIES ──
+const CATS = {
+  "Sofa":            {ico:"🛋️", subs:["2 Seater","3 Seater","L-Shape","Recliner","Sofa Cum Bed","Corner Sofa"]},
+  "Wardrobe":        {ico:"🚪", subs:["2 Door","3 Door","4 Door","Sliding Door","Corner Wardrobe","Open Wardrobe"]},
+  "Cot / Bed":       {ico:"🛏️", subs:["Single Cot","Double Cot","King Size","Queen Size","Bunk Bed","Diwan Bed"]},
+  "Dining Table":    {ico:"🍽️", subs:["2 Seater","4 Seater","6 Seater","8 Seater","Folding Table","Round Table"]},
+  "Chair":           {ico:"💺", subs:["Office Chair","Dining Chair","Rocking Chair","Plastic Chair","Arm Chair","Study Chair"]},
+  "TV Unit":         {ico:"📺", subs:["Wall Mount","Floor Standing","Corner Unit","With Cabinet","Floating Unit"]},
+  "Dressing Table":  {ico:"🪞", subs:["With Stool","Without Stool","Wall Mount","Sliding Mirror","Foldable"]},
+  "Bookshelf":       {ico:"📚", subs:["Open Shelf","With Door","Corner Shelf","Wall Mounted","Ladder Shelf"]},
+  "Steel Furniture": {ico:"🔩", subs:["Steel Almirah","Steel Rack","Steel Locker","Steel Chair","Steel Table","Steel Shelf"]},
+  "Office Furniture":{ico:"🗂️", subs:["Office Table","Conference Table","Reception Table","File Cabinet","Work Station"]}
+};
+const EMOJIS = {"Sofa":"🛋️","Wardrobe":"🚪","Cot / Bed":"🛏️","Dining Table":"🍽️","Chair":"💺","TV Unit":"📺","Dressing Table":"🪞","Bookshelf":"📚","Steel Furniture":"🔩","Office Furniture":"🗂️"};
+
+// ── STATE ──
+let isAdmin=false, selCat=null, selSub=null;
+let products=[];
+let pendId=null, pendName=null, pendImgPath=null;
+let addImgFile=null, addImgPreview=null;
+let sbOK=false;  // Supabase connected
+
+// ════════════════════════════════════════════════════
+// SUPABASE CLIENT — Official SDK (supports publishable key)
+// ════════════════════════════════════════════════════
+let _sbClient = null;
+
+async function getSB() {
+  if (_sbClient) return _sbClient;
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+  _sbClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+  return _sbClient;
+}
+
+const sb = {
+  async getProducts() {
+    const c = await getSB();
+    const { data, error } = await c.from('products').select('*').order('created_at', { ascending: false });
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+  async insertProduct(newData) {
+    const c = await getSB();
+    const { data, error } = await c.from('products').insert([newData]).select();
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+  async deleteProduct(id) {
+    const c = await getSB();
+    const { error } = await c.from('products').delete().eq('id', id);
+    if (error) throw new Error(error.message);
+  },
+
+  async uploadImage(path, file) {
+    const c = await getSB();
+    const { error } = await c.storage.from('product-images').upload(path, file, { cacheControl: '3600', upsert: false });
+    if (error) throw new Error('Image upload failed: ' + error.message);
+    const { data } = c.storage.from('product-images').getPublicUrl(path);
+    return data.publicUrl;
+  },
+
+  async deleteImage(path) {
+    const c = await getSB();
+    await c.storage.from('product-images').remove([path]);
+  }
+};
+
+// ════════════════════════════════════════════════════
+// INIT — Load products on page load
+// ════════════════════════════════════════════════════
+function setFbs(cls, msg) {
+  const e = document.getElementById('fbs');
+  e.style.display='block'; e.className=cls; e.innerHTML=msg;
+}
+
+async function init() {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    setFbs('demo','ℹ️ &nbsp;<strong>Demo Mode</strong> — Products reset on refresh. <a href="#" onclick="document.getElementById(\'guide\').style.display=\'block\';return false;" style="color:var(--maroon);font-weight:600;">Click here for Supabase setup guide →</a>');
+    document.getElementById('guide').style.display='block';
+    loadDemo();
+    return;
+  }
+  setFbs('connecting','⏳ &nbsp;Connecting to Supabase…');
+  try {
+    const data = await sb.getProducts();
+    products = data || [];
+    sbOK = true;
+    renderProd();
+    setFbs('ok','✅ &nbsp;Connected to Supabase — all products save permanently');
+    setTimeout(()=>{ document.getElementById('fbs').style.display='none'; }, 3000);
+  } catch(err) {
+    setFbs('err',`❌ &nbsp;Supabase error: ${err.message} — Check your URL & Key, and run the SQL setup.`);
+    loadDemo();
+  }
+}
+
+function loadDemo() {
+  products = [
+    {id:'d1',name:"Comfort 3 Seater Sofa",cat:"Sofa",sub:"3 Seater",model:"ISW-SF-001",size:"220×90×80 cm",material:"Fabric, Teak Legs",color:"Dark Grey",price:"18,500",description:"Premium 3-seater sofa with thick cushioning.",image_url:null,emoji:"🛋️"},
+    {id:'d2',name:"Monarch 2-Door Wardrobe",cat:"Wardrobe",sub:"2 Door",model:"ISW-WD-001",size:"90×52×200 cm",material:"Engineered Wood",color:"Wenge Brown",price:"12,500",description:"Compact 2-door wardrobe with hanging rod and shelves.",image_url:null,emoji:"🚪"},
+    {id:'d3',name:"Imperial 4-Door Wardrobe",cat:"Wardrobe",sub:"4 Door",model:"ISW-WD-002",size:"180×56×210 cm",material:"Solid Wood, Mirror",color:"Walnut",price:"28,000",description:"Grand 4-door wardrobe with full-length mirrors.",image_url:null,emoji:"🚪"},
+    {id:'d4',name:"Sliding Wardrobe",cat:"Wardrobe",sub:"Sliding Door",model:"ISW-WD-003",size:"150×56×210 cm",material:"Engineered Wood, Mirror",color:"White Gloss",price:"21,000",description:"Modern sliding door wardrobe with mirrored panels.",image_url:null,emoji:"🚪"},
+    {id:'d5',name:"King Size Bed",cat:"Cot / Bed",sub:"King Size",model:"ISW-CT-001",size:"200×180×120 cm",material:"Sheesham Wood",color:"Natural Oak",price:"22,000",description:"Sturdy king size cot with storage headboard.",image_url:null,emoji:"🛏️"},
+    {id:'d6',name:"6-Seater Dining Set",cat:"Dining Table",sub:"6 Seater",model:"ISW-DT-001",size:"180×90×76 cm",material:"Mango Wood",color:"Rustic Brown",price:"35,000",description:"Complete dining set with table and 6 chairs.",image_url:null,emoji:"🍽️"},
+    {id:'d7',name:"Steel 3-Door Almirah",cat:"Steel Furniture",sub:"Steel Almirah",model:"ISW-ST-001",size:"120×46×180 cm",material:"CRCA Steel",color:"Ivory White",price:"9,800",description:"Heavy-duty almirah with locking system.",image_url:null,emoji:"🔩"},
+    {id:'d8',name:"Executive Office Chair",cat:"Chair",sub:"Office Chair",model:"ISW-CH-001",size:"65×65×115 cm",material:"Mesh, Chrome",color:"Black",price:"6,500",description:"Ergonomic chair with lumbar support.",image_url:null,emoji:"💺"},
+  ];
+  renderProd();
+}
+
+// ════════════════════════════════════════════════════
+// SIDEBAR TREE
+// ════════════════════════════════════════════════════
+function k(s){ return s.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,''); }
+
+function buildTree() {
+  const tree = document.getElementById('cattree');
+  tree.innerHTML = '';
+  const cs = document.getElementById('pC');
+  cs.innerHTML = '<option value="">— Select —</option>';
+  Object.entries(CATS).forEach(([cat, info]) => {
+    cs.innerHTML += `<option value="${cat}">${cat}</option>`;
+    const d = document.createElement('div');
+    d.className = 'cat-item';
+    d.innerHTML = `
+      <div class="cat-hdr" id="ch-${k(cat)}" onclick="togCat('${k(cat)}','${cat}',this)">
+        <div class="cl"><span class="cico">${info.ico}</span><span class="clbl">${cat}</span></div>
+        <span class="carr" id="ca-${k(cat)}">›</span>
+      </div>
+      <div class="sclist" id="sc-${k(cat)}">
+        ${info.subs.map(s=>`<div class="sci" id="si-${k(cat)}-${k(s)}" onclick="pickSub('${k(cat)}','${cat}','${k(s)}','${s}')">${s}</div>`).join('')}
+      </div>`;
+    tree.appendChild(d);
+  });
+}
+
+function togCat(ck, cat, el) {
+  const list=document.getElementById('sc-'+ck);
+  const arr=document.getElementById('ca-'+ck);
+  const wasOpen=list.classList.contains('open');
+  closeAllDrops();
+  if (!wasOpen) {
+    list.classList.add('open'); arr.classList.add('open'); el.classList.add('acat');
+    selCat=cat; selSub=null;
+    document.getElementById('allBtn').classList.remove('active');
+    updateBc(); renderProd();
+  } else {
+    selCat=null; selSub=null;
+    document.getElementById('allBtn').classList.add('active');
+    updateBc(); renderProd();
+  }
+}
+
+function pickSub(ck, cat, sk, sub) {
+  selCat=cat; selSub=sub;
+  document.querySelectorAll('.sci').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('si-'+ck+'-'+sk);
+  if(el) el.classList.add('active');
+  document.getElementById('allBtn').classList.remove('active');
+  updateBc(); renderProd();
+  if(window.innerWidth<=768) document.getElementById('sbar').classList.remove('open');
+}
+
+function selectAll() {
+  selCat=null; selSub=null;
+  closeAllDrops();
+  document.getElementById('allBtn').classList.add('active');
+  updateBc(); renderProd();
+}
+
+function closeAllDrops() {
+  document.querySelectorAll('.sci').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.cat-hdr').forEach(h=>h.classList.remove('acat'));
+  document.querySelectorAll('.carr').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.sclist').forEach(l=>l.classList.remove('open'));
+}
+
+function updateBc() {
+  const bc=document.getElementById('bc');
+  if(!selCat){bc.innerHTML='<span>All Products</span>';return;}
+  let h=`<span style="cursor:pointer;color:var(--maroon);" onclick="selectAll()">All</span><span class="bc-sep">›</span>`;
+  if(selSub){
+    h+=`<span style="cursor:pointer;color:var(--maroon);" onclick="clrSub()">${selCat}</span><span class="bc-sep">›</span><span>${selSub}</span>`;
+  } else {
+    h+=`<span>${selCat}</span>`;
+  }
+  bc.innerHTML=h;
+}
+function clrSub(){ selSub=null; updateBc(); renderProd(); }
+
+// ════════════════════════════════════════════════════
+// RENDER PRODUCTS
+// ════════════════════════════════════════════════════
+function renderProd() {
+  const grid=document.getElementById('grid');
+  const emp=document.getElementById('empty');
+  Array.from(grid.children).forEach(c=>{ if(c.id!=='empty') c.remove(); });
+
+  let list=[...products];
+  if(selCat) list=list.filter(p=>p.cat===selCat);
+  if(selSub) list=list.filter(p=>p.sub===selSub);
+
+  const lbl=selSub||selCat||'All Products';
+  document.getElementById('rc').textContent=lbl;
+  document.getElementById('rs').textContent=`${list.length} product${list.length!==1?'s':''} found`;
+
+  if(list.length===0){
+    emp.style.display='block';
+    document.getElementById('emptyMsg').textContent=isAdmin
+      ? 'No items here yet. Click "Add New Product" above.'
+      : 'No items in this category yet.';
+    return;
+  }
+  emp.style.display='none';
+
+  list.forEach((p,i)=>{
+    const c=document.createElement('div');
+    c.className='pcard';
+    c.style.animationDelay=`${i*.04}s`;
+    c.innerHTML=`
+      <div class="cimgw">
+        ${p.image_url
+          ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy"/>`
+          : `<div class="cph"><div class="cph-ico">${p.emoji||EMOJIS[p.cat]||'🪑'}</div><div class="cph-txt">No Image</div></div>`}
+        <div class="cbadge">${p.cat||''}</div>
+        ${p.sub?`<div class="csbadge">${p.sub}</div>`:''}
+      </div>
+      <div class="cbody">
+        <div class="cname">${p.name}</div>
+        <div class="cspecs">
+          ${p.material?`<div class="csp"><div class="csp-k">Material</div><div class="csp-v">${p.material}</div></div>`:''}
+          ${p.size?`<div class="csp"><div class="csp-k">Size</div><div class="csp-v">${p.size}</div></div>`:''}
+          ${p.color?`<div class="csp"><div class="csp-k">Color</div><div class="csp-v">${p.color}</div></div>`:''}
+          ${p.price?`<div class="csp"><div class="csp-k">Price</div><div class="csp-v">₹${p.price}</div></div>`:''}
+        </div>
+        <div class="cmodel">Model: ${p.model||'—'}</div>
+      </div>
+      <div class="cadm ${isAdmin?'show':''}" id="adm-${p.id}">
+        <button class="dbtn" onclick="event.stopPropagation();openDel('${p.id}','${(p.name||'').replace(/'/g,"\\'")}','${p.image_path||''}')">
+          🗑️ &nbsp;Delete Product
+        </button>
+      </div>`;
+    c.onclick=()=>openDet(p);
+    grid.insertBefore(c,emp);
+  });
+}
+
+// ════════════════════════════════════════════════════
+// ADMIN LOGIN / LOGOUT
+// ════════════════════════════════════════════════════
+function openLogin(){ document.getElementById('ovlLogin').classList.add('open'); setTimeout(()=>document.getElementById('aU').focus(),80); }
+function closeLogin(){
+  document.getElementById('ovlLogin').classList.remove('open');
+  document.getElementById('lerr').style.display='none';
+  document.getElementById('aU').value='';
+  document.getElementById('aP').value='';
+}
+function doLogin(){
+  const u=document.getElementById('aU').value.trim();
+  const p=document.getElementById('aP').value.trim();
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    isAdmin=true; closeLogin();
+    document.getElementById('btnAlog').style.display='none';
+    document.getElementById('admBadge').style.display='inline-block';
+    document.getElementById('btnLout').style.display='inline-block';
+    document.getElementById('admbar').style.display='flex';
+    renderProd(); showToast('✅ Welcome, Admin!','ok');
+  } else {
+    document.getElementById('lerr').style.display='block';
+  }
+}
+function doLogout(){
+  isAdmin=false;
+  document.getElementById('btnAlog').style.display='inline-block';
+  document.getElementById('admBadge').style.display='none';
+  document.getElementById('btnLout').style.display='none';
+  document.getElementById('admbar').style.display='none';
+  renderProd(); showToast('Logged out','inf');
+}
+
+// ════════════════════════════════════════════════════
+// ADD PRODUCT
+// ════════════════════════════════════════════════════
+function openAdd(){ document.getElementById('ovlAdd').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeAdd(){ document.getElementById('ovlAdd').classList.remove('open'); document.body.style.overflow=''; clearAdd(); }
+
+function fillSubs(){
+  const cat=document.getElementById('pC').value;
+  const sub=document.getElementById('pS');
+  sub.innerHTML='<option value="">— Select —</option>';
+  if(cat&&CATS[cat]) CATS[cat].subs.forEach(s=>{ sub.innerHTML+=`<option>${s}</option>`; });
+}
+
+function handleImg(e){
+  const f=e.target.files[0]; if(!f)return;
+  if(f.size>8*1024*1024){ showToast('Image too large — max 8 MB','err'); return; }
+  addImgFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{
+    addImgPreview=ev.target.result;
+    const img=document.getElementById('prevImg');
+    img.src=addImgPreview; img.style.display='block';
+    document.getElementById('iztxt').textContent='✓ '+f.name;
+  };
+  r.readAsDataURL(f);
+}
+
+async function addProduct(){
+  const n=document.getElementById('pN').value.trim();
+  const c=document.getElementById('pC').value;
+  const s=document.getElementById('pS').value;
+  const m=document.getElementById('pM').value.trim();
+  if(!n||!c||!s||!m){ showToast('Fill Name, Category, Sub-Category & Model Number','err'); return; }
+  setSave(true);
+
+  let image_url=null, image_path=null;
+
+  try {
+    // Upload image if provided
+    if(addImgFile && sbOK){
+      const ext=addImgFile.name.split('.').pop();
+      image_path=`${Date.now()}_${m.replace(/[^a-zA-Z0-9]/g,'_')}.${ext}`;
+      image_url=await sb.uploadImage(image_path, addImgFile);
+    } else if(addImgPreview && !sbOK){
+      image_url=addImgPreview; // demo: store inline
+    }
+
+    const newProd = {
+      name:n, cat:c, sub:s, model:m,
+      size:       document.getElementById('pSz').value.trim(),
+      material:   document.getElementById('pMt').value.trim(),
+      color:      document.getElementById('pCl').value.trim(),
+      price:      document.getElementById('pPr').value.trim(),
+      description:document.getElementById('pD').value.trim(),
+      emoji:      EMOJIS[c]||'🪑',
+      image_url, image_path
+    };
+
+    if(sbOK){
+      const inserted=await sb.insertProduct(newProd);
+      products.unshift(inserted[0]);
+    } else {
+      newProd.id='loc_'+Date.now();
+      products.unshift(newProd);
+    }
+
+    closeAdd(); selectAll();
+    showToast('✅ Product saved to catalog!','ok');
+  } catch(err){
+    showToast('❌ Save failed: '+err.message,'err');
+  }
+  setSave(false);
+}
+
+function setSave(on){
+  document.getElementById('sbtn').disabled=on;
+  document.getElementById('sspin').style.display=on?'block':'none';
+  document.getElementById('stxt').textContent=on?'Saving…':'✓ Save Product to Catalog';
+}
+
+function clearAdd(){
+  ['pN','pM','pSz','pMt','pCl','pPr','pD'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pC').value='';
+  document.getElementById('pS').innerHTML='<option value="">— Select —</option>';
+  document.getElementById('prevImg').style.display='none';
+  document.getElementById('pImg').value='';
+  document.getElementById('iztxt').textContent='Click or drag to upload image';
+  addImgFile=null; addImgPreview=null; setSave(false);
+}
+
+// ════════════════════════════════════════════════════
+// DELETE PRODUCT
+// ════════════════════════════════════════════════════
+function openDel(id, name, imgPath){
+  pendId=id; pendName=name; pendImgPath=imgPath||null;
+  document.getElementById('delName').textContent=name;
+  document.getElementById('ovlDel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDel(){
+  document.getElementById('ovlDel').classList.remove('open');
+  document.body.style.overflow='';
+  pendId=null; pendName=null; pendImgPath=null;
+  setDel(false);
+}
+function setDel(on){
+  document.getElementById('dokBtn').disabled=on;
+  document.getElementById('dspin').style.display=on?'block':'none';
+  document.getElementById('dtxt').textContent=on?'Deleting…':'🗑 Yes, Delete';
+}
+async function confirmDel(){
+  if(!pendId)return;
+  setDel(true);
+  try{
+    if(sbOK){
+      await sb.deleteProduct(pendId);
+      if(pendImgPath) await sb.deleteImage(pendImgPath).catch(()=>{});
+    }
+    products=products.filter(p=>p.id!==pendId);
+    renderProd();
+    closeDel();
+    showToast('🗑 Product deleted permanently','ok');
+  }catch(err){
+    showToast('❌ Delete failed: '+err.message,'err');
+    setDel(false);
+  }
+}
+
+// ════════════════════════════════════════════════════
+// PRODUCT DETAIL
+// ════════════════════════════════════════════════════
+function openDet(p){
+  document.getElementById('detc').innerHTML=`
+    <div class="dim-wrap">
+      ${p.image_url?`<img src="${p.image_url}" alt="${p.name}"/>`:`<div class="dph">${p.emoji||EMOJIS[p.cat]||'🪑'}</div>`}
+    </div>
+    <div class="dbody">
+      <div class="dcats">
+        <span class="dcat mc">${p.cat||''}</span>
+        ${p.sub?`<span class="dcat sc">${p.sub}</span>`:''}
+      </div>
+      <div class="dname">${p.name}</div>
+      <div class="dspecs">
+        <div><div class="dsk">Model Number</div><div class="dsv" style="font-family:monospace">${p.model||'—'}</div></div>
+        <div><div class="dsk">Material</div><div class="dsv">${p.material||'—'}</div></div>
+        <div><div class="dsk">Size / Dimensions</div><div class="dsv">${p.size||'—'}</div></div>
+        <div><div class="dsk">Color / Finish</div><div class="dsv">${p.color||'—'}</div></div>
+        ${p.price?`<div><div class="dsk">Price</div><div class="dsv" style="color:var(--maroon);font-weight:600;font-size:1.05rem;">₹${p.price}</div></div>`:''}
+        ${p.sub?`<div><div class="dsk">Type</div><div class="dsv">${p.sub}</div></div>`:''}
+      </div>
+      ${p.description?`<div class="ddesc">${p.description}</div>`:''}
+    </div>`;
+  document.getElementById('ovlDet').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDet(){ document.getElementById('ovlDet').classList.remove('open'); document.body.style.overflow=''; }
+
+// ════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════
+let tt;
+function showToast(msg,type='inf'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════
+function toggleSb(){ document.getElementById('sbar').classList.toggle('open'); }
+
+function copySql(){
+  const sql=document.getElementById('sqlBlock').textContent;
+  navigator.clipboard.writeText(sql).then(()=>showToast('SQL copied to clipboard!','ok'));
+}
+
+// Close overlays on background click
+[['ovlLogin',closeLogin],['ovlAdd',closeAdd],['ovlDel',closeDel],['ovlDet',closeDet]].forEach(([id,fn])=>{
+  document.getElementById(id).addEventListener('click',function(e){ if(e.target===this)fn(); });
+});
+
+// ════════════════════════════════════════════════════
+// START
+// ════════════════════════════════════════════════════
+buildTree();
+init();
+</script>
+</body>
+</html>
