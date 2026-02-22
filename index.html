@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indira Steel & Wood Furniture — Since 1988</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <!--
   SUPABASE SETUP:
   1. Go to supabase.com → create project
@@ -280,6 +281,25 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 .sbtn:hover{background:var(--maroon);}
 .sbtn:disabled{opacity:.5;cursor:not-allowed;}
 
+/* CATEGORY MANAGER */
+.cat-mgr-item{background:var(--white);border:1px solid var(--border);overflow:visible;}
+.cat-mgr-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,#f8f4ef,#f0e8db);flex-wrap:wrap;gap:8px;}
+.cat-mgr-hdr-l{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.9rem;color:var(--dark);flex:1;min-width:0;}
+.cat-mgr-hdr-l strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cat-mgr-hdr-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.cat-del-btn{background:#fff0f0;color:var(--red);border:1.5px solid #ffc5c5;padding:7px 14px;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .25s;font-weight:600;white-space:nowrap;border-radius:3px;}
+.cat-del-btn:hover{background:var(--red);color:white;border-color:var(--red);}
+.cat-sub-area{padding:14px 16px;border-top:1px solid var(--border);background:var(--cream);}
+.cat-sub-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.sub-tag{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--border);padding:5px 10px;font-size:.78rem;color:var(--dark);border-radius:3px;}
+.sub-tag-del{background:var(--red);border:none;color:white;cursor:pointer;font-size:.7rem;line-height:1;padding:2px 6px;margin-left:2px;border-radius:2px;font-weight:700;flex-shrink:0;}
+.sub-tag-del:hover{background:#7a1c1c;}
+.sub-add-row{display:flex;gap:8px;}
+.sub-add-row input{flex:1;border:1px solid var(--border);background:white;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:.82rem;outline:none;min-width:0;}
+.sub-add-row input:focus{border-color:var(--gold);}
+.sub-add-row button{background:var(--dark);color:white;border:none;padding:8px 16px;font-size:.78rem;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;font-weight:600;}
+.sub-add-row button:hover{background:var(--maroon);}
+
 /* DELETE CONFIRM */
 .dmodal{background:white;width:430px;position:relative;animation:pop .3s ease;overflow:hidden;}
 .dm-top{background:linear-gradient(135deg,#6d1010,#9b2335);padding:32px 30px 26px;text-align:center;}
@@ -403,7 +423,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
     <h3>Admin Dashboard</h3>
     <p>Add, edit or remove products — changes save permanently to Supabase</p>
   </div>
-  <button class="add-btn" onclick="openAdd()">＋ Add New Product</button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="add-btn" onclick="openAdd()">＋ Add New Product</button>
+    <button class="add-btn" style="background:linear-gradient(135deg,var(--brown),#8b5e3c);" onclick="openCatMgr()">⚙️ Manage Categories</button>
+    <button class="add-btn" style="background:linear-gradient(135deg,#1a5a8a,#1e6fa8);" onclick="openChgPwd()">🔑 Change Password</button>
+  </div>
 </div>
 
 <!-- LAYOUT -->
@@ -596,18 +620,60 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   <div class="lb-counter" id="lbCounter"></div>
 </div>
 
+<!-- CHANGE PASSWORD MODAL -->
+<div class="ovl" id="ovlChgPwd">
+  <div class="lmodal" style="width:400px;">
+    <button class="mclose" onclick="closeChgPwd()">×</button>
+    <div class="llogo">Change Password</div>
+    <div class="lsub">Admin Account Security</div>
+    <div class="mf">
+      <label>Current Password</label>
+      <input type="password" id="cpCur" placeholder="••••••••"/>
+    </div>
+    <div class="mf">
+      <label>New Password</label>
+      <input type="password" id="cpNew" placeholder="••••••••"/>
+    </div>
+    <div class="mf">
+      <label>Confirm New Password</label>
+      <input type="password" id="cpCon" placeholder="••••••••" onkeydown="if(event.key==='Enter')doChgPwd()"/>
+    </div>
+    <button class="lgo" onclick="doChgPwd()">🔑 Update Password</button>
+    <div id="cpErr" style="color:#ff6b6b;font-size:.72rem;text-align:center;margin-top:10px;display:none;"></div>
+    <div id="cpOk" style="color:#4caf50;font-size:.72rem;text-align:center;margin-top:10px;display:none;">✅ Password changed successfully!</div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- CATEGORY MANAGER MODAL -->
+<div class="ovl" id="ovlCatMgr">
+  <div class="amodal" style="width:min(720px,96vw);max-height:92vh;display:flex;flex-direction:column;">
+    <button class="mclose" style="color:var(--gray);" onclick="closeCatMgr()">×</button>
+    <h2>Manage Categories</h2>
+    <div class="amdsub" style="margin-bottom:20px;">Add or delete categories and sub-categories. Changes apply instantly to the sidebar and product form.</div>
+    <div style="background:var(--cream);border:1px solid var(--border);padding:18px;margin-bottom:20px;flex-shrink:0;">
+      <div style="font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--brown);font-weight:600;margin-bottom:12px;">Add New Category</div>
+      <div style="display:grid;grid-template-columns:1fr 80px auto;gap:10px;align-items:end;">
+        <div class="af" style="margin:0;"><label>Category Name</label><input type="text" id="newCatName" placeholder="e.g. Outdoor Furniture"/></div>
+        <div class="af" style="margin:0;"><label>Icon</label><input type="text" id="newCatIco" placeholder="🌿" style="text-align:center;font-size:1.2rem;"/></div>
+        <button class="add-btn" style="height:42px;" onclick="addCategory()">＋ Add</button>
+      </div>
+    </div>
+    <div id="catMgrList" style="display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding-right:6px;flex:1;"></div>
+  </div>
+</div>
 
 <script>
 // ════════════════════════════════════════════════════
 // ▼▼▼ PASTE YOUR SUPABASE CREDENTIALS HERE ▼▼▼
 const SUPABASE_URL = 'https://ddovhxyduwjrchturqdq.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_yV6Mm7gmJ0oePTD24rTViw_HQm8nM3a';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkb3ZoeHlkdXdqcmNodHVycWRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1MTEzMjYsImV4cCI6MjA4NzA4NzMyNn0.KL56_9wBZe-SvdEu9gFmGhDoHKMSIdWM_IqQvQgt6IU';
 // ▲▲▲ END CREDENTIALS ▲▲▲
 
 const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'admin@1988';
+let ADMIN_PASS = 'admin@1988';
 
 // ════ CATEGORIES ════
 const CATS = {
@@ -639,22 +705,36 @@ let lbIndex=0;
 let lbZoomed=false;
 
 // ════════════════════════════════════════════════════
-// SUPABASE CLIENT
+// SUPABASE CLIENT — plain fetch, no library
 // ════════════════════════════════════════════════════
-let _sbClient=null;
-async function getSB(){
-  if(_sbClient)return _sbClient;
-  const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-  _sbClient=createClient(SUPABASE_URL,SUPABASE_KEY);
-  return _sbClient;
+function sbHeaders(extra){
+  return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation',...(extra||{})};
 }
 const sb={
-  async getProducts(){const c=await getSB();const{data,error}=await c.from('products').select('*').order('created_at',{ascending:false});if(error)throw new Error(error.message);return data;},
-  async insertProduct(d){const c=await getSB();const{data,error}=await c.from('products').insert([d]).select();if(error)throw new Error(error.message);return data;},
-  async updateProduct(id,d){const c=await getSB();const{data,error}=await c.from('products').update(d).eq('id',id).select();if(error)throw new Error(error.message);return data;},
-  async deleteProduct(id){const c=await getSB();const{error}=await c.from('products').delete().eq('id',id);if(error)throw new Error(error.message);},
-  async uploadImage(path,file){const c=await getSB();const{error}=await c.storage.from('product-images').upload(path,file,{cacheControl:'3600',upsert:false});if(error)throw new Error('Upload failed: '+error.message);const{data}=c.storage.from('product-images').getPublicUrl(path);return data.publicUrl;},
-  async deleteImage(path){const c=await getSB();await c.storage.from('product-images').remove([path]);}
+  async getProducts(){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/products?select=*&order=created_at.desc',{headers:sbHeaders()});
+    const d=await r.json();if(!r.ok)throw new Error(d.message||d.error||r.status);return d;
+  },
+  async insertProduct(data){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/products',{method:'POST',headers:sbHeaders(),body:JSON.stringify(data)});
+    const d=await r.json();if(!r.ok)throw new Error(d.message||d.error||r.status);return d;
+  },
+  async updateProduct(id,data){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/products?id=eq.'+id,{method:'PATCH',headers:sbHeaders(),body:JSON.stringify(data)});
+    const d=await r.json();if(!r.ok)throw new Error(d.message||d.error||r.status);return d;
+  },
+  async deleteProduct(id){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/products?id=eq.'+id,{method:'DELETE',headers:sbHeaders()});
+    if(!r.ok){const d=await r.json();throw new Error(d.message||d.error||r.status);}
+  },
+  async uploadImage(path,file){
+    const r=await fetch(SUPABASE_URL+'/storage/v1/object/product-images/'+path,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':file.type,'Cache-Control':'3600'},body:file});
+    if(!r.ok){const d=await r.json();throw new Error('Upload failed: '+(d.message||d.error||r.status));}
+    return SUPABASE_URL+'/storage/v1/object/public/product-images/'+path;
+  },
+  async deleteImage(path){
+    await fetch(SUPABASE_URL+'/storage/v1/object/product-images/'+path,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+  }
 };
 
 // ════════════════════════════════════════════════════
@@ -1128,11 +1208,191 @@ function showToast(msg,type='inf'){
 // ════════════════════════════════════════════════════
 // OVERLAY CLOSE ON BG CLICK
 // ════════════════════════════════════════════════════
-[['ovlLogin',closeLogin],['ovlAdd',closeAdd],['ovlDel',closeDel],['ovlDet',closeDet],['lightbox',closeLb]].forEach(([id,fn])=>{
+[['ovlLogin',closeLogin],['ovlAdd',closeAdd],['ovlDel',closeDel],['ovlDet',closeDet],['lightbox',closeLb],['ovlCatMgr',closeCatMgr],['ovlChgPwd',closeChgPwd]].forEach(([id,fn])=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)fn();});
 });
 
 function toggleSb(){document.getElementById('sbar').classList.toggle('open');}
+
+// ════════════════════════════════════════════════════
+// CATEGORY MANAGER
+// ════════════════════════════════════════════════════
+function openCatMgr(){
+  renderCatMgr();
+  document.getElementById('ovlCatMgr').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCatMgr(){
+  document.getElementById('ovlCatMgr').classList.remove('open');
+  document.body.style.overflow='';
+}
+function renderCatMgr(){
+  const list=document.getElementById('catMgrList');
+  list.innerHTML='';
+  const cats=Object.entries(CATS);
+  if(cats.length===0){
+    list.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:.85rem;">No categories yet. Add one above.</div>';
+    return;
+  }
+  cats.forEach(([cat,info])=>{
+    // Outer wrapper
+    const div=document.createElement('div');
+    div.className='cat-mgr-item';
+
+    // Header
+    const hdr=document.createElement('div');
+    hdr.className='cat-mgr-hdr';
+
+    const hdrL=document.createElement('div');
+    hdrL.className='cat-mgr-hdr-l';
+    hdrL.innerHTML=`<span style="font-size:1.2rem;">${info.ico}</span> <strong>${cat}</strong>`;
+
+    const hdrR=document.createElement('div');
+    hdrR.className='cat-mgr-hdr-r';
+
+    const subCount=document.createElement('span');
+    subCount.style.cssText='font-size:.72rem;color:var(--gray);';
+    subCount.textContent=`${info.subs.length} sub-categories`;
+
+    const delCatBtn=document.createElement('button');
+    delCatBtn.className='cat-del-btn';
+    delCatBtn.innerHTML='🗑 Delete Category';
+    delCatBtn.addEventListener('click',()=>deleteCat(cat));
+
+    hdrR.appendChild(subCount);
+    hdrR.appendChild(delCatBtn);
+    hdr.appendChild(hdrL);
+    hdr.appendChild(hdrR);
+
+    // Sub-category area
+    const subArea=document.createElement('div');
+    subArea.className='cat-sub-area';
+
+    const tagsDiv=document.createElement('div');
+    tagsDiv.className='cat-sub-tags';
+    tagsDiv.id='subtags-'+k(cat);
+
+    if(info.subs.length===0){
+      const noSub=document.createElement('span');
+      noSub.style.cssText='font-size:.75rem;color:var(--gray);font-style:italic;';
+      noSub.textContent='No sub-categories yet.';
+      tagsDiv.appendChild(noSub);
+    } else {
+      info.subs.forEach(s=>{
+        const tag=document.createElement('div');
+        tag.className='sub-tag';
+
+        const label=document.createElement('span');
+        label.textContent=s;
+
+        const delBtn=document.createElement('button');
+        delBtn.className='sub-tag-del';
+        delBtn.title='Remove sub-category';
+        delBtn.innerHTML='✕';
+        delBtn.addEventListener('click',()=>deleteSub(cat,s));
+
+        tag.appendChild(label);
+        tag.appendChild(delBtn);
+        tagsDiv.appendChild(tag);
+      });
+    }
+
+    // Add sub-category row
+    const addRow=document.createElement('div');
+    addRow.className='sub-add-row';
+    addRow.style.marginTop='10px';
+
+    const inp=document.createElement('input');
+    inp.type='text';
+    inp.placeholder='New sub-category name…';
+    inp.id='newsub-'+k(cat);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')addSub(cat);});
+
+    const addBtn=document.createElement('button');
+    addBtn.textContent='＋ Add Sub';
+    addBtn.addEventListener('click',()=>addSub(cat));
+
+    addRow.appendChild(inp);
+    addRow.appendChild(addBtn);
+
+    subArea.appendChild(tagsDiv);
+    subArea.appendChild(addRow);
+
+    div.appendChild(hdr);
+    div.appendChild(subArea);
+    list.appendChild(div);
+  });
+}
+function addCategory(){
+  const name=document.getElementById('newCatName').value.trim();
+  const ico=document.getElementById('newCatIco').value.trim()||'📦';
+  if(!name){showToast('❌ Enter a category name','err');return;}
+  if(CATS[name]){showToast('❌ Category already exists','err');return;}
+  CATS[name]={ico,subs:[]};
+  EMOJIS[name]=ico;
+  document.getElementById('newCatName').value='';
+  document.getElementById('newCatIco').value='';
+  buildTree();renderCatMgr();
+  showToast('✅ Category "'+name+'" added','ok');
+}
+function deleteCat(cat){
+  if(!confirm(`Delete category "${cat}" and all its sub-categories?\n\nNote: Products in this category will remain but may show without a valid category.`))return;
+  delete CATS[cat];
+  delete EMOJIS[cat];
+  if(selCat===cat){selCat=null;selSub=null;}
+  buildTree();renderCatMgr();renderProd();
+  showToast('🗑 Category "'+cat+'" deleted','ok');
+}
+function addSub(cat){
+  const inp=document.getElementById('newsub-'+k(cat));
+  const sub=inp.value.trim();
+  if(!sub){showToast('❌ Enter a sub-category name','err');return;}
+  if(CATS[cat].subs.includes(sub)){showToast('❌ Sub-category already exists','err');return;}
+  CATS[cat].subs.push(sub);
+  inp.value='';
+  buildTree();renderCatMgr();
+  showToast('✅ Sub-category "'+sub+'" added','ok');
+}
+function deleteSub(cat,sub){
+  CATS[cat].subs=CATS[cat].subs.filter(s=>s!==sub);
+  if(selSub===sub&&selCat===cat){selSub=null;}
+  buildTree();renderCatMgr();renderProd();
+  showToast('🗑 Sub-category "'+sub+'" removed','ok');
+}
+
+// ════════════════════════════════════════════════════
+// CHANGE PASSWORD
+// ════════════════════════════════════════════════════
+function openChgPwd(){
+  document.getElementById('cpCur').value='';
+  document.getElementById('cpNew').value='';
+  document.getElementById('cpCon').value='';
+  document.getElementById('cpErr').style.display='none';
+  document.getElementById('cpOk').style.display='none';
+  document.getElementById('ovlChgPwd').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('cpCur').focus(),80);
+}
+function closeChgPwd(){
+  document.getElementById('ovlChgPwd').classList.remove('open');
+  document.body.style.overflow='';
+}
+function doChgPwd(){
+  const cur=document.getElementById('cpCur').value;
+  const nw=document.getElementById('cpNew').value;
+  const con=document.getElementById('cpCon').value;
+  const errEl=document.getElementById('cpErr');
+  const okEl=document.getElementById('cpOk');
+  errEl.style.display='none';
+  okEl.style.display='none';
+  if(cur!==ADMIN_PASS){errEl.textContent='❌ Current password is incorrect.';errEl.style.display='block';return;}
+  if(nw.length<6){errEl.textContent='❌ New password must be at least 6 characters.';errEl.style.display='block';return;}
+  if(nw!==con){errEl.textContent='❌ New passwords do not match.';errEl.style.display='block';return;}
+  ADMIN_PASS=nw;
+  okEl.style.display='block';
+  showToast('🔑 Password changed successfully!','ok');
+  setTimeout(()=>closeChgPwd(),1800);
+}
 
 // START
 buildTree();
