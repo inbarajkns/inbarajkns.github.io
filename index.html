@@ -747,12 +747,10 @@ async function init(){
     setFbs('demo','ℹ️ &nbsp;<strong>Demo Mode</strong> — Paste your Supabase URL & Key in the HTML file to enable permanent storage.');
     loadDemo();return;
   }
-  setFbs('connecting','⏳ &nbsp;Connecting to Supabase…');
   try{
     const data=await sb.getProducts();
     products=data||[];sbOK=true;renderProd();
-    setFbs('ok','✅ &nbsp;Connected to Supabase — products save permanently');
-    setTimeout(()=>{document.getElementById('fbs').style.display='none';},3000);
+    document.getElementById('fbs').style.display='none';
   }catch(err){
     setFbs('err',`❌ &nbsp;Supabase error: ${err.message}`);loadDemo();
   }
