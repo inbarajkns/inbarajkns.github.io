@@ -29,6 +29,17 @@
   create policy "Public insert" on public.products for insert with check (true);
   create policy "Public update" on public.products for update using (true);
   create policy "Public delete" on public.products for delete using (true);
+
+  -- Site settings (hero text, categories)
+  create table public.site_settings (
+    key text primary key,
+    value jsonb,
+    updated_at timestamptz default now()
+  );
+  alter table public.site_settings enable row level security;
+  create policy "Public read settings" on public.site_settings for select using (true);
+  create policy "Public insert settings" on public.site_settings for insert with check (true);
+  create policy "Public update settings" on public.site_settings for update using (true);
 -->
 <style>
 :root{
@@ -43,7 +54,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 /* ─── HEADER ─── */
 .hdr{background:linear-gradient(135deg,#1c1410,#2d1f14,#3a2010);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:78px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.4);}
 .brand{display:flex;align-items:center;gap:14px;}
-.hdr-logo{height:46px;width:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(184,134,11,.3));}
+.hdr-logo{height:42px;width:auto;object-fit:contain;flex-shrink:0;border-radius:6px;}
 .b-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--gold-l);letter-spacing:.8px;line-height:1.1;}
 .b-sub{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-top:2px;white-space:nowrap;}
 .b-since{color:var(--gold);}
@@ -403,7 +414,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
     height:62px;
     gap:0;
   }
-  .hdr-logo{height:42px;}
+  .hdr-logo{height:36px;}
+  .b-name{font-size:.82rem;letter-spacing:.3px;line-height:1.2;}
   .b-name{font-size:.82rem;letter-spacing:.3px;line-height:1.2;}
   .b-sub{font-size:.52rem;letter-spacing:1.5px;}
   .brand{gap:9px;}
@@ -424,8 +436,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 
   /* ── LAYOUT ── */
   .search-wrap{padding:14px 12px 0!important;}
-  .cat-chips-wrap{padding:12px 12px 0;}
-  .sub-chips-wrap{padding:6px 12px 0;}
+  .cat-chips-wrap{padding:10px 10px 0;}
+  .sub-chips-wrap{padding:6px 10px 0;}
+  .cat-chip{padding:6px 10px;font-size:.7rem;}
+  .cat-chip .chip-ico{font-size:.85rem;}
+  .sub-chip{padding:5px 10px;font-size:.66rem;}
 
   /* ── BREADCRUMB & RESULT BAR ── */
   .bc{font-size:.7rem;margin-bottom:10px;}
@@ -531,9 +546,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   .pgrid{grid-template-columns:repeat(2,1fr);gap:8px;}
   .cimgw{height:130px;}
   .cname{font-size:.82rem;}
-  .hdr-logo{height:36px;}
-  .b-name{font-size:.72rem;}
-  .b-sub{font-size:.45rem!important;}
+  .hdr-logo{height:30px;}
+  .b-name{font-size:.68rem;}
+  .b-sub{font-size:.42rem!important;letter-spacing:1px;}
   .hero h1{font-size:1.5rem;}
 }
 
@@ -565,7 +580,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 /* ─── CATEGORY CHIPS ─── */
 .cat-chips-wrap{padding:16px 24px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .cat-chips-wrap::-webkit-scrollbar{display:none;}
-.cat-chips{display:flex;gap:8px;flex-wrap:nowrap;padding-bottom:4px;}
+.cat-chips{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px;}
 .cat-chip{background:var(--white);border:1.5px solid var(--border);padding:8px 16px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:500;color:var(--dark);cursor:pointer;transition:all .25s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .cat-chip:hover{border-color:var(--gold);background:var(--cream);}
 .cat-chip.active{background:var(--maroon);color:white;border-color:var(--maroon);}
@@ -573,24 +588,28 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 .sub-chips-wrap{padding:8px 24px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:none;}
 .sub-chips-wrap::-webkit-scrollbar{display:none;}
 .sub-chips-wrap.show{display:block;}
-.sub-chips{display:flex;gap:6px;flex-wrap:nowrap;}
+.sub-chips{display:flex;gap:6px;flex-wrap:wrap;}
 .sub-chip{background:var(--cream);border:1px solid var(--border);padding:6px 14px;font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--gray);cursor:pointer;transition:all .25s;white-space:nowrap;flex-shrink:0;}
 .sub-chip:hover{border-color:var(--gold);color:var(--dark);}
 .sub-chip.active{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:600;}
 
+
+/* ─── HERO EDIT ─── */
+.hero-edit-btn{background:rgba(184,134,11,.25);border:1px solid var(--gold);color:var(--gold-l);padding:8px 18px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;margin-top:14px;transition:all .3s;position:relative;}
+.hero-edit-btn:hover{background:rgba(184,134,11,.4);}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="hdr">
-  <div class="brand">
+  <a href="index.html" class="brand" style="text-decoration:none;">
     <img src="data:image/png;base64,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" alt="Indira Interior" class="hdr-logo" />
     <div>
       <div class="b-name">Indira Steel &amp; Wood Furniture</div>
       <div class="b-sub">Quality Craftsmanship &middot; <span class="b-since">Est. 1988</span></div>
     </div>
-  </div>
+  </a>
   <div class="hdr-r">
     <span class="adm-badge" id="admBadge">&#9881; Admin</span>
     <div class="nav-menu-wrap">
@@ -616,8 +635,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
     <img src="data:image/png;base64,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" alt="Indira Interior Logo" style="height:90px;width:auto;opacity:.92" />
   </div>
   <div class="h-eye">Trusted Since 1988</div>
-  <h1>Steel Strong. <span>Wood Warm.</span></h1>
-  <p>Quality Furniture for Every Home &amp; Office — Coimbatore's Finest</p>
+  <h1 id="heroTitle">Steel Strong. <span>Wood Warm.</span></h1>
+  <p id="heroSub">Quality Furniture for Every Home &amp; Office — Coimbatore’s Finest</p>
+  <button class="hero-edit-btn" id="heroEditBtn" onclick="openHeroEdit()" style="display:none;">✏️ Edit Quote</button>
 </div>
 
 <!-- ADMIN BAR -->
@@ -629,6 +649,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   <div style="display:flex;gap:10px;flex-wrap:wrap;">
     <button class="add-btn" onclick="openAdd()">＋ Add New Product</button>
     <button class="add-btn" style="background:linear-gradient(135deg,var(--brown),#8b5e3c);" onclick="openCatMgr()">⚙️ Manage Categories</button>
+    <button class="add-btn" style="background:linear-gradient(135deg,#4a2c6a,#6a3d9a);" onclick="openHeroEdit()">✏️ Edit Hero Quote</button>
     <button class="add-btn" style="background:linear-gradient(135deg,#1a5a8a,#1e6fa8);" onclick="openChgPwd()">🔑 Change Password</button>
   </div>
 </div>
@@ -878,6 +899,28 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   </div>
 </div>
 
+
+<!-- HERO EDIT MODAL -->
+<div class="ovl" id="ovlHero">
+  <div class="amodal" style="width:min(520px,96vw);">
+    <button class="mclose" style="color:var(--gray);" onclick="closeHeroEdit()">×</button>
+    <h2>Edit Front Page Quote</h2>
+    <div class="amdsub" style="margin-bottom:16px;">Change the hero heading and subtitle shown on the front page.</div>
+    <div class="af">
+      <label>Main Heading (use | to split gold text)</label>
+      <input type="text" id="heroTitleInput" placeholder="e.g. Steel Strong.|Wood Warm." />
+      <div style="font-size:.62rem;color:var(--gray);margin-top:3px;">Text after | will appear in gold. Example: Steel Strong.|Wood Warm.</div>
+    </div>
+    <div class="af">
+      <label>Subtitle</label>
+      <input type="text" id="heroSubInput" placeholder="e.g. Quality Furniture for Every Home & Office" />
+    </div>
+    <button class="sbtn" onclick="saveHeroText()">
+      <span>✓ Save Quote</span>
+    </button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -986,6 +1029,9 @@ async function init(){
     const data=await sb.getProducts();
     products=data||[];sbOK=true;renderProd();
     document.getElementById('fbs').style.display='none';
+    // Load settings from Supabase (categories, hero text)
+    loadCatsFromSupabase();
+    loadHeroFromSupabase();
   }catch(err){
     setFbs('err',`❌ &nbsp;Supabase error: ${err.message}`);loadDemo();
   }
@@ -1183,6 +1229,7 @@ function doLogout(){
   document.getElementById('admBadge').style.display='none';
   document.getElementById('btnLout').style.display='none';
   document.getElementById('admbar').style.display='none';
+  document.getElementById('heroEditBtn').style.display='none';
   renderProd();showToast('Logged out','inf');
 }
 
@@ -1543,7 +1590,7 @@ function showToast(msg,type='inf'){
 // ════════════════════════════════════════════════════
 // OVERLAY CLOSE ON BG CLICK
 // ════════════════════════════════════════════════════
-[['ovlLogin',closeLogin],['ovlAdd',closeAdd],['ovlDel',closeDel],['ovlDet',closeDet],['lightbox',closeLb],['ovlCatMgr',closeCatMgr],['ovlChgPwd',closeChgPwd],['ovlTrack',closeTrack]].forEach(([id,fn])=>{
+[['ovlHero',closeHeroEdit],['ovlLogin',closeLogin],['ovlAdd',closeAdd],['ovlDel',closeDel],['ovlDet',closeDet],['lightbox',closeLb],['ovlCatMgr',closeCatMgr],['ovlChgPwd',closeChgPwd],['ovlTrack',closeTrack]].forEach(([id,fn])=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)fn();});
 });
 
@@ -1658,8 +1705,33 @@ function renderCatMgr(){
     list.appendChild(div);
   });
 }
+// ════════════════════════════════════════════════════
+// SITE SETTINGS — Supabase backed (categories + hero)
+// ════════════════════════════════════════════════════
+async function saveSetting(key, value){
+  if(!sbOK) return;
+  try{
+    // Try upsert: delete then insert
+    await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key),{method:'DELETE',headers:sbHeaders()});
+    await fetch(SUPABASE_URL+'/rest/v1/site_settings',{method:'POST',headers:sbHeaders(),body:JSON.stringify({key,value:JSON.stringify(value)})});
+  }catch(e){console.warn('saveSetting error:',e);}
+}
+async function loadSetting(key){
+  if(SUPABASE_URL==='YOUR_SUPABASE_URL') return null;
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key)+'&select=value&limit=1',{headers:sbHeaders()});
+    const d=await r.json();
+    if(d&&d.length>0){
+      const v=d[0].value;
+      return typeof v==='string'?JSON.parse(v):v;
+    }
+  }catch(e){console.warn('loadSetting error:',e);}
+  return null;
+}
+
 function saveCatsLocal(){
   try{localStorage.setItem('indira_cats',JSON.stringify(CATS));localStorage.setItem('indira_emojis',JSON.stringify(EMOJIS));}catch(e){}
+  saveSetting('categories',{cats:CATS,emojis:EMOJIS});
 }
 function loadCatsLocal(){
   try{
@@ -1668,6 +1740,62 @@ function loadCatsLocal(){
     if(c){const parsed=JSON.parse(c);Object.keys(parsed).forEach(k=>{if(!CATS[k])CATS[k]=parsed[k];});}
     if(e){const parsed=JSON.parse(e);Object.keys(parsed).forEach(k=>{if(!EMOJIS[k])EMOJIS[k]=parsed[k];});}
   }catch(e){}
+}
+async function loadCatsFromSupabase(){
+  const data=await loadSetting('categories');
+  if(data&&data.cats){
+    Object.keys(data.cats).forEach(k=>{if(!CATS[k])CATS[k]=data.cats[k];});
+    if(data.emojis)Object.keys(data.emojis).forEach(k=>{if(!EMOJIS[k])EMOJIS[k]=data.emojis[k];});
+    try{localStorage.setItem('indira_cats',JSON.stringify(CATS));localStorage.setItem('indira_emojis',JSON.stringify(EMOJIS));}catch(e){}
+    buildTree();
+  }
+}
+
+// ════════════════════════════════════════════════════
+// HERO TEXT EDIT
+// ════════════════════════════════════════════════════
+let heroData={title:'Steel Strong.|Wood Warm.',sub:"Quality Furniture for Every Home & Office \u2014 Coimbatore\u2019s Finest"};
+
+function applyHeroText(){
+  const parts=heroData.title.split('|');
+  const el=document.getElementById('heroTitle');
+  if(parts.length>1){
+    el.innerHTML=parts[0]+' <span>'+parts[1]+'</span>';
+  } else {
+    el.textContent=heroData.title;
+  }
+  document.getElementById('heroSub').textContent=heroData.sub;
+}
+
+function openHeroEdit(){
+  document.getElementById('heroTitleInput').value=heroData.title;
+  document.getElementById('heroSubInput').value=heroData.sub;
+  document.getElementById('ovlHero').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeHeroEdit(){
+  document.getElementById('ovlHero').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+async function saveHeroText(){
+  const t=document.getElementById('heroTitleInput').value.trim();
+  const s=document.getElementById('heroSubInput').value.trim();
+  if(!t){showToast('Enter a heading','err');return;}
+  heroData.title=t;
+  heroData.sub=s||heroData.sub;
+  applyHeroText();
+  await saveSetting('hero_text',heroData);
+  closeHeroEdit();
+  showToast('\u2705 Quote updated!','ok');
+}
+
+async function loadHeroFromSupabase(){
+  const data=await loadSetting('hero_text');
+  if(data&&data.title){
+    heroData=data;
+    applyHeroText();
+  }
 }
 function addCategory(){
   const name=document.getElementById('newCatName').value.trim();
