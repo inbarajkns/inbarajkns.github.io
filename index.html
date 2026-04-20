@@ -43,11 +43,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 /* ─── HEADER ─── */
 .hdr{background:linear-gradient(135deg,#1c1410,#2d1f14,#3a2010);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:78px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.4);}
 .brand{display:flex;align-items:center;gap:14px;}
-.b-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-size:1.5rem;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);}
+.hdr-logo{height:46px;width:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(184,134,11,.3));}
 .b-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--gold-l);letter-spacing:.8px;line-height:1.1;}
-.b-sub{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
+.b-sub{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-top:2px;white-space:nowrap;}
 .b-since{color:var(--gold);}
-.hdr-logo{height:54px;width:auto;object-fit:contain;flex-shrink:0;}
 .hdr-r{display:flex;align-items:center;gap:10px;}
 /* old header buttons removed */
 .tmodal{background:var(--dark);width:480px;padding:38px 36px;border:1px solid rgba(184,134,11,.25);position:relative;animation:pop .3s ease;}
@@ -927,6 +926,7 @@ const EMOJIS={"Sofa":"🛋️","Wardrobe":"🚪","Cot / Bed":"🛏️","Dining T
 
 // ════ STATE ════
 let isAdmin=false,selCat=null,selSub=null;
+let searchQuery='';
 let products=[];
 let pendId=null,pendName=null,pendImgPaths=[];
 let newImgFiles=[]; // new File objects to upload
