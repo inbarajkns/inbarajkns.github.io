@@ -49,18 +49,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 .b-since{color:var(--gold);}
 .hdr-logo{height:54px;width:auto;object-fit:contain;flex-shrink:0;}
 .hdr-r{display:flex;align-items:center;gap:10px;}
-.btn-alog{background:transparent;border:1px solid rgba(184,134,11,.4);color:rgba(255,255,255,.6);padding:7px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.73rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;}
-.btn-alog:hover{border-color:var(--gold);color:var(--gold);}
-.adm-badge{background:linear-gradient(135deg,var(--maroon),var(--red));color:white;padding:6px 13px;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;display:none;}
-.btn-lout{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);padding:6px 13px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;transition:all .3s;display:none;}
-.btn-lout:hover{border-color:#ff6b6b;color:#ff6b6b;}
-.btn-about{background:transparent;border:1px solid rgba(184,134,11,.4);color:rgba(255,255,255,.6);padding:7px 16px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;font-size:.73rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;}
-.btn-about:hover{border-color:var(--gold);color:var(--gold);background:rgba(184,134,11,0.08);}
-.menu-tog{display:none;background:none;border:none;color:rgba(255,255,255,.7);font-size:1.5rem;cursor:pointer;}
-.btn-track{background:transparent;border:1.5px solid rgba(184,134,11,.55);color:var(--gold-l);padding:7px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.73rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;display:inline-flex;align-items:center;gap:6px;}
-.btn-track:hover{border-color:var(--gold);background:rgba(184,134,11,.12);color:var(--gold);}
-.btn-iom{background:linear-gradient(135deg,var(--maroon),var(--red));color:white;padding:7px 14px;font-family:'Outfit',sans-serif;font-size:.73rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;display:inline-flex;align-items:center;gap:5px;text-decoration:none;border:1px solid rgba(255,255,255,.15);}
-.btn-iom:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 4px 14px rgba(155,35,53,.4);}
+/* old header buttons removed */
 .tmodal{background:var(--dark);width:480px;padding:38px 36px;border:1px solid rgba(184,134,11,.25);position:relative;animation:pop .3s ease;}
 .tmodal-top{text-align:center;margin-bottom:26px;}
 .tmodal-ico{font-size:2.4rem;margin-bottom:8px;}
@@ -120,11 +109,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 .add-btn{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--dark);border:none;padding:11px 24px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;display:flex;align-items:center;gap:7px;}
 .add-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.4);}
 
-/* LAYOUT */
-.layout{display:flex;}
-.sbar{width:252px;min-width:252px;background:var(--white);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:78px;height:calc(100vh - 78px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
-.sbar-ttl{font-size:.61rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray);padding:0 16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.sbar-ttl::after{content:'';flex:1;height:1px;background:var(--border);}
+/* sidebar removed - using chips */
 .all-btn{margin:0 16px 8px;background:var(--dark);color:white;border:none;padding:9px 13px;width:calc(100% - 32px);font-family:'Outfit',sans-serif;font-size:.76rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:left;}
 .all-btn:hover,.all-btn.active{background:var(--maroon);}
 .cat-item{border-bottom:1px solid var(--border);}
@@ -147,7 +132,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 .sci.active::before{opacity:1;}
 
 /* MAIN */
-.main{flex:1;padding:24px;}
 .bc{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--gray);margin-bottom:16px;flex-wrap:wrap;}
 .bc span{color:var(--dark);font-weight:500;}
 .bc-sep{color:var(--border);}
@@ -424,15 +408,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   .b-name{font-size:.82rem;letter-spacing:.3px;line-height:1.2;}
   .b-sub{font-size:.52rem;letter-spacing:1.5px;}
   .brand{gap:9px;}
-  .menu-tog{display:block;font-size:1.3rem;padding:6px;order:-1;}
+  
 
-  /* hide text labels on header buttons, keep icons */
-  .btn-about span,.btn-track span,.btn-iom span{display:none;}
-  .btn-about{padding:6px 9px;font-size:.7rem;letter-spacing:1px;}
-  .btn-track{padding:6px 9px;font-size:.7rem;letter-spacing:1px;}
-  .btn-iom{padding:6px 9px;font-size:.7rem;letter-spacing:1px;}
-  .btn-alog{padding:6px 9px;font-size:.65rem;letter-spacing:1px;}
   .hdr-r{gap:6px;}
+  .nav-menu-btn{width:36px;height:36px;font-size:1.1rem;}
+  .nav-dropdown{right:0;top:46px;min-width:180px;}
+  .b-sub{font-size:.5rem;letter-spacing:1px;}
+  .b-dot{display:inline;}
 
   /* ── HERO ── */
   .hero{padding:24px 16px 20px;}
@@ -441,18 +423,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   .h-eye{font-size:.6rem;letter-spacing:2.5px;}
   .hero img{height:68px!important;}
 
-  /* ── SIDEBAR (drawer) ── */
-  .sbar{
-    position:fixed;left:-280px;top:62px;bottom:0;
-    width:280px;z-index:150;
-    transition:left .28s ease;
-    box-shadow:5px 0 24px rgba(0,0,0,.25);
-  }
-  .sbar.open{left:0;}
-
   /* ── LAYOUT ── */
-  .layout{flex-direction:column;}
-  .main{padding:12px 12px 24px;}
+  .search-wrap{padding:14px 12px 0!important;}
+  .cat-chips-wrap{padding:12px 12px 0;}
+  .sub-chips-wrap{padding:6px 12px 0;}
 
   /* ── BREADCRUMB & RESULT BAR ── */
   .bc{font-size:.7rem;margin-bottom:10px;}
@@ -559,9 +533,52 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   .cimgw{height:130px;}
   .cname{font-size:.82rem;}
   .hdr-logo{height:36px;}
-  .b-name{font-size:.75rem;}
+  .b-name{font-size:.72rem;}
+  .b-sub{font-size:.45rem!important;}
   .hero h1{font-size:1.5rem;}
 }
+
+/* ─── NAV MENU DROPDOWN ─── */
+.adm-badge{background:linear-gradient(135deg,var(--maroon),var(--red));color:white;padding:5px 10px;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;display:none;border-radius:2px;}
+.nav-menu-wrap{position:relative;}
+.nav-menu-btn{background:none;border:1.5px solid rgba(184,134,11,.5);color:var(--gold-l);font-size:1.3rem;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.nav-menu-btn:hover{border-color:var(--gold);background:rgba(184,134,11,.1);}
+.nav-dropdown{display:none;position:absolute;right:0;top:52px;background:linear-gradient(135deg,#1c1410,#2d1f14);border:1px solid rgba(184,134,11,.3);min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:ddFade .2s ease;}
+.nav-dropdown.open{display:block;}
+@keyframes ddFade{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.nav-dd-item{display:flex;align-items:center;gap:10px;width:100%;padding:13px 18px;background:none;border:none;color:rgba(255,255,255,.7);font-family:'Outfit',sans-serif;font-size:.82rem;letter-spacing:.5px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.nav-dd-item:hover{background:rgba(184,134,11,.12);color:var(--gold-l);}
+.nav-dd-divider{height:1px;background:rgba(184,134,11,.15);margin:4px 14px;}
+.b-sub{white-space:nowrap;}
+.b-dot{display:inline;}
+
+/* ─── SEARCH BOX ─── */
+.search-wrap{padding:0 24px;margin-bottom:0;}
+.search-box{display:flex;align-items:center;gap:0;max-width:540px;margin:0 auto;background:var(--white);border:2px solid var(--border);transition:border-color .3s;overflow:hidden;}
+.search-box:focus-within{border-color:var(--gold);}
+.search-box input{flex:1;border:none;padding:12px 16px;font-family:'Outfit',sans-serif;font-size:.9rem;color:var(--dark);outline:none;background:transparent;}
+.search-box input::placeholder{color:var(--gray);opacity:.6;}
+.search-box button{background:var(--dark);border:none;color:white;padding:12px 18px;cursor:pointer;font-size:1rem;transition:background .3s;flex-shrink:0;}
+.search-box button:hover{background:var(--maroon);}
+.search-clear{background:transparent!important;color:var(--gray)!important;padding:8px 12px!important;font-size:1.1rem!important;display:none;}
+.search-clear.show{display:block;}
+
+/* ─── CATEGORY CHIPS ─── */
+.cat-chips-wrap{padding:16px 24px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cat-chips-wrap::-webkit-scrollbar{display:none;}
+.cat-chips{display:flex;gap:8px;flex-wrap:nowrap;padding-bottom:4px;}
+.cat-chip{background:var(--white);border:1.5px solid var(--border);padding:8px 16px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:500;color:var(--dark);cursor:pointer;transition:all .25s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.cat-chip:hover{border-color:var(--gold);background:var(--cream);}
+.cat-chip.active{background:var(--maroon);color:white;border-color:var(--maroon);}
+.cat-chip .chip-ico{font-size:1rem;}
+.sub-chips-wrap{padding:8px 24px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:none;}
+.sub-chips-wrap::-webkit-scrollbar{display:none;}
+.sub-chips-wrap.show{display:block;}
+.sub-chips{display:flex;gap:6px;flex-wrap:nowrap;}
+.sub-chip{background:var(--cream);border:1px solid var(--border);padding:6px 14px;font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--gray);cursor:pointer;transition:all .25s;white-space:nowrap;flex-shrink:0;}
+.sub-chip:hover{border-color:var(--gold);color:var(--dark);}
+.sub-chip.active{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:600;}
+
 </style>
 </head>
 <body>
@@ -569,20 +586,25 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
 <!-- HEADER -->
 <header class="hdr">
   <div class="brand">
-    <img src="data:image/png;base64,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" alt="Indira Interior" class="hdr-logo" />
+    <img src="data:image/png;base64,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" alt="Indira Interior" class="hdr-logo" />
     <div>
       <div class="b-name">Indira Steel &amp; Wood Furniture</div>
-      <div class="b-sub">Quality Craftsmanship &nbsp;·&nbsp; <span class="b-since">Est. 1988</span></div>
+      <div class="b-sub">Quality Craftsmanship &middot; <span class="b-since">Est. 1988</span></div>
     </div>
   </div>
   <div class="hdr-r">
-    <button class="menu-tog" onclick="toggleSb()">☰</button>
-    <a class="btn-about" href="about.html">🏛 About Us</a>
-    <button class="btn-track" onclick="openTrack()">🔍 Track Order</button>
-    <a class="btn-iom" href="oms.html" target="_blank">⚙ IOM</a>
-    <span class="adm-badge" id="admBadge">⚙ Admin Mode</span>
-    <button class="btn-alog" id="btnAlog" onclick="openLogin()">Admin Login</button>
-    <button class="btn-lout" id="btnLout" onclick="doLogout()">Logout</button>
+    <span class="adm-badge" id="admBadge">&#9881; Admin</span>
+    <div class="nav-menu-wrap">
+      <button class="nav-menu-btn" onclick="toggleNavMenu()">&#9776;</button>
+      <div class="nav-dropdown" id="navDropdown">
+        <a class="nav-dd-item" href="about.html">&#127963;&#65039; <span>About Us</span></a>
+        <button class="nav-dd-item" onclick="openTrack();closeNavMenu();">&#128269; <span>Track Order</span></button>
+        <a class="nav-dd-item" href="oms.html" target="_blank">&#9881;&#65039; <span>IOM Panel</span></a>
+        <div class="nav-dd-divider"></div>
+        <button class="nav-dd-item" id="btnAlog" onclick="openLogin();closeNavMenu();">&#128274; <span>Admin Login</span></button>
+        <button class="nav-dd-item" id="btnLout" style="display:none;" onclick="doLogout();closeNavMenu();">&#128682; <span>Logout</span></button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -612,29 +634,39 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);}
   </div>
 </div>
 
-<!-- LAYOUT -->
-<div class="layout">
-  <div class="sbar" id="sbar">
-    <div class="sbar-ttl">Browse By</div>
-    <button class="all-btn active" id="allBtn" onclick="selectAll()">🏠 &nbsp;All Products</button>
-    <div id="cattree"></div>
+<!-- SEARCH -->
+<div class="search-wrap" style="padding:20px 24px 0;">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search products by name, material, model..." oninput="doSearch()" />
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">&#10005;</button>
+    <button onclick="doSearch()">&#128269;</button>
   </div>
-  <div class="main">
-    <div class="bc" id="bc"><span>All Products</span></div>
-    <div class="rbar">
-      <div>
-        <div class="rcount" id="rc">All Products</div>
-        <div class="rsub" id="rs"></div>
-      </div>
+</div>
+
+<!-- CATEGORY CHIPS -->
+<div class="cat-chips-wrap">
+  <div class="cat-chips" id="catChips"></div>
+</div>
+<div class="sub-chips-wrap" id="subChipsWrap">
+  <div class="sub-chips" id="subChips"></div>
+</div>
+
+<!-- LAYOUT -->
+<div style="padding:16px 24px 0;">
+  <div class="bc" id="bc"><span>All Products</span></div>
+  <div class="rbar">
+    <div>
+      <div class="rcount" id="rc">All Products</div>
+      <div class="rsub" id="rs"></div>
     </div>
-    <div class="pgrid" id="grid">
-      <div class="ske"></div><div class="ske"></div>
-      <div class="ske"></div><div class="ske"></div>
-      <div class="empty" id="empty" style="display:none;">
-        <div class="empty-ico">🪑</div>
-        <h3>No Products Found</h3>
-        <p id="emptyMsg">No items here yet.</p>
-      </div>
+  </div>
+  <div class="pgrid" id="grid">
+    <div class="ske"></div><div class="ske"></div>
+    <div class="ske"></div><div class="ske"></div>
+    <div class="empty" id="empty" style="display:none;">
+      <div class="empty-ico">&#129681;</div>
+      <h3>No Products Found</h3>
+      <p id="emptyMsg">No items here yet.</p>
     </div>
   </div>
 </div>
@@ -975,48 +1007,59 @@ function loadDemo(){
 // SIDEBAR
 // ════════════════════════════════════════════════════
 function k(s){return s.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');}
+
 function buildTree(){
-  const tree=document.getElementById('cattree');tree.innerHTML='';
+  const chips=document.getElementById('catChips');
+  chips.innerHTML='<button class="cat-chip active" id="chipAll" onclick="selectAll()">🏠 All</button>';
   const cs=document.getElementById('pC');cs.innerHTML='<option value="">— Select —</option>';
   Object.entries(CATS).forEach(([cat,info])=>{
     cs.innerHTML+=`<option value="${cat}">${cat}</option>`;
-    const d=document.createElement('div');d.className='cat-item';
-    d.innerHTML=`
-      <div class="cat-hdr" id="ch-${k(cat)}" onclick="togCat('${k(cat)}','${cat}',this)">
-        <div class="cl"><span class="cico">${info.ico}</span><span class="clbl">${cat}</span></div>
-        <span class="carr" id="ca-${k(cat)}">›</span>
-      </div>
-      <div class="sclist" id="sc-${k(cat)}">
-        ${info.subs.map(s=>`<div class="sci" id="si-${k(cat)}-${k(s)}" onclick="pickSub('${k(cat)}','${cat}','${k(s)}','${s}')">${s}</div>`).join('')}
-      </div>`;
-    tree.appendChild(d);
+    const btn=document.createElement('button');
+    btn.className='cat-chip';
+    btn.id='chip-'+k(cat);
+    btn.innerHTML=`<span class="chip-ico">${info.ico}</span> ${cat}`;
+    btn.onclick=()=>pickCat(cat);
+    chips.appendChild(btn);
   });
 }
-function togCat(ck,cat,el){
-  const list=document.getElementById('sc-'+ck);
-  const arr=document.getElementById('ca-'+ck);
-  const wasOpen=list.classList.contains('open');
-  closeAllDrops();
-  if(!wasOpen){list.classList.add('open');arr.classList.add('open');el.classList.add('acat');selCat=cat;selSub=null;document.getElementById('allBtn').classList.remove('active');updateBc();renderProd();}
-  else{selCat=null;selSub=null;document.getElementById('allBtn').classList.add('active');updateBc();renderProd();}
-}
-function pickSub(ck,cat,sk,sub){
-  selCat=cat;selSub=sub;
-  document.querySelectorAll('.sci').forEach(s=>s.classList.remove('active'));
-  const el=document.getElementById('si-'+ck+'-'+sk);if(el)el.classList.add('active');
-  document.getElementById('allBtn').classList.remove('active');
-  updateBc();renderProd();
-  if(window.innerWidth<=768){
-    document.getElementById('sbar').classList.remove('open');
-    const bd=document.getElementById('sb-backdrop');if(bd)bd.remove();
+
+function pickCat(cat){
+  if(selCat===cat){selectAll();return;}
+  selCat=cat;selSub=null;
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  const el=document.getElementById('chip-'+k(cat));if(el)el.classList.add('active');
+  const subWrap=document.getElementById('subChipsWrap');
+  const subChips=document.getElementById('subChips');
+  if(CATS[cat]&&CATS[cat].subs.length>0){
+    subChips.innerHTML='';
+    CATS[cat].subs.forEach(s=>{
+      const btn=document.createElement('button');
+      btn.className='sub-chip';
+      btn.textContent=s;
+      btn.onclick=function(){pickSub2(cat,s,this);};
+      subChips.appendChild(btn);
+    });
+    subWrap.classList.add('show');
+  } else {
+    subWrap.classList.remove('show');
   }
+  updateBc();renderProd();
 }
-function selectAll(){selCat=null;selSub=null;closeAllDrops();document.getElementById('allBtn').classList.add('active');updateBc();renderProd();}
-function closeAllDrops(){
-  document.querySelectorAll('.sci').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.cat-hdr').forEach(h=>h.classList.remove('acat'));
-  document.querySelectorAll('.carr').forEach(a=>a.classList.remove('open'));
-  document.querySelectorAll('.sclist').forEach(l=>l.classList.remove('open'));
+
+function pickSub2(cat,sub,el){
+  selCat=cat;selSub=sub;
+  document.querySelectorAll('.sub-chip').forEach(c=>c.classList.remove('active'));
+  if(el)el.classList.add('active');
+  updateBc();renderProd();
+}
+
+function selectAll(){
+  selCat=null;selSub=null;
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  const allBtn=document.getElementById('chipAll');
+  if(allBtn)allBtn.classList.add('active');
+  document.getElementById('subChipsWrap').classList.remove('show');
+  updateBc();renderProd();
 }
 function updateBc(){
   const bc=document.getElementById('bc');
@@ -1027,6 +1070,36 @@ function updateBc(){
   bc.innerHTML=h;
 }
 function clrSub(){selSub=null;updateBc();renderProd();}
+
+// ════════════════════════════════════════════════════
+// SEARCH
+// ════════════════════════════════════════════════════
+function doSearch(){
+  searchQuery=document.getElementById('searchInput').value.trim().toLowerCase();
+  const clearBtn=document.getElementById('searchClear');
+  if(searchQuery){clearBtn.classList.add('show');}else{clearBtn.classList.remove('show');}
+  renderProd();
+}
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchQuery='';
+  document.getElementById('searchClear').classList.remove('show');
+  renderProd();
+}
+
+// ════════════════════════════════════════════════════
+// NAV MENU
+// ════════════════════════════════════════════════════
+function toggleNavMenu(){
+  document.getElementById('navDropdown').classList.toggle('open');
+}
+function closeNavMenu(){
+  document.getElementById('navDropdown').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  const wrap=document.querySelector('.nav-menu-wrap');
+  if(wrap && !wrap.contains(e.target)){closeNavMenu();}
+});
 
 // ════════════════════════════════════════════════════
 // RENDER PRODUCTS
@@ -1045,6 +1118,12 @@ function renderProd(){
   let list=[...products];
   if(selCat)list=list.filter(p=>p.cat===selCat);
   if(selSub)list=list.filter(p=>p.sub===selSub);
+  if(searchQuery){
+    list=list.filter(p=>{
+      const hay=((p.name||'')+(p.cat||'')+(p.sub||'')+(p.model||'')+(p.material||'')+(p.color||'')+(p.description||'')).toLowerCase();
+      return hay.includes(searchQuery);
+    });
+  }
   const lbl=selSub||selCat||'All Products';
   document.getElementById('rc').textContent=lbl;
   document.getElementById('rs').textContent=`${list.length} product${list.length!==1?'s':''} found`;
@@ -1100,7 +1179,7 @@ function doLogin(){
 }
 function doLogout(){
   isAdmin=false;
-  document.getElementById('btnAlog').style.display='inline-block';
+  document.getElementById('btnAlog').style.display='flex';
   document.getElementById('admBadge').style.display='none';
   document.getElementById('btnLout').style.display='none';
   document.getElementById('admbar').style.display='none';
@@ -1468,23 +1547,7 @@ function showToast(msg,type='inf'){
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)fn();});
 });
 
-function toggleSb(){
-  const sb=document.getElementById('sbar');
-  const isOpen=sb.classList.toggle('open');
-  // Backdrop overlay when sidebar is open on mobile
-  let bd=document.getElementById('sb-backdrop');
-  if(isOpen){
-    if(!bd){
-      bd=document.createElement('div');
-      bd.id='sb-backdrop';
-      bd.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;backdrop-filter:blur(2px);';
-      bd.onclick=()=>{sb.classList.remove('open');bd.remove();};
-      document.body.appendChild(bd);
-    }
-  } else {
-    if(bd) bd.remove();
-  }
-}
+// toggleSb removed - using nav dropdown menu now
 
 // ════════════════════════════════════════════════════
 // CATEGORY MANAGER
@@ -1595,6 +1658,17 @@ function renderCatMgr(){
     list.appendChild(div);
   });
 }
+function saveCatsLocal(){
+  try{localStorage.setItem('indira_cats',JSON.stringify(CATS));localStorage.setItem('indira_emojis',JSON.stringify(EMOJIS));}catch(e){}
+}
+function loadCatsLocal(){
+  try{
+    const c=localStorage.getItem('indira_cats');
+    const e=localStorage.getItem('indira_emojis');
+    if(c){const parsed=JSON.parse(c);Object.keys(parsed).forEach(k=>{if(!CATS[k])CATS[k]=parsed[k];});}
+    if(e){const parsed=JSON.parse(e);Object.keys(parsed).forEach(k=>{if(!EMOJIS[k])EMOJIS[k]=parsed[k];});}
+  }catch(e){}
+}
 function addCategory(){
   const name=document.getElementById('newCatName').value.trim();
   const ico=document.getElementById('newCatIco').value.trim()||'📦';
@@ -1604,6 +1678,7 @@ function addCategory(){
   EMOJIS[name]=ico;
   document.getElementById('newCatName').value='';
   document.getElementById('newCatIco').value='';
+  saveCatsLocal();
   buildTree();renderCatMgr();
   showToast('✅ Category "'+name+'" added','ok');
 }
@@ -1612,6 +1687,7 @@ function deleteCat(cat){
   delete CATS[cat];
   delete EMOJIS[cat];
   if(selCat===cat){selCat=null;selSub=null;}
+  saveCatsLocal();
   buildTree();renderCatMgr();renderProd();
   showToast('🗑 Category "'+cat+'" deleted','ok');
 }
@@ -1622,12 +1698,14 @@ function addSub(cat){
   if(CATS[cat].subs.includes(sub)){showToast('❌ Sub-category already exists','err');return;}
   CATS[cat].subs.push(sub);
   inp.value='';
+  saveCatsLocal();
   buildTree();renderCatMgr();
   showToast('✅ Sub-category "'+sub+'" added','ok');
 }
 function deleteSub(cat,sub){
   CATS[cat].subs=CATS[cat].subs.filter(s=>s!==sub);
   if(selSub===sub&&selCat===cat){selSub=null;}
+  saveCatsLocal();
   buildTree();renderCatMgr();renderProd();
   showToast('🗑 Sub-category "'+sub+'" removed','ok');
 }
@@ -1791,6 +1869,7 @@ async function doTrackOrder(){
 }
 
 // START
+loadCatsLocal();
 buildTree();
 init();
 </script>
