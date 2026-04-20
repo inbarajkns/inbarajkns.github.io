@@ -30,7 +30,7 @@
   create policy "Public update" on public.products for update using (true);
   create policy "Public delete" on public.products for delete using (true);
 
-  -- Site settings (hero text, categories)
+  -- Site settings (hero text, categories, password)
   create table public.site_settings (
     key text primary key,
     value jsonb,
@@ -40,6 +40,7 @@
   create policy "Public read settings" on public.site_settings for select using (true);
   create policy "Public insert settings" on public.site_settings for insert with check (true);
   create policy "Public update settings" on public.site_settings for update using (true);
+  create policy "Public delete settings" on public.site_settings for delete using (true);
 -->
 <style>
 :root{
@@ -1029,9 +1030,10 @@ async function init(){
     const data=await sb.getProducts();
     products=data||[];sbOK=true;renderProd();
     document.getElementById('fbs').style.display='none';
-    // Load settings from Supabase (categories, hero text)
+    // Load settings from Supabase (categories, hero text, password)
     loadCatsFromSupabase();
     loadHeroFromSupabase();
+    loadPassFromSupabase();
   }catch(err){
     setFbs('err',`❌ &nbsp;Supabase error: ${err.message}`);loadDemo();
   }
@@ -1706,25 +1708,45 @@ function renderCatMgr(){
   });
 }
 // ════════════════════════════════════════════════════
-// SITE SETTINGS — Supabase backed (categories + hero)
+// SITE SETTINGS — Supabase backed (categories + hero + password)
 // ════════════════════════════════════════════════════
 async function saveSetting(key, value){
   if(!sbOK) return;
   try{
-    // Try upsert: delete then insert
-    await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key),{method:'DELETE',headers:sbHeaders()});
-    await fetch(SUPABASE_URL+'/rest/v1/site_settings',{method:'POST',headers:sbHeaders(),body:JSON.stringify({key,value:JSON.stringify(value)})});
+    // Step 1: Try UPDATE existing row
+    const r1=await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key),{
+      method:'PATCH',
+      headers:{...sbHeaders(),'Prefer':'return=representation'},
+      body:JSON.stringify({value, updated_at:new Date().toISOString()})
+    });
+    const d1=await r1.json().catch(()=>[]);
+    if(r1.ok&&Array.isArray(d1)&&d1.length>0) return; // updated OK
+
+    // Step 2: Row doesn't exist yet — INSERT
+    const r2=await fetch(SUPABASE_URL+'/rest/v1/site_settings',{
+      method:'POST',
+      headers:sbHeaders(),
+      body:JSON.stringify({key, value, updated_at:new Date().toISOString()})
+    });
+    if(!r2.ok){
+      const e2=await r2.json().catch(()=>({}));
+      // If duplicate key error, the row exists but PATCH failed — try once more
+      if(e2.code==='23505'){
+        await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key),{
+          method:'PATCH',headers:sbHeaders(),
+          body:JSON.stringify({value})
+        });
+      }
+    }
   }catch(e){console.warn('saveSetting error:',e);}
 }
 async function loadSetting(key){
   if(SUPABASE_URL==='YOUR_SUPABASE_URL') return null;
   try{
     const r=await fetch(SUPABASE_URL+'/rest/v1/site_settings?key=eq.'+encodeURIComponent(key)+'&select=value&limit=1',{headers:sbHeaders()});
+    if(!r.ok) return null;
     const d=await r.json();
-    if(d&&d.length>0){
-      const v=d[0].value;
-      return typeof v==='string'?JSON.parse(v):v;
-    }
+    if(d&&d.length>0) return d[0].value;
   }catch(e){console.warn('loadSetting error:',e);}
   return null;
 }
@@ -1744,8 +1766,11 @@ function loadCatsLocal(){
 async function loadCatsFromSupabase(){
   const data=await loadSetting('categories');
   if(data&&data.cats){
-    Object.keys(data.cats).forEach(k=>{if(!CATS[k])CATS[k]=data.cats[k];});
-    if(data.emojis)Object.keys(data.emojis).forEach(k=>{if(!EMOJIS[k])EMOJIS[k]=data.emojis[k];});
+    // Full replace — Supabase is the source of truth
+    const merged={...CATS};
+    Object.keys(data.cats).forEach(k=>{merged[k]=data.cats[k];});
+    Object.keys(merged).forEach(k=>{CATS[k]=merged[k];});
+    if(data.emojis) Object.keys(data.emojis).forEach(k=>{EMOJIS[k]=data.emojis[k];});
     try{localStorage.setItem('indira_cats',JSON.stringify(CATS));localStorage.setItem('indira_emojis',JSON.stringify(EMOJIS));}catch(e){}
     buildTree();
   }
@@ -1795,6 +1820,20 @@ async function loadHeroFromSupabase(){
   if(data&&data.title){
     heroData=data;
     applyHeroText();
+  }
+}
+
+async function loadPassFromSupabase(){
+  // Check localStorage first (instant)
+  try{
+    const lp=localStorage.getItem('indira_admin_pass');
+    if(lp) ADMIN_PASS=lp;
+  }catch(e){}
+  // Then check Supabase (all devices)
+  const data=await loadSetting('admin_pass');
+  if(data&&data.pass){
+    ADMIN_PASS=data.pass;
+    try{localStorage.setItem('indira_admin_pass',data.pass);}catch(e){}
   }
 }
 function addCategory(){
@@ -1855,7 +1894,7 @@ function closeChgPwd(){
   document.getElementById('ovlChgPwd').classList.remove('open');
   document.body.style.overflow='';
 }
-function doChgPwd(){
+async function doChgPwd(){
   const cur=document.getElementById('cpCur').value;
   const nw=document.getElementById('cpNew').value;
   const con=document.getElementById('cpCon').value;
@@ -1867,6 +1906,10 @@ function doChgPwd(){
   if(nw.length<6){errEl.textContent='❌ New password must be at least 6 characters.';errEl.style.display='block';return;}
   if(nw!==con){errEl.textContent='❌ New passwords do not match.';errEl.style.display='block';return;}
   ADMIN_PASS=nw;
+  // Save to localStorage (instant, same device)
+  try{localStorage.setItem('indira_admin_pass',nw);}catch(e){}
+  // Save to Supabase (all devices)
+  await saveSetting('admin_pass',{pass:nw});
   okEl.style.display='block';
   showToast('🔑 Password changed successfully!','ok');
   setTimeout(()=>closeChgPwd(),1800);
