@@ -218,6 +218,93 @@ textarea.fi{resize:vertical;min-height:72px}
 .qbox{background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.25);border-radius:7px;padding:10px;font-size:12px;color:var(--yel);margin-top:8px}
 .info-box{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
 
+/* ─── Expandable Stats ─── */
+.xstat{border-radius:var(--r);padding:12px;cursor:pointer;transition:all .15s;border:1px solid transparent;flex:1}
+.xstat:hover{border-color:var(--acc)}
+.xstat.open{border-width:2px}
+.xstat-n{font-size:24px;font-weight:900;line-height:1}
+.xstat-l{font-size:10px;font-weight:600;margin-top:3px}
+.xstat-exp{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-top:8px;max-height:240px;overflow-y:auto}
+.xstat-row{padding:7px 0;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.xstat-row:last-child{border-bottom:none}
+
+/* ─── Status Overview Expandable ─── */
+.sto-row{display:flex;align-items:center;gap:7px;padding:6px 0;cursor:pointer;transition:background .1s;border-radius:4px}
+.sto-row:hover{background:rgba(232,144,10,.05)}
+.sto-bar{height:4px;border-radius:2px;flex:1}
+.sto-exp{margin-left:26px;margin-top:4px;margin-bottom:8px;border:1px solid var(--bdr);border-radius:8px;background:var(--bg3);max-height:200px;overflow-y:auto}
+.sto-exp-row{padding:6px 10px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.sto-exp-row:last-child{border-bottom:none}
+
+/* ─── Calendar ─── */
+.cal-hd{display:flex;align-items:center;gap:10px;padding:10px 0;margin-bottom:8px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
+.cal-dh{text-align:center;font-size:11px;font-weight:700;color:var(--muted);padding:4px}
+.cal-day{text-align:center;padding:6px 2px;border-radius:6px;cursor:pointer;transition:all .12s;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px}
+.cal-day:hover{background:rgba(232,144,10,.1)}
+.cal-day.today{border:1.5px solid var(--blue);background:rgba(45,125,210,.1)}
+.cal-day.sel{background:rgba(232,144,10,.2);border:1.5px solid var(--acc)}
+.cal-day.past{opacity:.35}
+.cal-dot{width:6px;height:6px;border-radius:50%;margin-top:2px}
+.cal-legend{display:flex;gap:12px;justify-content:flex-end;font-size:10px;color:var(--muted);align-items:center;margin-bottom:8px}
+.cal-leg-d{width:8px;height:8px;border-radius:50%;display:inline-block}
+.cal-panel{border-top:1px solid var(--bdr);padding-top:10px;min-height:120px}
+
+/* ─── Calculator ─── */
+.calc-tabs{display:flex;border-bottom:1px solid var(--bdr);margin-bottom:14px}
+.calc-tab{flex:1;text-align:center;padding:10px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+.calc-tab.on{color:var(--acc);border-bottom-color:var(--acc)}
+.calc-card{border:1px solid var(--bdr);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.calc-card.active{border-color:var(--acc);background:rgba(232,144,10,.05)}
+.calc-ico{width:50px;text-align:center}
+.calc-ico span{font-size:26px}
+.calc-abbr{display:inline-block;padding:2px 8px;border-radius:5px;font-size:12px;font-weight:800;margin-top:4px}
+.calc-inp{flex:1}
+.calc-inp label{font-size:12px;color:var(--muted);font-weight:600}
+.calc-inp input{width:100%;background:transparent;border:none;outline:none;font-size:24px;font-weight:800;color:var(--txt);padding:2px 0;font-family:inherit}
+.calc-inp input::placeholder{color:var(--muted);opacity:.2;font-weight:200}
+.calc-ref{background:rgba(232,144,10,.06);border:1px solid rgba(232,144,10,.2);border-radius:10px;padding:12px;margin-top:12px}
+.calc-ref-t{color:var(--acc);font-weight:800;font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.calc-ref li{font-size:12px;margin-bottom:5px;color:var(--muted)}
+.calc-ref li strong{color:var(--txt)}
+
+/* ─── Enquiry ─── */
+.enq-pipe{display:flex;align-items:center;gap:0;margin:8px 0}
+.enq-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;flex-shrink:0;transition:all .15s}
+.enq-dot.done{background:var(--green)}
+.enq-dot.cur{width:18px;height:18px}
+.enq-line{flex:1;height:2px}
+.enq-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:9px;cursor:pointer;transition:all .15s}
+.enq-card:hover{border-color:var(--acc);transform:translateY(-1px)}
+.enq-stchip{padding:3px 8px;border-radius:7px;font-size:10px;font-weight:700}
+.enq-timeline{margin-top:8px}
+.enq-tl-item{display:flex;gap:8px;margin-bottom:0}
+.enq-tl-dot{width:30px;display:flex;flex-direction:column;align-items:center}
+.enq-tl-circle{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.enq-tl-line{width:2px;flex:1;min-height:12px}
+
+/* ─── Profile ─── */
+.prof-av{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--pur));display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;font-weight:800;margin:0 auto 12px}
+.prof-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:12px}
+.prof-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:13px}
+.prof-row:last-child{border-bottom:none}
+.prof-row span:first-child{color:var(--muted);font-size:12px}
+.prof-row span:last-child{font-weight:600}
+
+/* ─── Individual Reports ─── */
+.rpt-chip{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(232,144,10,.3);transition:all .15s}
+.rpt-chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.rpt-chip:not(.on){color:var(--acc);background:rgba(232,144,10,.08)}
+.rpt-person{border:1px solid var(--bdr);border-radius:8px;margin-bottom:6px;overflow:hidden;transition:border-color .15s}
+.rpt-person.open{border-color:rgba(232,144,10,.4)}
+.rpt-ph{padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.rpt-pb{padding:8px;border-top:1px solid var(--bdr)}
+.rpt-pr{padding:5px 8px;border-radius:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;font-size:11px}
+
+/* ─── Track Widget ─── */
+.trk-prod{border-radius:8px;padding:8px;margin-bottom:6px}
+.trk-prod-bar{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;margin-top:4px}
+
 /* ─── Responsive ─── */
 @media(max-width:768px){
   .sb{transform:translateX(-100%)}.sb.on{transform:translateX(0)}
@@ -238,7 +325,7 @@ textarea.fi{resize:vertical;min-height:72px}
   <div class="a-card" style="max-width:440px">
     <div class="logo">
       <div class="logo-i">I</div>
-      <div><div class="logo-t">Indira OMS</div><div class="logo-s">v2.3</div></div>
+      <div><div class="logo-t">Indira OMS</div><div class="logo-s">v2.4</div></div>
     </div>
     <div class="tabs" style="margin-bottom:18px">
       <div class="tab on" id="lt-staff" onclick="switchLTab('staff')">👤 Staff</div>
@@ -263,8 +350,8 @@ textarea.fi{resize:vertical;min-height:72px}
       <div class="fg dn" id="l-user-wrap"><label class="fl">Your Name</label>
         <select class="fi" id="l-user"><option value="">Loading…</option></select>
       </div>
-      <div class="fg"><label class="fl">Password</label>
-        <div class="fi-wrap"><input class="fi" id="l-pass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="fg"><label class="fl">PIN</label>
+        <div class="fi-wrap"><input class="fi" id="l-pass" type="password" inputmode="numeric" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')doLogin()">
           <button class="fi-eye" onclick="toggleEye('l-pass',this)">👁</button></div>
       </div>
       <button class="btn bp bfull" id="l-btn" onclick="doLogin()">Sign In</button>
@@ -274,8 +361,8 @@ textarea.fi{resize:vertical;min-height:72px}
     <!-- Owner -->
     <div id="lp-owner" class="dn">
       <div id="lo-err"></div>
-      <div class="fg"><label class="fl">Owner Password</label>
-        <div class="fi-wrap"><input class="fi" id="lo-pass" type="password" placeholder="Enter owner password" onkeydown="if(event.key==='Enter')doOwnerLogin()">
+      <div class="fg"><label class="fl">Owner PIN</label>
+        <div class="fi-wrap"><input class="fi" id="lo-pass" type="password" inputmode="numeric" placeholder="Enter owner PIN" onkeydown="if(event.key==='Enter')doOwnerLogin()">
           <button class="fi-eye" onclick="toggleEye('lo-pass',this)">👁</button></div>
       </div>
       <button class="btn bp bfull" onclick="doOwnerLogin()">Sign In as Owner</button>
@@ -313,7 +400,7 @@ textarea.fi{resize:vertical;min-height:72px}
         <div class="fg"><label class="fl">Email</label><input class="fi" id="reg-email" type="email" placeholder="you@email.com"></div>
         <div class="fg"><label class="fl">Phone</label><input class="fi" id="reg-phone" type="tel" placeholder="Phone number"></div>
       </div>
-      <div class="fg"><label class="fl">Password *</label><input class="fi" id="reg-pass" type="password" placeholder="Choose a password"></div>
+      <div class="fg"><label class="fl">PIN * (numbers only)</label><input class="fi" id="reg-pass" type="password" inputmode="numeric" placeholder="Choose a 4+ digit PIN"></div>
     </div>
     <div class="mf"><button class="btn bs" onclick="closeReg()">Cancel</button><button class="btn bp" onclick="doRegister()">Register</button></div>
   </div>
@@ -325,7 +412,7 @@ textarea.fi{resize:vertical;min-height:72px}
   <aside class="sb" id="sb">
     <div class="sb-logo">
       <div class="sb-li">I</div>
-      <div><div class="sb-lt">Indira OMS</div><div class="sb-lv">v2.3</div></div>
+      <div><div class="sb-lt">Indira OMS</div><div class="sb-lv">v2.4</div></div>
     </div>
     <nav class="sb-nav">
       <div class="sb-sec">Main</div>
@@ -333,8 +420,13 @@ textarea.fi{resize:vertical;min-height:72px}
       <div class="ni" id="ni-orders" onclick="go('orders')"><span class="ni-ic">📦</span>Orders<span class="nbadge dn" id="badge-ord">0</span></div>
       <div class="ni" id="ni-tasks" onclick="go('tasks')"><span class="ni-ic">📋</span>Tasks<span class="nbadge dn" id="badge-tsk">0</span></div>
       <div class="ni dn" id="ni-users" onclick="go('users')"><span class="ni-ic">👥</span>Users<span class="nbadge dn" id="badge-usr">0</span></div>
+      <div class="ni" id="ni-enquiries" onclick="go('enquiries')"><span class="ni-ic">📞</span>Enquiries</div>
+      <div class="sb-sec">Tools</div>
+      <div class="ni dn" id="ni-calendar" onclick="go('calendar')"><span class="ni-ic">📅</span>Calendar</div>
+      <div class="ni dn" id="ni-calculator" onclick="go('calculator')"><span class="ni-ic">📐</span>Calculator</div>
       <div class="sb-sec">Account</div>
-      <div class="ni" onclick="go('password')"><span class="ni-ic">🔑</span>Change Password</div>
+      <div class="ni" id="ni-profile" onclick="go('profile')"><span class="ni-ic">👤</span>Profile</div>
+      <div class="ni" onclick="go('password')"><span class="ni-ic">🔐</span>Change PIN</div>
       <div class="ni" onclick="doLogout()" style="color:var(--red)"><span class="ni-ic">🚪</span>Logout</div>
     </nav>
     <div class="sb-foot">
@@ -390,6 +482,19 @@ let _usrSearch = '', _usrFilter = 'pending';
 let _tskFilter = 'pending';
 let _newProds = [];
 let _ivUrls = [], _ivIdx = 0;
+let _imgStore = {}; // global image store for safe onclick references
+let _imgStoreId = 0;
+let _expandedStat = ''; // 'active','delivered','high' or ''
+let _expandedStatus = ''; // status label or ''
+let _rptPeriod = 'week'; // 'week','month'
+let _rptExpanded = ''; // expanded person key
+let _calMonth = new Date().getMonth();
+let _calYear = new Date().getFullYear();
+let _calSelDay = null;
+let _calcTab = 'length'; // 'length','area','weight'
+let _enqSearch = '', _enqStatusFilter = '';
+let ENQUIRIES = [];
+let _trkCode = '', _trkResult = null, _trkNotFound = false;
 
 const ROLES = {sales:'Sales',branch_head:'Branch Head',factory_head:'Factory Head',carpenter:'Carpenter',quality_check:'Quality Check',driver:'Delivery',owner:'Owner'};
 const BRANCHES = ['Steel Main Branch','Vengamedu Branch','Chennimalai Branch','Factory'];
@@ -431,7 +536,17 @@ function showApp(user){
   g('u-nm').textContent=user.name;
   g('u-rl').textContent=ROLES[user.role]||user.role;
   if(user.role==='owner') show('ni-users');
-  bootData();
+  // Show calendar for owner, branch_head, factory_head, driver
+  if(['owner','branch_head','factory_head','driver'].includes(user.role)) show('ni-calendar');
+  // Show calculator for carpenter
+  if(user.role==='carpenter') show('ni-calculator');
+  bootData().then(()=>{
+    // Force PIN change if not yet changed
+    if(!ME.pin_changed){
+      go('password');
+      renderPass(true);
+    }
+  });
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -462,13 +577,13 @@ async function doLogin(){
   const el=g('l-err');
   if(!role){el.innerHTML=err('Select role');return}
   if(!uid){el.innerHTML=err('Select your name');return}
-  if(!pass){el.innerHTML=err('Enter password');return}
+  if(!pass){el.innerHTML=err('Enter PIN');return}
   const btn=g('l-btn'); btn.classList.add('bload'); btn.textContent='Signing in…';
   el.innerHTML='';
   try{
     const {data,error}=await DB.from('users').select('*').eq('id',uid).eq('role',role).eq('password',pass).maybeSingle();
     if(error) throw error;
-    if(!data){el.innerHTML=err('Incorrect password');return}
+    if(!data){el.innerHTML=err('Incorrect PIN');return}
     if(!data.approved||data.status==='pending'){el.innerHTML=err('Account pending owner approval');return}
     if(data.status==='suspended'){el.innerHTML=err('Account suspended. Contact owner.');return}
     sessionStorage.setItem('me',JSON.stringify(data));
@@ -480,7 +595,7 @@ async function doLogin(){
 async function doOwnerLogin(){
   const pass=g('lo-pass').value;
   const el=g('lo-err');
-  if(!pass){el.innerHTML=err('Enter password');return}
+  if(!pass){el.innerHTML=err('Enter PIN');return}
   el.innerHTML='';
   try{
     let {data}=await DB.from('users').select('*').eq('id','owner-1').eq('password',pass).maybeSingle();
@@ -489,7 +604,7 @@ async function doOwnerLogin(){
       await DB.from('users').insert(rec);
       data=rec;
     }
-    if(!data){el.innerHTML=err('Incorrect owner password');return}
+    if(!data){el.innerHTML=err('Incorrect owner PIN');return}
     sessionStorage.setItem('me',JSON.stringify(data));
     showApp(data);
   }catch(e){el.innerHTML=err(e.message)}
@@ -523,9 +638,10 @@ function closeReg(){hide('reg-ov');g('reg-err').innerHTML='';g('reg-ok').innerHT
 async function doRegister(){
   const name=g('reg-name').value.trim(), pass=g('reg-pass').value.trim();
   const el=g('reg-err'), ok2=g('reg-ok');
-  if(!name||!pass){el.innerHTML=err('Name and password required');return}
+  if(!name||!pass){el.innerHTML=err('Name and PIN required');return}
+  if(!/^\d{4,}$/.test(pass)){el.innerHTML=err('PIN must be 4+ digits, numbers only');return}
   try{
-    await DB.from('users').insert({id:'u'+Date.now(),name,role:g('reg-role').value,branch:g('reg-branch').value,email:g('reg-email').value,phone:g('reg-phone').value,password:pass,approved:false,status:'pending'});
+    await DB.from('users').insert({id:'u'+Date.now(),name,role:g('reg-role').value,branch:g('reg-branch').value,email:g('reg-email').value,phone:g('reg-phone').value,password:pass,approved:false,status:'pending',pin_changed:true});
     ok2.innerHTML=ok('Registered! Awaiting owner approval.');
     setTimeout(closeReg,2000);
   }catch(e){el.innerHTML=err(e.message)}
@@ -540,9 +656,10 @@ async function bootData(){
   DB.channel('ch-ord').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>loadOrders().then(()=>{refresh();badges()})).subscribe();
   DB.channel('ch-usr').on('postgres_changes',{event:'*',schema:'public',table:'users'},()=>loadUsers().then(()=>{refresh();badges()})).subscribe();
   DB.channel('ch-tsk').on('postgres_changes',{event:'*',schema:'public',table:'tasks'},()=>loadTasks().then(()=>{refresh();badges()})).subscribe();
+  DB.channel('ch-enq').on('postgres_changes',{event:'*',schema:'public',table:'customer_enquiries'},()=>loadEnquiries().then(()=>{if(PAGE==='enquiries')renderEnquiries()})).subscribe();
   go('dashboard');
 }
-async function loadAll(){ await Promise.all([loadOrders(),loadUsers(),loadTasks()]); badges(); }
+async function loadAll(){ await Promise.all([loadOrders(),loadUsers(),loadTasks(),loadEnquiries()]); badges(); }
 async function loadOrders(){
   try{const{data}=await DB.from('orders').select('*').order('created_at',{ascending:false}); ORDERS=data||[]}catch(_){ORDERS=[]}
 }
@@ -555,6 +672,12 @@ async function loadTasks(){
     if(ME.role!=='owner') q=q.eq('assigned_to_id',ME.id);
     const{data}=await q; TASKS=data||[];
   }catch(_){TASKS=[]}
+}
+async function loadEnquiries(){
+  try{
+    const{data}=await DB.from('customer_enquiries').select('*').order('created_at',{ascending:false});
+    ENQUIRIES=data||[];
+  }catch(_){ENQUIRIES=[]}
 }
 
 function badges(){
@@ -571,8 +694,12 @@ function setBadge(id,n){const el=g(id);if(!el)return;el.textContent=n;el.classLi
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // NAVIGATION
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const PAGE_TITLES={dashboard:'Dashboard',orders:'Orders',tasks:'Tasks',users:'Users',password:'Change Password'};
+const PAGE_TITLES={dashboard:'Dashboard',orders:'Orders',tasks:'Tasks',users:'Users',password:'Change PIN',enquiries:'Customer Enquiries',calendar:'Delivery Calendar',calculator:'Unit Calculator',profile:'Profile'};
 function go(p){
+  // Block navigation if PIN change is forced
+  if(!ME.pin_changed && p!=='password'){
+    go('password'); renderPass(true); return;
+  }
   PAGE=p;
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   const ni=g('ni-'+p); if(ni) ni.classList.add('on');
@@ -591,6 +718,10 @@ function render(){
     case'tasks':renderTasks();break;
     case'users':renderUsers();break;
     case'password':renderPass();break;
+    case'enquiries':renderEnquiries();break;
+    case'calendar':renderCalendar();break;
+    case'calculator':renderCalculator();break;
+    case'profile':renderProfile();break;
   }
 }
 
@@ -606,12 +737,179 @@ function renderDash(){
   const pendUsr=USERS.filter(u=>!u.approved||u.status==='pending');
   // Status breakdown
   const sc={};vis.forEach(o=>{sc[o.status]=(sc[o.status]||0)+1});
-  const stRows=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
-    <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
-      <div style="width:7px;height:7px;border-radius:50%;background:${stColor(s)};flex-shrink:0"></div>
-      <span style="flex:1;font-size:12px;color:var(--muted)">${s}</span>
-      <span style="font-weight:700;font-size:12px">${c}</span>
-    </div>`).join('');
+  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+
+  // Expandable stat boxes
+  function xstatBox(key,n,lbl,col,icon){
+    const isOpen=_expandedStat===key;
+    return`<div class="xstat${isOpen?' open':''}" style="background:rgba(${col},.08);border-color:${isOpen?`rgba(${col},.5)`:'transparent'}" onclick="_expandedStat=_expandedStat==='${key}'?'':'${key}';renderDash()">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:18px">${icon}</span>
+        <div style="flex:1"><div class="xstat-n" style="color:rgb(${col})">${n}</div><div class="xstat-l" style="color:rgba(${col},.7)">${lbl}</div></div>
+        <span style="font-size:12px;color:rgba(${col},.5)">${isOpen?'▲':'▼'}</span>
+      </div>
+    </div>`;
+  }
+
+  function xstatExpanded(orders,title){
+    if(!orders.length) return`<div class="xstat-exp"><div style="padding:10px;color:var(--muted);font-size:12px">No orders</div></div>`;
+    return`<div class="xstat-exp"><div style="padding:6px 10px;font-weight:700;font-size:12px;border-bottom:1px solid var(--bdr)">${title}</div>${orders.map(o=>`
+      <div class="xstat-row" onclick="openOrd('${o.order_id}')" style="cursor:pointer;padding:7px 10px">
+        <div><div style="font-weight:600;font-size:12px">${o.customer_name}</div><div style="font-size:10px;color:var(--muted)">#${o.tracking_code} · ${o.branch_name}</div></div>
+        <div style="text-align:right"><span class="badge ${badgeSt(o.status)}" style="font-size:9px">${o.status}</span><br><span class="badge ${priB(o.priority)}" style="font-size:9px;margin-top:2px">${o.priority}</span></div>
+      </div>`).join('')}</div>`;
+  }
+
+  // Expandable status overview
+  function stoRows(){
+    if(!sorted.length) return'<div style="color:var(--muted);font-size:12px;padding:8px">No orders yet</div>';
+    return sorted.map(([s,c])=>{
+      const frac=vis.length?(c/vis.length):0;
+      const col=stColor(s);
+      const isOpen=_expandedStatus===s;
+      const matchOrders=vis.filter(o=>o.status===s);
+      return`<div>
+        <div class="sto-row" onclick="_expandedStatus=_expandedStatus==='${s}'?'':'${s}';renderDash()">
+          <div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0"></div>
+          <span style="flex:1;font-size:11px;color:var(--muted)">${s}</span>
+          <span style="font-weight:700;font-size:12px;color:${col}">${c}</span>
+          <span style="font-size:11px;color:${col};opacity:.6;margin-left:4px">${isOpen?'▲':'▼'}</span>
+        </div>
+        <div style="margin-left:13px;margin-bottom:2px"><div style="background:rgba(${hexToRgb(col)},.15);border-radius:2px;height:4px;overflow:hidden"><div style="width:${frac*100}%;height:100%;background:${col};border-radius:2px"></div></div></div>
+        ${isOpen?`<div class="sto-exp">${matchOrders.map(o=>`<div class="sto-exp-row" onclick="openOrd('${o.order_id}')" style="cursor:pointer"><div><span style="font-weight:600">${o.customer_name}</span><br><span style="color:var(--muted);font-size:10px">#${o.tracking_code} · ${o.branch_name}</span></div><span class="badge ${priB(o.priority)}" style="font-size:9px">${o.priority}</span></div>`).join('')}</div>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  // Branch breakdown (owner/factory_head)
+  function branchSection(){
+    if(!['owner','factory_head'].includes(ME.role)) return'';
+    return`<div class="sec-t">🏬 Branches</div>${BRANCHES.filter(b=>b!=='Factory').map(b=>{
+      const bt=ORDERS.filter(o=>o.branch_name===b).length;
+      const bp=ORDERS.filter(o=>o.branch_name===b&&!['Delivered','Closed'].includes(o.status)).length;
+      return`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:16px">🏬</span><span style="flex:1;font-weight:600;font-size:13px">${b}</span>
+        <span style="color:var(--yel);font-size:11px">${bp} pending</span>
+        <span style="color:var(--muted);font-size:11px">${bt} total</span>
+      </div>`;
+    }).join('')}`;
+  }
+
+  // Carpenter workload (owner/factory_head)
+  function carpenterSection(){
+    if(!['owner','factory_head'].includes(ME.role)) return'';
+    const carps=USERS.filter(u=>u.role==='carpenter'&&u.approved);
+    if(!carps.length) return'';
+    return`<div class="sec-t" style="margin-top:14px">🔨 Carpenter Workload</div>${carps.map(c=>{
+      const ca=ORDERS.filter(o=>o.factory_assigned_to===c.name&&!['Delivered','Closed'].includes(o.status)).length;
+      const ch=ORDERS.filter(o=>o.factory_assigned_to===c.name&&o.priority==='High'&&!['Delivered','Closed'].includes(o.status)).length;
+      return`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        <div class="u-av" style="width:32px;height:32px;font-size:11px">${(c.name||'?')[0]}</div>
+        <span style="flex:1;font-weight:600;font-size:13px">${c.name}</span>
+        ${ch>0?`<span style="color:var(--red);font-size:12px;font-weight:700">🔴 ${ch}</span>`:''}
+        <span style="color:var(--blue);font-size:12px;font-weight:700">${ca} active</span>
+      </div>`;
+    }).join('')}`;
+  }
+
+  // Track order widget
+  function trackWidget(){
+    let resultHtml='';
+    if(_trkNotFound) resultHtml=`<div style="margin-top:10px;background:rgba(224,60,49,.08);border:1px solid rgba(224,60,49,.25);border-radius:8px;padding:10px;display:flex;gap:6px;align-items:center"><span>❌</span><span style="color:var(--red);font-weight:600">Order not found.</span></div>`;
+    if(_trkResult){
+      const o=_trkResult, prods=o.products||[];
+      const total=prods.length, delivered=prods.filter(p=>p.product_status==='Delivered').length;
+      resultHtml=`<div style="margin-top:12px;border-top:1px solid var(--bdr);padding-top:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div><div style="font-weight:800;font-size:15px">${o.customer_name}</div><div style="font-size:11px;color:var(--muted)">#${o.tracking_code}</div></div>
+          <div style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;background:${delivered===total?'rgba(39,174,96,.12)':'rgba(45,125,210,.1)'};color:${delivered===total?'var(--green)':'var(--blue)'}">${delivered===total?'✅ All Done':`${delivered}/${total} Done`}</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">🏬 ${o.branch_name} · 📅 Delivery: ${fmtDate(o.delivery_date)}</div>
+        ${prods.map((p,i)=>{
+          const sc=trkStatusColor(p.product_status);
+          const ti=p.product_type==='manufacture'?'🏭':p.product_type==='vendor'?'🛒':'🏬';
+          const tl=p.product_type==='manufacture'?'Manufacture':p.product_type==='vendor'?'Vendor':'Stock';
+          const hint=trkHint(p);
+          return`<div class="trk-prod" style="background:rgba(${hexToRgb(sc)},.05);border:1px solid rgba(${hexToRgb(sc)},.2)">
+            <div style="display:flex;align-items:center;gap:6px;padding:2px 0">
+              <div style="width:3px;height:24px;background:${sc};border-radius:2px"></div>
+              <div style="flex:1"><div style="font-size:9px;color:var(--muted)">${ti} Product ${i+1} · ${tl}</div><div style="font-size:12px;font-weight:700">${p.product_name||'Item'}</div></div>
+              <span style="font-size:10px;color:var(--muted)">×${p.quantity||1}</span>
+            </div>
+            <div class="trk-prod-bar" style="background:rgba(${hexToRgb(sc)},.08);border:1px solid rgba(${hexToRgb(sc)},.15)">
+              <div style="width:6px;height:6px;border-radius:50%;background:${sc}"></div>
+              <div style="flex:1"><div style="color:${sc};font-weight:800;font-size:11px">${p.product_status}</div><div style="color:var(--muted);font-size:9px">${hint}</div></div>
+              ${p.product_status==='Delivered'?'<span style="font-size:14px">✅</span>':''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+    return`<div class="sec-t" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span>🔍 Track Order</span>
+        ${_trkResult||_trkNotFound?`<span style="font-size:11px;color:var(--muted);cursor:pointer" onclick="_trkResult=null;_trkNotFound=false;_trkCode='';renderDash()">Clear</span>`:''}
+      </div>
+      <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:12px">
+        <div style="display:flex;gap:8px">
+          <input class="fi" style="flex:1" placeholder="Enter Order Copy No. (e.g. OC1001)" value="${_trkCode}" oninput="_trkCode=this.value" onkeydown="if(event.key==='Enter')dashTrack()">
+          <button class="btn bp" onclick="dashTrack()">Track</button>
+        </div>
+        ${resultHtml}
+      </div>`;
+  }
+
+  // Individual reports (owner only)
+  function reportsSection(){
+    if(ME.role!=='owner') return'';
+    const now=new Date();
+    const periodStart=_rptPeriod==='week'?new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()):new Date(now.getFullYear(),now.getMonth(),1);
+    const periodOrders=ORDERS.filter(o=>{try{return new Date(o.created_at)>=periodStart}catch(_){return false}});
+    const sales=USERS.filter(u=>u.role==='sales'&&u.approved);
+    const bhs=USERS.filter(u=>u.role==='branch_head'&&u.approved);
+    const carps=USERS.filter(u=>u.role==='carpenter'&&u.approved);
+
+    function personCard(key,name,color,stats,orders){
+      const isOpen=_rptExpanded===key;
+      return`<div class="rpt-person${isOpen?' open':''}">
+        <div class="rpt-ph" onclick="_rptExpanded=_rptExpanded==='${key}'?'':'${key}';renderDash()">
+          <div><div style="font-weight:700;font-size:13px">${name}</div><div style="color:rgb(${color});font-size:11px;font-weight:600">${stats}</div></div>
+          <span style="font-size:14px;color:rgb(${color})">${isOpen?'▲':'▼'}</span>
+        </div>
+        ${isOpen&&orders.length?`<div class="rpt-pb">${orders.map(o=>`<div class="rpt-pr" style="background:rgba(${color},.04)"><div><span style="font-weight:600;font-size:11px">${o.customer_name}</span><br><span style="color:var(--muted);font-size:10px">#${o.tracking_code} · ₹${Number(o.total_order_value||0).toLocaleString('en-IN')}</span></div><span class="badge ${badgeSt(o.status)}" style="font-size:9px">${o.status}</span></div>`).join('')}</div>`:''}
+      </div>`;
+    }
+
+    return`<div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-weight:800;font-size:14px">📊 Individual Reports</span>
+        <div style="display:flex;gap:6px">
+          <span class="rpt-chip${_rptPeriod==='week'?' on':''}" onclick="_rptPeriod='week';renderDash()">Week</span>
+          <span class="rpt-chip${_rptPeriod==='month'?' on':''}" onclick="_rptPeriod='month';renderDash()">Month</span>
+        </div>
+      </div>
+      ${sales.length?`<div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;font-size:12px;color:var(--green);font-weight:700">🛒 Sales</div>
+        ${sales.map(u=>{
+          const my=periodOrders.filter(o=>o.sales_person===u.name);
+          const tv=my.reduce((s,o)=>s+(o.total_order_value||0),0);
+          return personCard('sales_'+u.id,u.name,'39,174,96',`${my.length} orders · ₹${tv.toLocaleString('en-IN')}`,my);
+        }).join('')}`:''}
+      ${bhs.length?`<div style="display:flex;align-items:center;gap:5px;margin:10px 0 6px;font-size:12px;color:var(--blue);font-weight:700">🏬 Branch Heads</div>
+        ${bhs.map(u=>{
+          const my=periodOrders.filter(o=>o.branch_name===u.branch);
+          const appr=my.filter(o=>o.branch_approved==='yes').length;
+          return personCard('bh_'+u.id,`${u.name} (${u.branch})`,'45,125,210',`${my.length} orders · ${appr} approved`,my);
+        }).join('')}`:''}
+      ${carps.length?`<div style="display:flex;align-items:center;gap:5px;margin:10px 0 6px;font-size:12px;color:var(--pur);font-weight:700">🔨 Carpenters</div>
+        ${carps.map(u=>{
+          const myProds=[];
+          periodOrders.forEach(o=>(o.products||[]).forEach(p=>{
+            if(p.product_type==='manufacture'&&p.assigned_to===u.name) myProds.push({...p,_order:o});
+          }));
+          const comp=myProds.filter(p=>['Quality Check','Ready for Dispatch','Out for Delivery','Delivered'].includes(p.product_status)).length;
+          return personCard('carp_'+u.id,u.name,'142,68,173',`${myProds.length} products · ${comp} completed`,myProds.map(p=>p._order).filter((o,i,a)=>a.findIndex(x=>x.order_id===o.order_id)===i));
+        }).join('')}`:''}
+    </div>`;
+  }
 
   g('pg').innerHTML=`
     <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
@@ -624,17 +922,25 @@ function renderDash(){
       </div>
       ${high.length?`<div style="background:rgba(224,60,49,.1);border:1px solid rgba(224,60,49,.3);border-radius:8px;padding:7px 13px;font-size:12px;color:var(--red);font-weight:700">⚠️ ${high.length} High Priority</div>`:''}
     </div>
-    <div class="stat-grid">
-      ${sc2('#acc',active.length,'📦 Active Orders')}
-      ${sc2('#green',deliv.length,'✅ Delivered')}
-      ${sc2('#red',high.length,'🔴 High Priority')}
-      ${['owner','branch_head'].includes(ME.role)?sc2('#yel',pend.length,'⏳ Pending Approval'):''}
-      ${ME.role==='owner'?sc2('#blue',pendUsr.length,'👤 Pending Users'):''}
+
+    <!-- Expandable Stat Boxes -->
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      ${xstatBox('active',active.length,'Active Orders','232,144,10','📦')}
+      ${xstatBox('delivered',deliv.length,'Delivered','39,174,96','✅')}
+      ${xstatBox('high',high.length,'High Priority','224,60,49','🔴')}
     </div>
+    ${_expandedStat==='active'?xstatExpanded(active,'Active Orders'):''}
+    ${_expandedStat==='delivered'?xstatExpanded(deliv,'Delivered Orders'):''}
+    ${_expandedStat==='high'?xstatExpanded(high,'High Priority Orders'):''}
+
+    <!-- Alert banners -->
+    ${ME.role==='owner'&&pendUsr.length?`<div style="background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.25);border-radius:8px;padding:9px 13px;margin-bottom:8px;display:flex;gap:8px;align-items:center"><span>⚠️</span><span style="color:var(--yel);font-weight:600;font-size:12px">${pendUsr.length} user${pendUsr.length!==1?'s':''} waiting for approval</span></div>`:''}
+    ${['owner','branch_head'].includes(ME.role)&&pend.length?`<div style="background:rgba(45,125,210,.08);border:1px solid rgba(45,125,210,.25);border-radius:8px;padding:9px 13px;margin-bottom:8px;display:flex;gap:8px;align-items:center"><span>📋</span><span style="color:var(--blue);font-weight:600;font-size:12px">${pend.length} order${pend.length!==1?'s':''} awaiting approval</span></div>`:''}
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div class="info-box">
-        <div class="sec-t">📈 Status Breakdown</div>
-        ${stRows||'<div class="empty"><div class="empty-t">No orders yet</div></div>'}
+        <div class="sec-t">📈 Status Overview</div>
+        ${stoRows()}
       </div>
       <div class="info-box">
         <div class="sec-t">🚀 Recent Orders</div>
@@ -647,9 +953,75 @@ function renderDash(){
             <span class="badge ${badgeSt(o.status)}" style="font-size:9px">${o.status}</span>
           </div>`).join('')||'<div class="empty"><div class="empty-t">No orders</div></div>'}
       </div>
-    </div>`;
+    </div>
+
+    ${branchSection()}
+    ${carpenterSection()}
+    ${trackWidget()}
+    ${reportsSection()}
+
+    <!-- Recent orders list -->
+    <div class="sec-t" style="margin-top:14px">📋 Recent Orders</div>
+    ${vis.slice(0,5).map(o=>`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="openOrd('${o.order_id}')">
+      <div><div style="font-weight:600;font-size:13px">${o.customer_name}</div><div style="font-size:11px;color:var(--muted)">#${o.tracking_code} · ${o.branch_name}</div></div>
+      <div style="text-align:right"><span class="badge ${badgeSt(o.status)}" style="font-size:9px">${o.status}</span><br><span class="badge ${priB(o.priority)}" style="font-size:9px;margin-top:2px">${o.priority}</span></div>
+    </div>`).join('')||'<div class="empty"><div class="empty-t">No orders yet</div></div>'}
+  `;
 }
-function sc2(col,n,lbl){return`<div class="stat-c" style="border-left:3px solid var(${col})"><div class="stat-n" style="color:var(${col})">${n}</div><div class="stat-l">${lbl}</div></div>`}
+
+// Dashboard track helper
+async function dashTrack(){
+  if(!_trkCode.trim())return;
+  _trkResult=null;_trkNotFound=false;
+  // Local search first
+  const local=ORDERS.find(o=>o.tracking_code?.toLowerCase()===_trkCode.trim().toLowerCase());
+  if(local){_trkResult=local;renderDash();return}
+  try{
+    const{data}=await DB.from('orders').select('*').ilike('tracking_code',_trkCode.trim()).maybeSingle();
+    if(data){_trkResult=data}else{_trkNotFound=true}
+  }catch(_){_trkNotFound=true}
+  renderDash();
+}
+
+function trkStatusColor(s){
+  if(s==='Delivered')return'#22C55E';
+  if(s==='Out for Delivery'||s==='Product Received')return'#0EA5E9';
+  if(s==='Product Ready'||s==='Ready for Dispatch')return'#10B981';
+  if(s.includes('Production')||s.includes('Factory')||s==='Order Placed'||s.includes('Assigned')||s.includes('Quality'))return'#3B82F6';
+  if(s.includes('Query')||s.includes('Pending'))return'#F59E0B';
+  if(s.includes('Approved'))return'#22C55E';
+  return'#6B7280';
+}
+
+function trkHint(p){
+  const t=p.product_type,s=p.product_status;
+  if(t==='manufacture'){
+    if(s==='Pending Approval')return'Waiting for branch head review';
+    if(s==='Query Raised')return'Branch head has a query';
+    if(s==='Sent to Factory')return'Sent to factory for production';
+    if(s==='Assigned to Carpenter')return'Assigned to carpenter — work starting';
+    if(s==='In Production')return'Carpenter is building your product';
+    if(s==='Quality Check')return'Quality check in progress';
+    if(s==='Product Ready'||s==='Ready for Dispatch')return'Product ready — awaiting dispatch';
+    if(s==='Out for Delivery')return'On the way!';
+    if(s==='Delivered')return'Delivered successfully ✅';
+  }else if(t==='vendor'){
+    if(s==='Order Placed')return'Order placed with vendor';
+    if(s==='Product Received')return'Product received — ready';
+    if(s==='Out for Delivery')return'On the way!';
+    if(s==='Delivered')return'Delivered ✅';
+  }
+  if(s==='Pending Approval')return'Waiting for review';
+  if(s==='Out for Delivery')return'On the way!';
+  if(s==='Delivered')return'Delivered ✅';
+  return s;
+}
+
+function hexToRgb(hex){
+  if(!hex||hex[0]!=='#')return'128,128,128';
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`${r},${g},${b}`;
+}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ORDERS LIST
@@ -980,6 +1352,7 @@ function openOrd(oid){
 }
 
 function renderDetail(o){
+  _imgStore={}; _imgStoreId=0; // reset image store
   const u=ME, prods=o.products||[];
   const canBH = u.role==='branch_head'&&o.branch_name===u.branch;
   const canFH = ['factory_head'].includes(u.role);
@@ -1010,6 +1383,23 @@ function renderDetail(o){
       </div>
 
       <div class="sec-t">📋 Order Info</div>
+      ${isCarp?`
+      <div style="background:rgba(45,125,210,.07);border:1px solid rgba(45,125,210,.2);border-radius:8px;padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:16px">🏬</span>
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px">${o.branch_name}</div>
+          <div style="font-size:11px;color:var(--muted)">Sales: ${o.sales_person}</div>
+        </div>
+        ${(function(){
+          let approver=null;
+          if(o.branch_approved_by){
+            approver=USERS.find(u=>u.name===o.branch_approved_by&&u.phone);
+          }
+          if(!approver) approver=USERS.find(u=>u.role==='branch_head'&&u.branch===o.branch_name&&u.phone);
+          if(!approver) return '';
+          return '<div style="text-align:right"><div style="font-size:11px;color:var(--blue);font-weight:700">'+approver.name+'</div><a href="tel:'+approver.phone+'" class="btn bp bxs" style="background:var(--green);margin-top:4px;text-decoration:none;color:#fff">📞 Call BH</a></div>';
+        })()}
+      </div>`:''}
       <div class="dg">
         <div class="di"><div class="di-l">Customer</div><div class="di-v">${o.customer_name}</div></div>
         <div class="di"><div class="di-l">Phone</div><div class="di-v"><a href="tel:${o.customer_number1}">${o.customer_number1}</a>${o.customer_number2?`<br><a href="tel:${o.customer_number2}">${o.customer_number2}</a>`:''}</div></div>
@@ -1052,6 +1442,10 @@ function prodCard(p,idx,order,canBH,canFH,isCarp,isQC,isDrv,isOwn){
   const drawImgs=(p.drawing_image_urls||'').split(',').filter(Boolean);
   const refImgs=(p.reference_image_urls||'').split(',').filter(Boolean);
   const allImgs=[p.showroom_image_url,...drawImgs,...refImgs,p.model_image_url,p.completed_image_url].filter(Boolean);
+  // Store images globally for safe onclick references
+  const imgKey='_img'+(++_imgStoreId);
+  if(allImgs.length) _imgStore[imgKey]=allImgs;
+  const imgSize=isCarp?'width:90px;height:90px':'width:58px;height:58px';
 
   let acts='';
   const oid=order.order_id;
@@ -1098,7 +1492,7 @@ function prodCard(p,idx,order,canBH,canFH,isCarp,isQC,isDrv,isOwn){
     <div class="prog-w"><div class="prog-b" style="width:${pct}%"></div></div>
     <div style="font-size:10px;color:var(--muted);margin-top:2px">${Math.max(0,si)+1}/${stages.length} · ${Math.round(pct)}%</div>
     ${p.product_query?`<div class="qbox">💬 Query: ${p.product_query}</div>`:''}
-    ${allImgs.length?`<div class="img-row">${allImgs.map((u,i)=>`<img class="imt" src="${u}" onclick="openIV(${JSON.stringify(allImgs)},${i},'${p.product_name||'Product'} Images')">`).join('')}</div>`:''}
+    ${allImgs.length?`<div class="img-row">${allImgs.map((u,i)=>`<img class="imt" style="${imgSize}" src="${u}" onclick="openIV(_imgStore['${imgKey}'],${i},'${(p.product_name||'Product').replace(/'/g,'\\&#39;')} Images')">`).join('')}</div>`:''}
     ${acts?`<div class="p-acts">${acts}</div>`:''}
   </div>`;
 }
@@ -1125,7 +1519,7 @@ async function approveProd(oid,idx){
   prods[idx].product_query='';
   const ovSt=calcOrdSt(prods);
   try{
-    const{error}=await DB.from('orders').update({products:prods,status:ovSt,branch_approved:'yes'}).eq('order_id',oid);
+    const{error}=await DB.from('orders').update({products:prods,status:ovSt,branch_approved:'yes',branch_approved_by:ME.name}).eq('order_id',oid);
     if(error)throw error;
     toast('ok','Product approved!');
     await loadOrders(); openOrd(oid);
@@ -1444,7 +1838,7 @@ function usrCard(u){
     </div>
     <div class="uc-acts">
       ${(!u.approved||u.status==='pending')?`<button class="btn bg2 bxs" onclick="approveUsr('${u.id}')">✅</button>`:''}
-      ${u.status==='active'?`<button class="btn bs bxs" onclick="resetPass('${u.id}','${u.name}')">🔑</button><button class="btn bd bxs" onclick="suspendUsr('${u.id}')">🚫</button>`:''}
+      ${u.status==='active'?`<button class="btn bs bxs" onclick="resetPass('${u.id}','${u.name}')" title="Reset PIN">🔐</button><button class="btn bd bxs" onclick="suspendUsr('${u.id}')">🚫</button>`:''}
       ${u.status==='suspended'?`<button class="btn bg2 bxs" onclick="unsuspendUsr('${u.id}')">✅</button>`:''}
       <button class="btn bd bxs" onclick="deleteUsr('${u.id}','${u.name}')">🗑</button>
     </div>
@@ -1455,7 +1849,7 @@ async function approveUsr(id){try{const{e}=await DB.from('users').update({approv
 async function suspendUsr(id){if(!confirm('Suspend?'))return;try{await DB.from('users').update({status:'suspended'}).eq('id',id);toast('info','Suspended');await loadUsers();renderUsers()}catch(e){toast('err',e.message)}}
 async function unsuspendUsr(id){try{await DB.from('users').update({status:'active'}).eq('id',id);toast('ok','Reactivated');await loadUsers();renderUsers()}catch(e){toast('err',e.message)}}
 async function deleteUsr(id,name){if(!confirm(`Delete "${name}"?`))return;try{await DB.from('users').delete().eq('id',id);await loadUsers();renderUsers()}catch(e){toast('err',e.message)}}
-async function resetPass(id,name){const p=prompt(`New password for ${name}:`);if(!p)return;try{await DB.from('users').update({password:p}).eq('id',id);toast('ok','Password updated')}catch(e){toast('err',e.message)}}
+async function resetPass(id,name){const p=prompt(`New PIN for ${name} (numbers only):`);if(!p)return;if(!/^\d{4,}$/.test(p)){toast('err','PIN must be 4+ digits');return}try{await DB.from('users').update({password:p,pin_changed:true}).eq('id',id);toast('ok','PIN updated')}catch(e){toast('err',e.message)}}
 
 function openAddUser(){
   openDyn(`
@@ -1469,49 +1863,498 @@ function openAddUser(){
         <div class="fg"><label class="fl">Email</label><input class="fi" id="au-em" type="email"></div>
         <div class="fg"><label class="fl">Phone</label><input class="fi" id="au-ph" type="tel"></div>
       </div>
-      <div class="fg"><label class="fl">Password *</label><input class="fi" id="au-pw" type="text" placeholder="Initial password"></div>
+      <div class="fg"><label class="fl">PIN *</label><input class="fi" id="au-pw" type="text" inputmode="numeric" placeholder="Initial PIN (4+ digits)"></div>
     </div>
     <div class="mf"><button class="btn bs" onclick="closeDyn()">Cancel</button><button class="btn bp" onclick="submitAddUser()">Add</button></div>`);
 }
 async function submitAddUser(){
   const nm=gv('au-nm'),pw=gv('au-pw');
   const el=g('au-err');
-  if(!nm||!pw){el.innerHTML=err('Name and password required');return}
+  if(!nm||!pw){el.innerHTML=err('Name and PIN required');return}
+  if(!/^\d{4,}$/.test(pw)){el.innerHTML=err('PIN must be 4+ digits, numbers only');return}
   try{
-    const{error}=await DB.from('users').insert({id:'u'+Date.now(),name:nm,role:g('au-rl').value,branch:g('au-br').value,email:g('au-em').value,phone:g('au-ph').value,password:pw,approved:true,status:'active'});
+    const{error}=await DB.from('users').insert({id:'u'+Date.now(),name:nm,role:g('au-rl').value,branch:g('au-br').value,email:g('au-em').value,phone:g('au-ph').value,password:pw,approved:true,status:'active',pin_changed:true});
     if(error)throw error;
     toast('ok',nm+' added!'); closeDyn(); await loadUsers(); renderUsers();
   }catch(e){el.innerHTML=err(e.message)}
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// CHANGE PASSWORD
+// CHANGE PIN
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function renderPass(){
+function renderPass(force){
+  const isForce=force===true;
   g('pg').innerHTML=`<div style="max-width:380px;margin:0 auto">
     <div class="info-box">
-      <div class="sec-t">🔑 Change Password</div>
+      <div class="sec-t">🔐 ${isForce?'Set Your New PIN':'Change PIN'}</div>
+      ${isForce?`<div style="background:rgba(232,144,10,.1);border:1px solid rgba(232,144,10,.3);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--yel)">We've switched from passwords to numeric PINs for easier login. Please set your new 4+ digit PIN below.</div>`:''}
       <div id="cp-err"></div><div id="cp-ok"></div>
-      <div class="fg"><label class="fl">Current Password</label><input class="fi" id="cp-old" type="password"></div>
-      <div class="fg"><label class="fl">New Password</label><input class="fi" id="cp-new" type="password"></div>
-      <div class="fg"><label class="fl">Confirm New</label><input class="fi" id="cp-cf" type="password"></div>
-      <button class="btn bp bfull" onclick="doCP()">Update Password</button>
+      <div class="fg"><label class="fl">${isForce?'Current Password / PIN':'Current PIN'}</label><input class="fi" id="cp-old" type="password"></div>
+      <div class="fg"><label class="fl">New PIN (numbers only)</label><input class="fi" id="cp-new" type="password" inputmode="numeric"></div>
+      <div class="fg"><label class="fl">Confirm New PIN</label><input class="fi" id="cp-cf" type="password" inputmode="numeric"></div>
+      <button class="btn bp bfull" onclick="doCP(${isForce})">Update PIN</button>
     </div>
   </div>`;
 }
-async function doCP(){
+async function doCP(isForce){
   const o=g('cp-old').value,n=g('cp-new').value,c=g('cp-cf').value;
   const el=g('cp-err'),okEl=g('cp-ok');
   el.innerHTML='';okEl.innerHTML='';
   if(!o||!n||!c){el.innerHTML=err('All fields required');return}
-  if(n!==c){el.innerHTML=err('New passwords do not match');return}
-  if(o!==ME.password){el.innerHTML=err('Current password incorrect');return}
+  if(n!==c){el.innerHTML=err('New PINs do not match');return}
+  if(o!==ME.password){el.innerHTML=err(isForce?'Current password/PIN incorrect':'Current PIN incorrect');return}
+  if(!/^\d{4,}$/.test(n)){el.innerHTML=err('New PIN must be 4+ digits, numbers only');return}
+  if(n===o){el.innerHTML=err('New PIN must be different from current');return}
   try{
-    const{error}=await DB.from('users').update({password:n}).eq('id',ME.id);
+    const{error}=await DB.from('users').update({password:n,pin_changed:true}).eq('id',ME.id);
     if(error)throw error;
-    ME.password=n;sessionStorage.setItem('me',JSON.stringify(ME));
-    okEl.innerHTML=ok('Password updated!');
+    ME.password=n;ME.pin_changed=true;sessionStorage.setItem('me',JSON.stringify(ME));
+    okEl.innerHTML=ok('PIN updated successfully!');
+    if(isForce) setTimeout(()=>go('dashboard'),1200);
   }catch(e){el.innerHTML=err(e.message)}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CUSTOMER ENQUIRIES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const ENQ_STATUSES={
+  'New':{emoji:'📝',short:'New',color:'#78909C'},
+  'Rep Assigned':{emoji:'👤',short:'Rep Assigned',color:'#5C6BC0'},
+  'Site Visited':{emoji:'🏠',short:'Site Visited',color:'#26A69A'},
+  'WhatsApp Group Opened':{emoji:'💬',short:'WA Group',color:'#66BB6A'},
+  'Quotation Given':{emoji:'📄',short:'Quotation Given',color:'#FFA726'},
+  'Finalized':{emoji:'✅',short:'Finalized',color:'#43A047'},
+  'Pending':{emoji:'⏸️',short:'Pending',color:'#EF5350'},
+};
+const ENQ_PIPELINE=['New','Rep Assigned','Site Visited','WhatsApp Group Opened','Quotation Given'];
+const ENQ_NEXT={
+  'New':['Rep Assigned','Site Visited','Pending'],
+  'Rep Assigned':['Site Visited','Pending'],
+  'Site Visited':['WhatsApp Group Opened','Pending'],
+  'WhatsApp Group Opened':['Quotation Given','Pending'],
+  'Quotation Given':['Finalized','Pending'],
+  'Pending':['New','Rep Assigned','Site Visited','WhatsApp Group Opened','Quotation Given','Finalized'],
+  'Finalized':[],
+};
+const PROJECT_LABELS={'modular_kitchen':'Modular Kitchen Only','1bhk':'1 BHK','2bhk':'2 BHK','3bhk':'3 BHK','4bhk':'4 BHK','renovation':'Renovation','others':'Others'};
+
+function renderEnquiries(){
+  g('tb-a').innerHTML=`<button class="btn bp bsm" onclick="openNewEnquiry()">+ New Enquiry</button>`;
+  let list=[...ENQUIRIES];
+  // Non-owner: show assigned + unassigned + own entries
+  if(ME.role!=='owner'){
+    list=list.filter(e=>!e.assigned_rep||e.assigned_rep===ME.name||e.entered_by===ME.name);
+  }
+  if(_enqStatusFilter) list=list.filter(e=>e.enquiry_status===_enqStatusFilter);
+  if(_enqSearch){
+    const q=_enqSearch.toLowerCase();
+    list=list.filter(e=>(e.customer_name||'').toLowerCase().includes(q)||(e.phone1||'').includes(q)||(e.location||'').toLowerCase().includes(q)||(e.assigned_rep||'').toLowerCase().includes(q));
+  }
+
+  const statusCounts={};ENQUIRIES.forEach(e=>{statusCounts[e.enquiry_status]=(statusCounts[e.enquiry_status]||0)+1});
+
+  function filterChip(label,value,count,color){
+    const sel=_enqStatusFilter===value;
+    return`<span class="chip${sel?' on':''}" style="${sel?`background:rgba(${hexToRgb(color||'#E8900A')},.2);border-color:${color||'var(--acc)'};color:${color||'var(--acc)'}`:''}" onclick="_enqStatusFilter=_enqStatusFilter==='${value}'?'':'${value}';renderEnquiries()">${label}${count?` (${count})`:''}</span>`;
+  }
+
+  function miniPipeline(status){
+    const isPending=status==='Pending',isFinal=status==='Finalized';
+    const curIdx=ENQ_PIPELINE.indexOf(status);
+    const compIdx=(isPending||isFinal)?ENQ_PIPELINE.length:curIdx;
+    return`<div class="enq-pipe">${ENQ_PIPELINE.map((s,i)=>{
+      const done=i<compIdx;
+      const isCur=i===curIdx&&!isPending&&!isFinal;
+      const sc=ENQ_STATUSES[s]||ENQ_STATUSES['New'];
+      return`${i>0?`<div class="enq-line" style="background:${done?'rgba(39,174,96,.4)':'var(--bdr)'}"></div>`:''}
+        <div class="enq-dot${isCur?' cur':''}" style="background:${done?'var(--green)':(isCur?sc.color:'var(--bdr)')}">${done?'✓':''}</div>`;
+    }).join('')}</div>`;
+  }
+
+  g('pg').innerHTML=`
+    <div class="s-wrap" style="max-width:400px;margin-bottom:10px"><span class="s-ic">🔍</span><input class="s-in" placeholder="Search name, phone, location, rep…" value="${_enqSearch}" oninput="_enqSearch=this.value;renderEnquiries()"></div>
+    <div class="chips" style="margin-bottom:12px">
+      ${filterChip('All','',ENQUIRIES.length)}
+      ${Object.entries(ENQ_STATUSES).map(([k,v])=>{
+        const c=statusCounts[k]||0;
+        return c>0?filterChip(v.short,k,c,v.color):'';
+      }).join('')}
+    </div>
+    ${list.map(e=>{
+      const sc=ENQ_STATUSES[e.enquiry_status]||ENQ_STATUSES['New'];
+      const pl=PROJECT_LABELS[e.project_type]||e.project_type;
+      return`<div class="enq-card" onclick="openEnquiryDetail('${e.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+          <span style="font-weight:700;font-size:15px">${e.customer_name}</span>
+          <span class="enq-stchip" style="background:rgba(${hexToRgb(sc.color)},.15);color:${sc.color}">${sc.emoji} ${sc.short}</span>
+        </div>
+        ${miniPipeline(e.enquiry_status)}
+        <div style="display:flex;gap:6px;margin:8px 0">
+          <span style="background:rgba(232,144,10,.12);color:var(--acc);padding:2px 8px;border-radius:7px;font-size:10px;font-weight:600">${pl}</span>
+          <span style="background:${e.house_type==='new'?'rgba(39,174,96,.12)':'rgba(230,126,34,.12)'};color:${e.house_type==='new'?'var(--green)':'var(--yel)'};padding:2px 8px;border-radius:7px;font-size:10px;font-weight:600">${e.house_type==='new'?'🏠 New':'🏚️ Old'}</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:2px">📞 ${e.phone1}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:2px">📍 ${e.location||'—'}</div>
+        ${e.assigned_rep?`<div style="font-size:12px;color:#5C6BC0;margin-bottom:2px">👤 ${e.assigned_rep}</div>`:''}
+        ${e.enquiry_status==='Pending'&&e.pending_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">⚠️ ${e.pending_reason}</div>`:''}
+        <div style="border-top:1px solid var(--bdr);margin-top:8px;padding-top:6px;display:flex;gap:10px;font-size:10px;color:var(--muted)">
+          <span>📅 ${e.entry_date||''}</span><span>👤 ${e.entered_by||''}</span>
+          ${ME.role==='owner'?`<span style="margin-left:auto;color:#5C6BC0;cursor:pointer" onclick="event.stopPropagation();assignEnqRep('${e.id}')">${e.assigned_rep?'Change Rep':'Assign Rep'}</span>`:''}
+        </div>
+      </div>`;
+    }).join('')||emptyState('📞','No enquiries found','Try adjusting filters')}
+  `;
+}
+
+function openEnquiryDetail(eid){
+  const e=ENQUIRIES.find(x=>x.id===eid);if(!e)return;
+  const sc=ENQ_STATUSES[e.enquiry_status]||ENQ_STATUSES['New'];
+  const pl=PROJECT_LABELS[e.project_type]||e.project_type;
+  const canUpdate=ME.role==='owner'||e.assigned_rep===ME.name;
+  const nextStatuses=ENQ_NEXT[e.enquiry_status]||[];
+  const history=e.status_history||[];
+
+  openDyn(`
+    <div class="mh"><div><div class="mh-t">${e.customer_name}</div><div class="mh-s">${sc.emoji} ${e.enquiry_status}</div></div><div class="mc-x" onclick="closeDyn()">×</div></div>
+    <div class="mb">
+      <div style="background:linear-gradient(135deg,rgba(${hexToRgb(sc.color)},.12),rgba(${hexToRgb(sc.color)},.04));border:1px solid rgba(${hexToRgb(sc.color)},.2);border-radius:14px;padding:16px;margin-bottom:14px;text-align:center">
+        <div style="font-size:18px;font-weight:800;color:${sc.color}">${sc.emoji} ${e.enquiry_status}</div>
+        <div style="margin:10px auto;max-width:280px">${(function(){
+          const isPending=e.enquiry_status==='Pending',isFinal=e.enquiry_status==='Finalized';
+          const curIdx=ENQ_PIPELINE.indexOf(e.enquiry_status);
+          const compIdx=(isPending||isFinal)?ENQ_PIPELINE.length:curIdx;
+          return`<div style="display:flex;align-items:center;justify-content:center">${ENQ_PIPELINE.map((s,i)=>{
+            const done=i<compIdx;const isCur=i===curIdx&&!isPending&&!isFinal;const ssc=ENQ_STATUSES[s];
+            return`${i>0?`<div style="width:20px;height:2px;background:${done?'rgba(39,174,96,.5)':'var(--bdr)'}"></div>`:''}
+              <div title="${s}" style="width:${isCur?22:16}px;height:${isCur?22:16}px;border-radius:50%;background:${done?'var(--green)':(isCur?ssc.color:'var(--bdr)')};display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff">${done?'✓':''}</div>`;
+          }).join('')}</div>`;
+        })()}</div>
+        ${e.assigned_rep?`<div style="font-size:13px;color:#5C6BC0;font-weight:600;margin-top:8px">👤 Rep: ${e.assigned_rep}</div>`:''}
+        ${e.enquiry_status==='Pending'&&e.pending_reason?`<div style="background:rgba(224,60,49,.08);border-radius:10px;padding:8px;margin-top:8px;font-size:12px;color:var(--red);text-align:left">⚠️ ${e.pending_reason}</div>`:''}
+      </div>
+
+      ${canUpdate&&nextStatuses.length?`<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px">Update Status</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">${nextStatuses.map(s=>{
+          const nsc=ENQ_STATUSES[s]||ENQ_STATUSES['New'];
+          return`<button class="btn bsm" style="background:rgba(${hexToRgb(nsc.color)},.15);color:${nsc.color};border:1px solid rgba(${hexToRgb(nsc.color)},.3)" onclick="updateEnqStatus('${e.id}','${s}')">${nsc.emoji} ${s}</button>`;
+        }).join('')}</div></div>`:''}
+
+      <div class="sec-t">👤 Customer Details</div>
+      <div class="dg">
+        <div class="di"><div class="di-l">Name</div><div class="di-v">${e.customer_name}</div></div>
+        <div class="di"><div class="di-l">Phone 1</div><div class="di-v"><a href="tel:${e.phone1}" style="color:var(--green)">${e.phone1}</a></div></div>
+        ${e.phone2?`<div class="di"><div class="di-l">Phone 2</div><div class="di-v"><a href="tel:${e.phone2}" style="color:var(--green)">${e.phone2}</a></div></div>`:''}
+        <div class="di"><div class="di-l">Location</div><div class="di-v">${e.location||'—'}</div></div>
+        <div class="di"><div class="di-l">Project</div><div class="di-v">${pl}</div></div>
+        <div class="di"><div class="di-l">House Type</div><div class="di-v">${e.house_type==='new'?'🏠 New House':'🏚️ Old House'}</div></div>
+        ${e.heard_about_us?`<div class="di"><div class="di-l">Heard About Us</div><div class="di-v">${e.heard_about_us}</div></div>`:''}
+      </div>
+
+      <div class="sec-t">📅 Entry Info</div>
+      <div class="dg">
+        <div class="di"><div class="di-l">Date</div><div class="di-v">${e.entry_date||'—'}</div></div>
+        <div class="di"><div class="di-l">Entered By</div><div class="di-v">${e.entered_by||'—'}</div></div>
+      </div>
+
+      ${history.length?`<div class="sec-t">📜 Activity Timeline</div>
+        <div class="enq-timeline">${[...history].reverse().map((h,i,arr)=>{
+          const hsc=ENQ_STATUSES[h.status]||ENQ_STATUSES['New'];
+          const isLast=i===arr.length-1;
+          return`<div class="enq-tl-item"><div class="enq-tl-dot"><div class="enq-tl-circle" style="background:${hsc.color}"></div>${!isLast?`<div class="enq-tl-line" style="background:var(--bdr)"></div>`:''}</div>
+            <div style="padding-bottom:14px;flex:1"><div style="display:flex;justify-content:space-between"><span style="font-weight:600;font-size:13px;color:${hsc.color}">${hsc.emoji} ${h.status}</span><span style="font-size:11px;color:var(--muted)">${h.date||''}</span></div>
+            ${h.updated_by?`<div style="font-size:11px;color:var(--muted)">by ${h.updated_by}</div>`:''}
+            ${h.note?`<div style="font-size:12px;color:var(--muted);margin-top:2px">${h.note}</div>`:''}</div></div>`;
+        }).join('')}</div>`:''}
+    </div>`);
+}
+
+async function updateEnqStatus(eid,newStatus){
+  const e=ENQUIRIES.find(x=>x.id===eid);if(!e)return;
+  let pendingReason='',note='';
+  if(newStatus==='Pending'){
+    pendingReason=prompt('Why is this pending?');
+    if(!pendingReason)return;
+    note='Pending: '+pendingReason;
+  }
+  const history=[...(e.status_history||[]),{status:newStatus,date:todayStr(),updated_by:ME.name,note}];
+  const updates={enquiry_status:newStatus,status_history:history};
+  if(pendingReason) updates.pending_reason=pendingReason;
+  if(newStatus==='Finalized') updates.pending_reason='';
+  try{
+    await DB.from('customer_enquiries').update(updates).eq('id',eid);
+    toast('ok','Status → '+newStatus);closeDyn();await loadEnquiries();renderEnquiries();
+  }catch(ex){toast('err',ex.message)}
+}
+
+async function assignEnqRep(eid){
+  const reps=USERS.filter(u=>u.approved&&u.status==='active');
+  const sel=prompt('Assign rep:\\n'+reps.map((u,i)=>`${i+1}. ${u.name} (${ROLES[u.role]||u.role})`).join('\\n')+'\\nEnter number:');
+  if(!sel)return;
+  const ci=parseInt(sel)-1;if(ci<0||ci>=reps.length)return;
+  const rep=reps[ci];
+  const e=ENQUIRIES.find(x=>x.id===eid);if(!e)return;
+  const history=[...(e.status_history||[]),{status:'Rep Assigned',date:todayStr(),updated_by:ME.name,note:'Assigned to '+rep.name}];
+  await DB.from('customer_enquiries').update({
+    assigned_rep:rep.name,
+    enquiry_status:e.enquiry_status==='New'?'Rep Assigned':e.enquiry_status,
+    status_history:history
+  }).eq('id',eid);
+  await loadEnquiries();renderEnquiries();
+}
+
+function openNewEnquiry(){
+  openDyn(`
+    <div class="mh"><div class="mh-t">📞 New Customer Enquiry</div><div class="mc-x" onclick="closeDyn()">×</div></div>
+    <div class="mb">
+      <div id="enq-err"></div>
+      <div class="g2">
+        <div class="fg"><label class="fl">Customer Name *</label><input class="fi" id="enq-name" placeholder="Full name"></div>
+        <div class="fg"><label class="fl">Phone 1 *</label><input class="fi" id="enq-ph1" type="tel" placeholder="Primary phone"></div>
+        <div class="fg"><label class="fl">Phone 2</label><input class="fi" id="enq-ph2" type="tel" placeholder="Secondary (optional)"></div>
+        <div class="fg"><label class="fl">Location *</label><input class="fi" id="enq-loc" placeholder="Customer location / address"></div>
+      </div>
+      <div class="fg"><label class="fl">Project Type *</label>
+        <select class="fi" id="enq-proj"><option value="modular_kitchen">🍳 Modular Kitchen Only</option><option value="1bhk">1 BHK</option><option value="2bhk">2 BHK</option><option value="3bhk">3 BHK</option><option value="4bhk">4 BHK</option><option value="renovation">🔧 Renovation</option><option value="others">📝 Others</option></select>
+      </div>
+      <div class="fg"><label class="fl">House Type *</label>
+        <select class="fi" id="enq-house"><option value="new">🏠 New House</option><option value="old">🏚️ Old House</option></select>
+      </div>
+      <div class="fg"><label class="fl">How Customer Heard About Us</label><input class="fi" id="enq-heard" placeholder="e.g. Google, Friend, Ad…"></div>
+      <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:10px;margin-top:8px;font-size:12px;color:var(--muted)">
+        📅 Date: ${todayStr()} · 👤 Entered by: ${ME.name}
+      </div>
+    </div>
+    <div class="mf"><button class="btn bs" onclick="closeDyn()">Cancel</button><button class="btn bp" onclick="submitEnquiry()">Save Enquiry</button></div>`);
+}
+
+async function submitEnquiry(){
+  const name=gv('enq-name'),ph1=gv('enq-ph1'),loc=gv('enq-loc'),el=g('enq-err');
+  if(!name||!ph1||!loc){el.innerHTML=err('Name, Phone 1, and Location are required');return}
+  const enquiry={
+    id:'enq'+Date.now(),customer_name:name,phone1:ph1,phone2:gv('enq-ph2'),location:loc,
+    project_type:g('enq-proj').value,house_type:g('enq-house').value,
+    heard_about_us:gv('enq-heard'),entry_date:todayStr(),entered_by:ME.name,entered_by_role:ME.role,
+    enquiry_status:'New',assigned_rep:'',pending_reason:'',others_description:'',custom_fields:{},
+    status_history:[{status:'New',date:todayStr(),updated_by:ME.name,note:'Enquiry created'}],
+    created_at:new Date().toISOString()
+  };
+  try{
+    await DB.from('customer_enquiries').insert(enquiry);
+    toast('ok','Enquiry saved!');closeDyn();await loadEnquiries();renderEnquiries();
+  }catch(ex){el.innerHTML=err(ex.message)}
+}
+
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DELIVERY CALENDAR
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderCalendar(){
+  g('tb-a').innerHTML='';
+  const now=new Date();
+  const firstDay=new Date(_calYear,_calMonth,1);
+  const daysInMonth=new Date(_calYear,_calMonth+1,0).getDate();
+  const startDow=firstDay.getDay();
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Get visible orders (active, not closed/delivered)
+  let vis=ORDERS.filter(o=>!['Closed','Delivered'].includes(o.status));
+  if(ME.role==='sales') vis=vis.filter(o=>o.sales_person===ME.name);
+  else if(ME.role==='branch_head') vis=vis.filter(o=>o.branch_name===ME.branch);
+  else if(ME.role==='carpenter') vis=vis.filter(o=>(o.products||[]).some(p=>p.product_type==='manufacture'&&p.assigned_to===ME.name));
+  else if(ME.role==='driver') vis=vis.filter(o=>(o.products||[]).some(p=>p.product_status==='Out for Delivery'));
+
+  // Map: dateKey → orders
+  const ordersByDate={};
+  vis.forEach(o=>{try{const d=new Date(o.delivery_date);const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;(ordersByDate[k]=ordersByDate[k]||[]).push(o)}catch(_){}});
+
+  function dayColor(count){return count>=4?'var(--red)':count>=2?'var(--yel)':'var(--green)'}
+
+  // Calendar grid
+  let gridHtml='';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{gridHtml+=`<div class="cal-dh" style="${d==='Sun'?'color:var(--red)':''}">${d}</div>`});
+  for(let w=0;w<6;w++){
+    for(let d=0;d<7;d++){
+      const dayIdx=w*7+d-startDow+1;
+      if(dayIdx<1||dayIdx>daysInMonth){gridHtml+='<div></div>';continue}
+      const date=new Date(_calYear,_calMonth,dayIdx);
+      const k=`${_calYear}-${String(_calMonth+1).padStart(2,'0')}-${String(dayIdx).padStart(2,'0')}`;
+      const orders=ordersByDate[k]||[];
+      const isToday=date.getFullYear()===now.getFullYear()&&date.getMonth()===now.getMonth()&&date.getDate()===now.getDate();
+      const isSel=_calSelDay===k;
+      const isPast=date<new Date(now.getFullYear(),now.getMonth(),now.getDate());
+      gridHtml+=`<div class="cal-day${isToday?' today':''}${isSel?' sel':''}${isPast?' past':''}" onclick="_calSelDay=_calSelDay==='${k}'?null:'${k}';renderCalendar()">
+        <span style="font-weight:${isToday?'800':'500'}">${dayIdx}</span>
+        ${orders.length?`<div style="display:flex;align-items:center;gap:2px"><div class="cal-dot" style="background:${dayColor(orders.length)}"></div>${orders.length>1?`<span style="font-size:9px;color:${dayColor(orders.length)};font-weight:700">${orders.length}</span>`:''}</div>`:''}
+      </div>`;
+    }
+  }
+
+  // Selected day panel
+  let panelHtml='';
+  if(_calSelDay){
+    const selOrders=ordersByDate[_calSelDay]||[];
+    const [y,m,dd]=_calSelDay.split('-');
+    panelHtml=`<div class="cal-panel">
+      <div style="font-size:13px;font-weight:700;color:var(--acc);margin-bottom:8px">${dd}/${m}/${y} — ${selOrders.length?`${selOrders.length} deliver${selOrders.length===1?'y':'ies'}`:'No deliveries'}</div>
+      ${selOrders.map(o=>`<div class="ord-c" onclick="openOrd('${o.order_id}')">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div><div class="ord-trk">${o.tracking_code}</div><div class="ord-nm">${o.customer_name}</div></div>
+        <span class="badge ${priB(o.priority)}" style="font-size:10px">${o.priority==='High'?'🔴':'🟢'} ${o.priority}</span></div>
+      </div>`).join('')||'<div style="color:var(--muted);font-size:13px">No orders on this date</div>'}
+    </div>`;
+  }else{
+    // Show next 14 days summary
+    const upcoming=[];
+    for(let i=0;i<=14;i++){
+      const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i);
+      const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const orders=ordersByDate[k]||[];
+      if(orders.length) upcoming.push({date:d,key:k,orders});
+    }
+    panelHtml=`<div class="cal-panel">
+      ${upcoming.length?`<div style="font-size:13px;font-weight:700;color:var(--acc);margin-bottom:8px">📅 Next 14 Days</div>
+        ${upcoming.map(u=>`<div style="display:flex;gap:8px;margin-bottom:8px">
+          <div style="width:50px;text-align:center"><div style="font-size:10px;color:var(--acc);font-weight:700">${u.date.getDate()===now.getDate()?'Today':['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][u.date.getDay()]}</div><div style="font-size:12px;font-weight:600;color:var(--muted)">${u.date.getDate()}/${u.date.getMonth()+1}</div></div>
+          <div style="flex:1">${u.orders.map(o=>`<div style="background:${o.priority==='High'?'rgba(224,60,49,.1)':o.priority==='Medium'?'rgba(230,126,34,.1)':'rgba(39,174,96,.08)'};border-radius:6px;padding:6px 10px;margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:12px;font-weight:600" onclick="openOrd('${o.order_id}')"><span>${o.customer_name}</span><span>${o.priority==='High'?'🔴':o.priority==='Medium'?'🟡':'🟢'}</span></div>`).join('')}</div>
+        </div>`).join('')}`
+        :`<div style="text-align:center;padding:20px;color:var(--muted)"><div style="font-size:36px">📅</div><div style="margin-top:6px">Tap a date to see orders</div><div style="font-size:12px;margin-top:3px">No deliveries in next 14 days</div></div>`}
+    </div>`;
+  }
+
+  g('pg').innerHTML=`
+    <div class="cal-hd">
+      <button class="btn bs bsm" onclick="_calMonth--;if(_calMonth<0){_calMonth=11;_calYear--};_calSelDay=null;renderCalendar()">◀</button>
+      <div style="flex:1;text-align:center;font-weight:800;font-size:16px">${months[_calMonth]} ${_calYear}</div>
+      <button class="btn bs bsm" onclick="_calMonth++;if(_calMonth>11){_calMonth=0;_calYear++};_calSelDay=null;renderCalendar()">▶</button>
+      <button class="btn bp bsm" onclick="_calMonth=${now.getMonth()};_calYear=${now.getFullYear()};_calSelDay=null;renderCalendar()">Today</button>
+    </div>
+    <div class="cal-legend"><div class="cal-leg-d" style="background:var(--green)"></div>1 <div class="cal-leg-d" style="background:var(--yel)"></div>2–3 <div class="cal-leg-d" style="background:var(--red)"></div>4+ deliveries</div>
+    <div class="cal-grid">${gridHtml}</div>
+    ${panelHtml}
+  `;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UNIT CALCULATOR (Carpenter)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const CALC={
+  length:{
+    units:['mm','cm','inches','feet','meters'],
+    toBase:{mm:.001,cm:.01,inches:.0254,feet:.3048,meters:1},
+    emojis:{mm:'🔬',cm:'📐',inches:'📏',feet:'👣',meters:'📊'},
+    labels:{mm:'Millimeters',cm:'Centimeters',inches:'Inches',feet:'Feet',meters:'Meters'},
+    abbrs:{mm:'mm',cm:'cm',inches:'in',feet:'ft',meters:'m'},
+    ref:[['1 foot','12 in | 30.48 cm | 304.8 mm'],['1 inch','2.54 cm | 25.4 mm'],['1 meter','3.281 ft | 39.37 in'],['6 feet','72 in | 182.88 cm']]
+  },
+  area:{
+    units:['sq_mm','sq_cm','sq_inches','sq_feet','sq_meters'],
+    toBase:{sq_mm:.000001,sq_cm:.0001,sq_inches:.00064516,sq_feet:.092903,sq_meters:1},
+    emojis:{sq_mm:'🔬',sq_cm:'📐',sq_inches:'📏',sq_feet:'👣',sq_meters:'📊'},
+    labels:{sq_mm:'Sq. Millimeters',sq_cm:'Sq. Centimeters',sq_inches:'Sq. Inches',sq_feet:'Sq. Feet',sq_meters:'Sq. Meters'},
+    abbrs:{sq_mm:'mm²',sq_cm:'cm²',sq_inches:'in²',sq_feet:'ft²',sq_meters:'m²'},
+    ref:[['1 sq ft','144 sq in | 929 cm²'],['1 sq m','10.764 sq ft'],['10×10 ft','100 sq ft = 9.29 m²'],['6×2 ft','12 sq ft (standard wardrobe)']]
+  },
+  weight:{
+    units:['grams','kg','lbs','tons'],
+    toBase:{grams:.001,kg:1,lbs:.453592,tons:1000},
+    emojis:{grams:'🫙',kg:'⚖️',lbs:'🏋️',tons:'🚛'},
+    labels:{grams:'Grams',kg:'Kilograms',lbs:'Pounds',tons:'Metric Tons'},
+    abbrs:{grams:'g',kg:'kg',lbs:'lbs',tons:'ton'},
+    ref:[['1 kg','1000 g | 2.205 lbs'],['1 lb','453.6 g | 0.454 kg'],['1 ton','1000 kg | 2205 lbs'],['Teak wood','~650 kg per m³']]
+  }
+};
+
+function renderCalculator(){
+  g('tb-a').innerHTML='';
+  const cfg=CALC[_calcTab];
+
+  function unitCard(u,i){
+    return`<div class="calc-card" id="calc-${u}">
+      <div class="calc-ico"><span>${cfg.emojis[u]}</span><br><span class="calc-abbr" style="background:var(--bg3);color:var(--txt)">${cfg.abbrs[u]}</span></div>
+      <div class="calc-inp"><label>${cfg.labels[u]}</label><input type="text" inputmode="decimal" placeholder="—" id="ci-${u}" oninput="calcConvert('${_calcTab}','${u}',this.value)"></div>
+    </div>`;
+  }
+
+  g('pg').innerHTML=`
+    <div class="calc-tabs">
+      <div class="calc-tab${_calcTab==='length'?' on':''}" onclick="_calcTab='length';renderCalculator()">📏 Length</div>
+      <div class="calc-tab${_calcTab==='area'?' on':''}" onclick="_calcTab='area';renderCalculator()">⬛ Area</div>
+      <div class="calc-tab${_calcTab==='weight'?' on':''}" onclick="_calcTab='weight';renderCalculator()">⚖️ Weight</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:12px;color:var(--muted)">
+      <span>👆</span><span style="flex:1">Tap any field and type — others update instantly</span>
+      <button class="btn bs bxs" onclick="calcClear()">🔄 Clear all</button>
+    </div>
+    ${_calcTab==='area'?`<div style="background:rgba(45,125,210,.07);border:1px solid rgba(45,125,210,.3);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px"><span style="color:var(--blue);font-weight:800;font-size:14px">📐 L × W Calculator</span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="fi" id="calc-lw-l" type="text" inputmode="decimal" placeholder="Length" style="flex:1;font-size:18px;font-weight:700" oninput="calcLW()">
+        <span style="font-size:24px;color:var(--muted)">×</span>
+        <input class="fi" id="calc-lw-w" type="text" inputmode="decimal" placeholder="Width" style="flex:1;font-size:18px;font-weight:700" oninput="calcLW()">
+        <select class="fi" id="calc-lw-unit" onchange="calcLW()" style="width:60px"><option value="feet">ft</option><option value="inches">in</option><option value="meters">m</option><option value="cm">cm</option></select>
+      </div>
+    </div>`:''}
+    ${cfg.units.map(unitCard).join('')}
+    <div class="calc-ref">
+      <div class="calc-ref-t">💡 Quick Reference</div>
+      <ul style="list-style:none;padding:0;margin:0">${cfg.ref.map(r=>`<li>• <strong>${r[0]}</strong> = ${r[1]}</li>`).join('')}</ul>
+    </div>`;
+}
+
+function calcConvert(tab,fromUnit,val){
+  const cfg=CALC[tab];
+  const v=parseFloat(val);
+  cfg.units.forEach(u=>{
+    if(u===fromUnit)return;
+    const inp=g('ci-'+u);if(!inp)return;
+    if(isNaN(v)||val===''){inp.value='';return}
+    const base=v*cfg.toBase[fromUnit];
+    const result=base/cfg.toBase[u];
+    inp.value=calcFmt(result);
+  });
+  // Highlight active
+  cfg.units.forEach(u=>{
+    const card=g('calc-'+u);if(card)card.classList.toggle('active',u===fromUnit&&val!=='');
+  });
+}
+function calcFmt(v){if(v===0)return'0';if(Math.abs(v)>=1000)return v.toFixed(2);if(Math.abs(v)>=1)return parseFloat(v.toFixed(4)).toString();return parseFloat(v.toFixed(6)).toString()}
+function calcClear(){document.querySelectorAll('[id^="ci-"]').forEach(i=>i.value='');document.querySelectorAll('.calc-card').forEach(c=>c.classList.remove('active'));const l=g('calc-lw-l'),w=g('calc-lw-w');if(l)l.value='';if(w)w.value=''}
+function calcLW(){
+  const l=parseFloat(g('calc-lw-l')?.value),w=parseFloat(g('calc-lw-w')?.value);
+  if(isNaN(l)||isNaN(w))return;
+  const unit=g('calc-lw-unit')?.value||'feet';
+  const sqUnit='sq_'+unit;
+  const area=l*w;
+  const inp=g('ci-'+sqUnit);if(inp){inp.value=calcFmt(area);calcConvert('area',sqUnit,calcFmt(area))}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PROFILE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderProfile(){
+  g('tb-a').innerHTML='';
+  const u=ME.role==='owner'?ME:(USERS.find(x=>x.id===ME.id)||ME);
+  g('pg').innerHTML=`
+    <div style="max-width:420px;margin:0 auto;text-align:center">
+      <div class="prof-av">${(u.name||'?')[0].toUpperCase()}</div>
+      <div style="font-size:22px;font-weight:800;margin-bottom:6px">${u.name}</div>
+      <span class="rtag" style="font-size:11px;padding:3px 10px">${ROLES[u.role]||u.role}</span>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">${u.branch||''}</div>
+
+      <div class="prof-card" style="margin-top:20px;text-align:left">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Account Info</div>
+        ${u.email?`<div class="prof-row"><span>Email</span><span>${u.email}</span></div>`:''}
+        ${u.phone?`<div class="prof-row"><span>Phone</span><span>${u.phone}</span></div>`:''}
+        <div class="prof-row"><span>Role</span><span>${ROLES[u.role]||u.role}</span></div>
+        <div class="prof-row"><span>Branch</span><span>${u.branch||'—'}</span></div>
+        <div class="prof-row"><span>Status</span><span style="color:${u.status==='active'?'var(--green)':'var(--red)'}">${u.status==='active'?'✅ Active':u.status}</span></div>
+      </div>
+
+      <button class="btn bp bfull" onclick="go('password')" style="margin-bottom:10px">🔐 Change PIN</button>
+      <button class="btn bfull" style="background:rgba(224,60,49,.12);color:var(--red);border:1px solid rgba(224,60,49,.25)" onclick="doLogout()">🚪 Logout</button>
+
+      <div style="margin-top:24px;font-size:11px;color:var(--muted)">Indira OMS v2.4</div>
+    </div>`;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1537,18 +2380,23 @@ function closeDyn(){hide('dyn-ov');g('dyn-m').innerHTML=''}
 // IMAGE VIEWER
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function openIV(urls,idx,title){
-  _ivUrls=urls;_ivIdx=idx;
+  if(!urls||!urls.length)return;
+  _ivUrls=Array.isArray(urls)?urls:[urls];_ivIdx=Math.max(0,Math.min(idx||0,_ivUrls.length-1));
   g('iv-title').textContent=title||'';
-  show('iv-ov');renderIV();
+  g('iv-ov').style.display='flex';
+  g('iv-ov').classList.remove('dn');
+  renderIV();
 }
 function renderIV(){
-  g('iv-img').src=_ivUrls[_ivIdx];
+  const img=g('iv-img');
+  img.src=_ivUrls[_ivIdx];
+  img.style.maxWidth='95vw';img.style.maxHeight='calc(100vh - 90px)';
   g('iv-ctr').textContent=_ivUrls.length>1?`${_ivIdx+1}/${_ivUrls.length}`:'';
   g('iv-prev').style.display=_ivIdx>0?'':'none';
   g('iv-next').style.display=_ivIdx<_ivUrls.length-1?'':'none';
 }
 function navIV(d){_ivIdx=Math.max(0,Math.min(_ivUrls.length-1,_ivIdx+d));renderIV()}
-function closeIV(){hide('iv-ov')}
+function closeIV(){g('iv-ov').classList.add('dn');g('iv-ov').style.display='none'}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TOAST
