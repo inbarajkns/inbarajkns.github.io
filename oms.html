@@ -819,8 +819,8 @@ details[open] summary { color: var(--accent); }
    Edit these once: paste your Supabase URL and anon key from
    Project Settings → API in the Supabase dashboard.
    ──────────────────────────────────────────────────────────────────────── */
-const SUPABASE_URL      = window.localStorage.getItem('iom_supabase_url') || '';
-const SUPABASE_ANON_KEY = window.localStorage.getItem('iom_supabase_key') || '';
+const SUPABASE_URL      = 'https://cwoanknzbeoqnswtcgfh.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_BAj5vpneF9tHwp6Dtr6pxg_6N329k7X';
 const STORAGE_BUCKET    = 'oms-images';
 
 /* ─── CONSTANTS (mirror lib/constants.dart) ──────────────────────────── */
@@ -4582,17 +4582,10 @@ function renderProfileTab(host) {
    BOOT SEQUENCE
    ──────────────────────────────────────────────────────────────────── */
 async function boot() {
-  // 1. If no Supabase URL/key → setup
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    renderSetup();
-    return;
-  }
-
-  // 2. Init Supabase client
+  // Init Supabase client (URL + key hardcoded above)
   initSupabase();
   if (!STATE.sb) {
     toast('Failed to init Supabase', 'red');
-    renderSetup();
     return;
   }
 
