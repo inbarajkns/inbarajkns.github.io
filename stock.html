@@ -350,8 +350,9 @@
 <script>
 // ── Constants ────────────────────────────────────────────────────────────
 const LS_URL    = 'sl_url';
-const LS_THRESH = 'sl_thresh';
 const DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbwfG9-PjUivw5GZQsIlL1lXYlAiC6GQZYtRk_jGSN17zUFc9KBvWvfvBqWy57nxYCsb/exec';
+
+let serverThresholds = {};
 
 // ── State ────────────────────────────────────────────────────────────────
 let allItems   = [];
@@ -364,7 +365,7 @@ const esc = s => String(s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 function getUrl()        { return localStorage.getItem(LS_URL)    || DEFAULT_URL; }
-function getThresholds() { try { return JSON.parse(localStorage.getItem(LS_THRESH)) || {}; } catch { return {}; } }
+function getThresholds() { return serverThresholds || {}; }
 
 // ── PIN Screen ───────────────────────────────────────────────────────────
 function pinKey(d) {
@@ -455,8 +456,9 @@ async function loadData() {
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
-    allItems   = data.items || [];
-    categories = data.categories || [...new Set(allItems.map(i => i.category))].sort();
+    allItems         = data.items || [];
+    categories       = data.categories || [...new Set(allItems.map(i => i.category))].sort();
+    serverThresholds = data.thresholds || {};
 
     buildCategoryDropdown();
     applyFilters();
@@ -587,15 +589,27 @@ function buildThresholdFields() {
   `).join('');
 }
 
-function saveThresholds() {
+async function saveThresholds() {
   const t = {};
   categories.forEach(cat => {
     const el = document.getElementById('t-' + cat);
     if (el) t[cat] = parseInt(el.value) || 0;
   });
-  localStorage.setItem(LS_THRESH, JSON.stringify(t));
-  showMsg('thresh-msg', 'ok', '✓ Thresholds saved.');
-  applyFilters();
+  showMsg('thresh-msg', 'ok', 'Saving...');
+  try {
+    const url = getUrl() + '?action=setThresholds&data=' + encodeURIComponent(JSON.stringify(t));
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.success) {
+      serverThresholds = t;
+      showMsg('thresh-msg', 'ok', '✓ Thresholds saved for all devices.');
+      applyFilters();
+    } else {
+      showMsg('thresh-msg', 'err', data.error || 'Failed to save.');
+    }
+  } catch (err) {
+    showMsg('thresh-msg', 'err', 'Connection error — try again.');
+  }
 }
 
 async function changePin() {
