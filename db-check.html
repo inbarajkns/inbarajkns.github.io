@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indira — Database Connection Check</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#0a0c10;color:#e8eaf0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.card{background:#14171f;border:1px solid #2a2d35;border-radius:12px;padding:32px;max-width:600px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.4);}
+h1{font-size:1.4rem;margin-bottom:6px;color:#c9a84c;}
+.sub{color:#8b8fa8;font-size:.8rem;margin-bottom:24px;}
+.db-item{background:#1a1d24;border:1px solid #2a2d35;border-radius:8px;padding:18px;margin-bottom:14px;}
+.db-label{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#8b8fa8;margin-bottom:6px;}
+.db-name{font-size:1rem;font-weight:600;margin-bottom:4px;}
+.db-url{font-size:.75rem;color:#c9a84c;word-break:break-all;font-family:monospace;margin-bottom:12px;}
+.status{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:.78rem;font-weight:600;}
+.status.checking{background:rgba(232,144,10,.15);color:#e8900a;border:1px solid rgba(232,144,10,.3);}
+.status.ok{background:rgba(39,174,96,.15);color:#27ae60;border:1px solid rgba(39,174,96,.3);}
+.status.err{background:rgba(224,60,49,.15);color:#e03c31;border:1px solid rgba(224,60,49,.3);}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.checking{background:#e8900a;animation:pulse 1s infinite;}
+.dot.ok{background:#27ae60;}
+.dot.err{background:#e03c31;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.detail{margin-top:8px;font-size:.72rem;color:#8b8fa8;}
+.ts{text-align:center;margin-top:18px;font-size:.7rem;color:#555;}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🔌 Database Connection Status</h1>
+  <div class="sub">Indira Steel & Wood Furniture — Supabase Databases</div>
+
+  <div class="db-item">
+    <div class="db-label">Product Catalog Database</div>
+    <div class="db-name">Indira Product Catalog</div>
+    <div class="db-url">https://ddovhxyduwjrchturqdq.supabase.co</div>
+    <div id="status1"><span class="status checking"><span class="dot checking"></span> Checking...</span></div>
+    <div class="detail" id="detail1"></div>
+  </div>
+
+  <div class="db-item">
+    <div class="db-label">Order Management System (OMS) Database</div>
+    <div class="db-name">Indira OMS</div>
+    <div class="db-url">https://cwoanknzbeoqnswtcgfh.supabase.co</div>
+    <div id="status2"><span class="status checking"><span class="dot checking"></span> Checking...</span></div>
+    <div class="detail" id="detail2"></div>
+  </div>
+
+  <div class="ts" id="timestamp"></div>
+</div>
+
+<script>
+const DB1_URL = 'https://ddovhxyduwjrchturqdq.supabase.co';
+const DB1_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkb3ZoeHlkdXdqcmNodHVycWRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1MTEzMjYsImV4cCI6MjA4NzA4NzMyNn0.KL56_9wBZe-SvdEu9gFmGhDoHKMSIdWM_IqQvQgt6IU';
+
+const DB2_URL = 'https://cwoanknzbeoqnswtcgfh.supabase.co';
+const DB2_KEY = 'sb_publishable_jr0-HWDmstOv74xBfb2kuA_6QKa7AGt';
+
+document.getElementById('timestamp').textContent = 'Checked at: ' + new Date().toLocaleString('en-IN');
+
+async function checkDB(url, key, statusEl, detailEl, tableName) {
+  try {
+    const start = Date.now();
+    const r = await fetch(url + '/rest/v1/' + tableName + '?select=count&limit=1', {
+      headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+    });
+    const ms = Date.now() - start;
+
+    if (r.ok) {
+      const data = await r.json();
+      statusEl.innerHTML = '<span class="status ok"><span class="dot ok"></span> Connected</span>';
+      detailEl.textContent = '✅ Response: ' + r.status + ' OK | Latency: ' + ms + 'ms | Records found: ' + (Array.isArray(data) ? data.length : '—');
+    } else {
+      const errData = await r.json().catch(() => ({}));
+      statusEl.innerHTML = '<span class="status err"><span class="dot err"></span> Error ' + r.status + '</span>';
+      detailEl.textContent = '❌ ' + (errData.message || errData.error || 'HTTP ' + r.status) + ' | Latency: ' + ms + 'ms';
+    }
+  } catch (err) {
+    statusEl.innerHTML = '<span class="status err"><span class="dot err"></span> Connection Failed</span>';
+    detailEl.textContent = '❌ ' + err.message;
+  }
+}
+
+checkDB(DB1_URL, DB1_KEY, document.getElementById('status1'), document.getElementById('detail1'), 'products');
+checkDB(DB2_URL, DB2_KEY, document.getElementById('status2'), document.getElementById('detail2'), 'orders');
+</script>
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Lookup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f4f8; color: #1a202c; min-height: 100vh; }
+
+    /* ── PIN Screen ─────────────────────────────────────────────────── */
+    #pin-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 100%);
+    }
+    .pin-card {
+      background: #fff; border-radius: 18px; padding: 40px 36px;
+      text-align: center; width: 320px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    }
+    .pin-card .logo { font-size: 36px; margin-bottom: 10px; }
+    .pin-card h1 { font-size: 20px; color: #1e3a5f; margin-bottom: 4px; }
+    .pin-card p  { color: #718096; font-size: 13px; margin-bottom: 24px; }
+
+    .pin-dots { display: flex; justify-content: center; gap: 14px; margin-bottom: 26px; }
+    .pin-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid #2d6a9f; transition: background 0.15s, transform 0.1s;
+    }
+    .pin-dot.filled { background: #2d6a9f; transform: scale(1.15); }
+
+    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .pin-btn {
+      padding: 15px 10px; font-size: 20px; font-weight: 600;
+      border: 1.5px solid #e2e8f0; border-radius: 10px;
+      background: #f7fafc; cursor: pointer; color: #1e3a5f;
+      transition: background 0.12s, transform 0.08s, border-color 0.12s;
+      user-select: none;
+    }
+    .pin-btn:hover  { background: #ebf8ff; border-color: #bee3f8; }
+    .pin-btn:active { background: #bee3f8; transform: scale(0.94); }
+    .pin-btn.del    { font-size: 18px; color: #e53e3e; }
+    .pin-btn.ghost  { visibility: hidden; pointer-events: none; }
+
+    .pin-error {
+      min-height: 20px; margin-top: 14px; font-size: 13px;
+      color: #e53e3e; font-weight: 500;
+    }
+
+    /* ── App Shell ──────────────────────────────────────────────────── */
+    #app { display: none; }
+
+    .topbar {
+      background: #1e3a5f; color: #fff;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left span { font-size: 22px; }
+    .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: 0.01em; }
+    .topbar-actions { display: flex; gap: 8px; }
+
+    .tbtn {
+      background: rgba(255,255,255,0.14); border: none; color: #fff;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
+      font-weight: 500; transition: background 0.15s;
+    }
+    .tbtn:hover { background: rgba(255,255,255,0.26); }
+
+    /* ── Main Content ───────────────────────────────────────────────── */
+    .content { padding: 22px 24px; max-width: 1200px; margin: 0 auto; }
+
+    .controls {
+      display: flex; gap: 14px; margin-bottom: 18px;
+      flex-wrap: wrap; align-items: flex-end;
+    }
+    .ctrl-group { display: flex; flex-direction: column; gap: 5px; }
+    .ctrl-group label { font-size: 12px; font-weight: 700; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    select, input[type="text"] {
+      padding: 10px 14px; border: 1.5px solid #cbd5e0; border-radius: 8px;
+      font-size: 14px; background: #fff; color: #1a202c; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    select:focus, input[type="text"]:focus {
+      border-color: #2d6a9f;
+      box-shadow: 0 0 0 3px rgba(45,106,159,0.18);
+    }
+    select { min-width: 210px; cursor: pointer; }
+    input[type="text"] { min-width: 270px; }
+
+    /* ── Stats Bar ──────────────────────────────────────────────────── */
+    .stats { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat {
+      background: #fff; border-radius: 10px; padding: 14px 20px;
+      display: flex; flex-direction: column; gap: 2px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border-left: 4px solid #2d6a9f; min-width: 130px;
+    }
+    .stat.warn { border-left-color: #e53e3e; }
+    .stat .lbl { font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat .val { font-size: 28px; font-weight: 800; color: #1a202c; line-height: 1; }
+    .stat.warn .val { color: #c53030; }
+
+    /* ── Table ──────────────────────────────────────────────────────── */
+    .table-wrap {
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08); overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #edf2f7; }
+    th {
+      padding: 11px 16px; text-align: left; font-size: 11px;
+      font-weight: 800; color: #4a5568; text-transform: uppercase;
+      letter-spacing: 0.06em; white-space: nowrap;
+    }
+    td { padding: 11px 16px; font-size: 14px; border-top: 1px solid #f0f4f8; }
+    tr:hover td { background: #f7fafc; }
+    .code-cell { font-family: 'Courier New', monospace; font-weight: 700; color: #2d6a9f; }
+    .qty-ok   { font-weight: 800; font-size: 15px; color: #276749; }
+    .qty-low  { font-weight: 800; font-size: 15px; color: #c53030; }
+    .badge-low {
+      display: inline-block; background: #fff5f5; color: #c53030;
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 10px; border: 1px solid #fed7d7; margin-left: 7px;
+      vertical-align: middle; letter-spacing: 0.03em;
+    }
+
+    /* ── Empty / Loading ────────────────────────────────────────────── */
+    .placeholder {
+      text-align: center; padding: 60px 20px;
+      color: #a0aec0; font-size: 15px; line-height: 1.8;
+    }
+    .spinner {
+      display: inline-block; width: 22px; height: 22px;
+      border: 3px solid #e2e8f0; border-top-color: #2d6a9f;
+      border-radius: 50%; animation: spin 0.75s linear infinite;
+      vertical-align: middle; margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Settings Modal ─────────────────────────────────────────────── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 200;
+      align-items: center; justify-content: center;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px; padding: 32px;
+      width: 480px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .modal-header h2 { font-size: 18px; color: #1e3a5f; }
+    .close-btn {
+      background: #e2e8f0; border: none; width: 30px; height: 30px;
+      border-radius: 50%; cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: #4a5568; transition: background 0.15s;
+    }
+    .close-btn:hover { background: #cbd5e0; }
+
+    .section { margin-bottom: 26px; }
+    .section h3 {
+      font-size: 13px; font-weight: 700; color: #4a5568;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+    }
+    .field-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .field-row label { font-size: 13px; color: #4a5568; min-width: 115px; flex-shrink: 0; }
+    .field-row input { flex: 1; min-width: 80px; }
+
+    input[type="password"], input[type="number"] {
+      padding: 9px 13px; border: 1.5px solid #cbd5e0; border-radius: 8px;
+      font-size: 14px; background: #fff; color: #1a202c; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="password"]:focus, input[type="number"]:focus {
+      border-color: #2d6a9f;
+      box-shadow: 0 0 0 3px rgba(45,106,159,0.18);
+    }
+
+    .btn {
+      padding: 9px 18px; border: none; border-radius: 8px; cursor: pointer;
+      font-size: 14px; font-weight: 600; transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:hover  { opacity: 0.88; }
+    .btn-primary   { background: #2d6a9f; color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #4a5568; }
+
+    .msg { font-size: 13px; margin-top: 8px; min-height: 18px; }
+    .msg.ok  { color: #276749; }
+    .msg.err { color: #c53030; }
+
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .content { padding: 16px; }
+      .controls { flex-direction: column; }
+      select, input[type="text"] { min-width: 100%; width: 100%; }
+      .topbar h1 { font-size: 14px; }
+      .tbtn { padding: 6px 10px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ PIN SCREEN -->
+<div id="pin-screen">
+  <div class="pin-card">
+    <div class="logo">📦</div>
+    <h1>Stock Lookup</h1>
+    <p>Enter your 4-digit PIN to continue</p>
+    <div class="pin-dots">
+      <div class="pin-dot" id="d0"></div>
+      <div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div>
+      <div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-btn" onclick="pinKey('1')">1</button>
+      <button class="pin-btn" onclick="pinKey('2')">2</button>
+      <button class="pin-btn" onclick="pinKey('3')">3</button>
+      <button class="pin-btn" onclick="pinKey('4')">4</button>
+      <button class="pin-btn" onclick="pinKey('5')">5</button>
+      <button class="pin-btn" onclick="pinKey('6')">6</button>
+      <button class="pin-btn" onclick="pinKey('7')">7</button>
+      <button class="pin-btn" onclick="pinKey('8')">8</button>
+      <button class="pin-btn" onclick="pinKey('9')">9</button>
+      <button class="pin-btn ghost"></button>
+      <button class="pin-btn" onclick="pinKey('0')">0</button>
+      <button class="pin-btn del" onclick="pinBack()">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-err"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span>📦</span>
+      <h1>Stock Lookup</h1>
+    </div>
+    <div class="topbar-actions">
+      <button class="tbtn" onclick="refreshData()">⟳ Refresh</button>
+      <button class="tbtn" onclick="openSettings()">⚙ Settings</button>
+      <button class="tbtn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Filters -->
+    <div class="controls">
+      <div class="ctrl-group">
+        <label>Category</label>
+        <select id="cat-filter" onchange="applyFilters()">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+      <div class="ctrl-group">
+        <label>Search</label>
+        <input type="text" id="search" placeholder="Item code or product name..." oninput="applyFilters()">
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" id="stats"></div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="placeholder" id="ph"><span class="spinner"></span>Loading stock data...</div>
+      <table id="tbl" style="display:none">
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Size</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SETTINGS MODAL -->
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>⚙ Settings</h2>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+
+    <!-- Data Source -->
+    <div class="section">
+      <h3>Data Source (Google Apps Script URL)</h3>
+      <div class="field-row">
+        <input type="text" id="s-url" placeholder="https://script.google.com/macros/s/..." style="width:100%">
+      </div>
+      <button class="btn btn-primary" onclick="saveUrl()">Save &amp; Reload</button>
+      <div class="msg" id="url-msg"></div>
+    </div>
+
+    <!-- Change PIN -->
+    <div class="section">
+      <h3>Change PIN</h3>
+      <div class="field-row">
+        <label>Current PIN</label>
+        <input type="password" id="s-cur" maxlength="4" placeholder="••••" style="max-width:110px">
+      </div>
+      <div class="field-row">
+        <label>New PIN</label>
+        <input type="password" id="s-new" maxlength="4" placeholder="••••" style="max-width:110px">
+      </div>
+      <div class="field-row">
+        <label>Confirm New PIN</label>
+        <input type="password" id="s-con" maxlength="4" placeholder="••••" style="max-width:110px">
+      </div>
+      <button class="btn btn-primary" onclick="changePin()">Update PIN</button>
+      <div class="msg" id="pin-msg"></div>
+    </div>
+
+    <!-- Low Stock Thresholds -->
+    <div class="section">
+      <h3>Low Stock Thresholds (per category)</h3>
+      <p style="font-size:12px;color:#718096;margin-bottom:12px">
+        Items at or below this quantity are flagged as LOW STOCK.
+      </p>
+      <div id="thresh-fields">
+        <p style="color:#a0aec0;font-size:13px">Load data first to see categories.</p>
+      </div>
+      <button class="btn btn-primary" onclick="saveThresholds()" style="margin-top:10px">Save Thresholds</button>
+      <div class="msg" id="thresh-msg"></div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="closeSettings()">Close</button>
+  </div>
+</div>
+
+<script>
+// ── Constants ────────────────────────────────────────────────────────────
+const LS_PIN    = 'sl_pin';
+const LS_URL    = 'sl_url';
+const LS_THRESH = 'sl_thresh';
+const DEFAULT_PIN = '1234';
+const DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbwfG9-PjUivw5GZQsIlL1lXYlAiC6GQZYtRk_jGSN17zUFc9KBvWvfvBqWy57nxYCsb/exec';
+
+// ── State ────────────────────────────────────────────────────────────────
+let allItems   = [];
+let categories = [];
+let pinBuf     = '';
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const esc = s => String(s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function getPin()        { return localStorage.getItem(LS_PIN)    || DEFAULT_PIN; }
+function getUrl()        { return localStorage.getItem(LS_URL)    || DEFAULT_URL; }
+function getThresholds() { try { return JSON.parse(localStorage.getItem(LS_THRESH)) || {}; } catch { return {}; } }
+
+// ── PIN Screen ───────────────────────────────────────────────────────────
+function pinKey(d) {
+  if (pinBuf.length >= 4) return;
+  pinBuf += d;
+  updateDots();
+  if (pinBuf.length === 4) setTimeout(checkPin, 160);
+}
+
+function pinBack() {
+  pinBuf = pinBuf.slice(0, -1);
+  updateDots();
+  $('pin-err').textContent = '';
+}
+
+function updateDots() {
+  for (let i = 0; i < 4; i++)
+    $('d' + i).classList.toggle('filled', i < pinBuf.length);
+}
+
+function checkPin() {
+  if (pinBuf === getPin()) {
+    $('pin-screen').style.display = 'none';
+    $('app').style.display = 'block';
+    loadData();
+  } else {
+    $('pin-err').textContent = 'Incorrect PIN — try again.';
+    pinBuf = '';
+    updateDots();
+    // shake animation
+    const card = document.querySelector('.pin-card');
+    card.style.animation = 'none';
+    card.style.transform = 'translateX(-8px)';
+    setTimeout(() => { card.style.transition = 'transform 0.3s'; card.style.transform = ''; }, 50);
+    setTimeout(() => { card.style.transition = ''; }, 350);
+  }
+}
+
+function logout() {
+  pinBuf = '';
+  updateDots();
+  $('pin-err').textContent = '';
+  $('pin-screen').style.display = 'flex';
+  $('app').style.display = 'none';
+}
+
+// Keyboard support on PIN screen
+document.addEventListener('keydown', e => {
+  if ($('pin-screen').style.display !== 'none') {
+    if (e.key >= '0' && e.key <= '9') pinKey(e.key);
+    if (e.key === 'Backspace') pinBack();
+    if (e.key === 'Enter' && pinBuf.length === 4) checkPin();
+  }
+});
+
+// ── Data ─────────────────────────────────────────────────────────────────
+async function loadData() {
+  const url = getUrl();
+  const ph  = $('ph');
+  $('tbl').style.display = 'none';
+  $('stats').innerHTML   = '';
+
+  if (!url) {
+    ph.style.display = '';
+    ph.innerHTML = '<b>No data source configured.</b><br>' +
+      'Click <b>⚙ Settings</b> → paste your Google Apps Script URL → Save &amp; Reload.';
+    return;
+  }
+
+  ph.style.display = '';
+  ph.innerHTML = '<span class="spinner"></span>Loading stock data...';
+
+  try {
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    allItems   = data.items || [];
+    categories = data.categories || [...new Set(allItems.map(i => i.category))].sort();
+
+    buildCategoryDropdown();
+    applyFilters();
+  } catch (err) {
+    ph.style.display = '';
+    ph.innerHTML = '⚠ <b>Failed to load data.</b><br>' + esc(err.message) +
+      '<br><small style="color:#a0aec0">Check your Apps Script URL in Settings.</small>';
+  }
+}
+
+function refreshData() { loadData(); }
+
+// ── Filters ──────────────────────────────────────────────────────────────
+function buildCategoryDropdown() {
+  const sel = $('cat-filter');
+  sel.innerHTML = '<option value="">All Categories</option>';
+  categories.forEach(c => {
+    const o = document.createElement('option');
+    o.value = o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+function isLow(item) {
+  const t = getThresholds();
+  const threshold = t[item.category] !== undefined ? Number(t[item.category]) : 10;
+  return item.quantity <= threshold;
+}
+
+function applyFilters() {
+  const cat = $('cat-filter').value;
+  const q   = $('search').value.trim().toLowerCase();
+
+  let rows = allItems;
+  if (cat) rows = rows.filter(i => i.category === cat);
+  if (q)   rows = rows.filter(i =>
+    i.itemCode.toLowerCase().includes(q) ||
+    i.productName.toLowerCase().includes(q)
+  );
+
+  renderTable(rows);
+  renderStats(rows);
+}
+
+// ── Render ───────────────────────────────────────────────────────────────
+function renderTable(rows) {
+  const ph    = $('ph');
+  const tbl   = $('tbl');
+  const tbody = $('tbody');
+
+  if (rows.length === 0) {
+    ph.style.display = '';
+    ph.textContent = allItems.length === 0
+      ? 'No stock data found in the sheet.'
+      : 'No items match your search.';
+    tbl.style.display = 'none';
+    return;
+  }
+
+  ph.style.display = 'none';
+  tbl.style.display = '';
+  tbody.innerHTML = rows.map(item => {
+    const low = isLow(item);
+    return `<tr>
+      <td class="code-cell">${esc(item.itemCode)}</td>
+      <td>${esc(item.productName)}</td>
+      <td>${esc(item.category)}</td>
+      <td>${esc(item.size || '')}</td>
+      <td class="${low ? 'qty-low' : 'qty-ok'}">
+        ${item.quantity}
+        ${low ? '<span class="badge-low">LOW</span>' : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderStats(rows) {
+  const low   = rows.filter(isLow).length;
+  const total = rows.reduce((s, i) => s + i.quantity, 0);
+  $('stats').innerHTML = `
+    <div class="stat">
+      <span class="lbl">Items Shown</span>
+      <span class="val">${rows.length}</span>
+    </div>
+    <div class="stat">
+      <span class="lbl">Total Units</span>
+      <span class="val">${total.toLocaleString()}</span>
+    </div>
+    <div class="stat ${low > 0 ? 'warn' : ''}">
+      <span class="lbl">Low Stock</span>
+      <span class="val">${low}</span>
+    </div>
+  `;
+}
+
+// ── Settings Modal ───────────────────────────────────────────────────────
+function openSettings() {
+  $('s-url').value = getUrl();
+  $('s-cur').value = $('s-new').value = $('s-con').value = '';
+  $('url-msg').className = $('url-msg').textContent = '';
+  $('pin-msg').className = $('pin-msg').textContent = '';
+  $('thresh-msg').className = $('thresh-msg').textContent = '';
+  buildThresholdFields();
+  $('modal-overlay').classList.add('open');
+}
+
+function closeSettings() {
+  $('modal-overlay').classList.remove('open');
+}
+
+$('modal-overlay').addEventListener('click', e => {
+  if (e.target === $('modal-overlay')) closeSettings();
+});
+
+function buildThresholdFields() {
+  const t = getThresholds();
+  const c = $('thresh-fields');
+  if (!categories.length) {
+    c.innerHTML = '<p style="color:#a0aec0;font-size:13px">Load data first to see categories.</p>';
+    return;
+  }
+  c.innerHTML = categories.map(cat => `
+    <div class="field-row">
+      <label>${esc(cat)}</label>
+      <input type="number" id="t-${esc(cat)}" value="${t[cat] !== undefined ? t[cat] : 10}"
+             min="0" style="max-width:90px"> <span style="font-size:13px;color:#718096">units</span>
+    </div>
+  `).join('');
+}
+
+function saveThresholds() {
+  const t = {};
+  categories.forEach(cat => {
+    const el = document.getElementById('t-' + cat);
+    if (el) t[cat] = parseInt(el.value) || 0;
+  });
+  localStorage.setItem(LS_THRESH, JSON.stringify(t));
+  showMsg('thresh-msg', 'ok', '✓ Thresholds saved.');
+  applyFilters();
+}
+
+function changePin() {
+  const cur = $('s-cur').value;
+  const np  = $('s-new').value;
+  const con = $('s-con').value;
+
+  if (cur !== getPin()) { showMsg('pin-msg','err','Current PIN is incorrect.'); return; }
+  if (!/^\d{4}$/.test(np)) { showMsg('pin-msg','err','New PIN must be exactly 4 digits.'); return; }
+  if (np !== con)           { showMsg('pin-msg','err','PINs do not match.'); return; }
+
+  localStorage.setItem(LS_PIN, np);
+  $('s-cur').value = $('s-new').value = $('s-con').value = '';
+  showMsg('pin-msg', 'ok', '✓ PIN updated successfully.');
+}
+
+function saveUrl() {
+  const url = $('s-url').value.trim();
+  if (!url) { showMsg('url-msg','err','Please paste a valid URL.'); return; }
+  localStorage.setItem(LS_URL, url);
+  showMsg('url-msg', 'ok', '✓ Saved — reloading data...');
+  setTimeout(() => { closeSettings(); loadData(); }, 800);
+}
+
+function showMsg(id, type, text) {
+  const el = $(id);
+  el.className = 'msg ' + type;
+  el.textContent = text;
+  setTimeout(() => { el.textContent = ''; el.className = 'msg'; }, 3500);
+}
+</script>
+</body>
+</html>
