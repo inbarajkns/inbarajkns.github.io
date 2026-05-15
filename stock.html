@@ -349,10 +349,8 @@
 
 <script>
 // ── Constants ────────────────────────────────────────────────────────────
-const LS_PIN    = 'sl_pin';
 const LS_URL    = 'sl_url';
 const LS_THRESH = 'sl_thresh';
-const DEFAULT_PIN = '1234';
 const DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbwfG9-PjUivw5GZQsIlL1lXYlAiC6GQZYtRk_jGSN17zUFc9KBvWvfvBqWy57nxYCsb/exec';
 
 // ── State ────────────────────────────────────────────────────────────────
@@ -365,7 +363,6 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-function getPin()        { return localStorage.getItem(LS_PIN)    || DEFAULT_PIN; }
 function getUrl()        { return localStorage.getItem(LS_URL)    || DEFAULT_URL; }
 function getThresholds() { try { return JSON.parse(localStorage.getItem(LS_THRESH)) || {}; } catch { return {}; } }
 
@@ -388,21 +385,34 @@ function updateDots() {
     $('d' + i).classList.toggle('filled', i < pinBuf.length);
 }
 
-function checkPin() {
-  if (pinBuf === getPin()) {
-    $('pin-screen').style.display = 'none';
-    $('app').style.display = 'block';
-    loadData();
-  } else {
-    $('pin-err').textContent = 'Incorrect PIN — try again.';
+async function checkPin() {
+  const url = getUrl();
+  if (!url) {
+    $('pin-err').textContent = 'No data source configured.';
+    return;
+  }
+  $('pin-err').textContent = 'Checking...';
+  try {
+    const res = await fetch(url + '?action=verifyPin&pin=' + encodeURIComponent(pinBuf));
+    const data = await res.json();
+    if (data.valid) {
+      $('pin-err').textContent = '';
+      $('pin-screen').style.display = 'none';
+      $('app').style.display = 'block';
+      loadData();
+    } else {
+      $('pin-err').textContent = 'Incorrect PIN — try again.';
+      pinBuf = '';
+      updateDots();
+      const card = document.querySelector('.pin-card');
+      card.style.transform = 'translateX(-8px)';
+      setTimeout(() => { card.style.transition = 'transform 0.3s'; card.style.transform = ''; }, 50);
+      setTimeout(() => { card.style.transition = ''; }, 350);
+    }
+  } catch (err) {
+    $('pin-err').textContent = 'Connection error — check internet.';
     pinBuf = '';
     updateDots();
-    // shake animation
-    const card = document.querySelector('.pin-card');
-    card.style.animation = 'none';
-    card.style.transform = 'translateX(-8px)';
-    setTimeout(() => { card.style.transition = 'transform 0.3s'; card.style.transform = ''; }, 50);
-    setTimeout(() => { card.style.transition = ''; }, 350);
   }
 }
 
@@ -588,18 +598,28 @@ function saveThresholds() {
   applyFilters();
 }
 
-function changePin() {
+async function changePin() {
   const cur = $('s-cur').value;
   const np  = $('s-new').value;
   const con = $('s-con').value;
 
-  if (cur !== getPin()) { showMsg('pin-msg','err','Current PIN is incorrect.'); return; }
   if (!/^\d{4}$/.test(np)) { showMsg('pin-msg','err','New PIN must be exactly 4 digits.'); return; }
   if (np !== con)           { showMsg('pin-msg','err','PINs do not match.'); return; }
 
-  localStorage.setItem(LS_PIN, np);
-  $('s-cur').value = $('s-new').value = $('s-con').value = '';
-  showMsg('pin-msg', 'ok', '✓ PIN updated successfully.');
+  showMsg('pin-msg', 'ok', 'Updating...');
+  try {
+    const url = getUrl() + '?action=changePin&current=' + encodeURIComponent(cur) + '&new=' + encodeURIComponent(np);
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.success) {
+      $('s-cur').value = $('s-new').value = $('s-con').value = '';
+      showMsg('pin-msg', 'ok', '✓ PIN updated for all devices.');
+    } else {
+      showMsg('pin-msg', 'err', data.error || 'Failed to update PIN.');
+    }
+  } catch (err) {
+    showMsg('pin-msg', 'err', 'Connection error — try again.');
+  }
 }
 
 function saveUrl() {
